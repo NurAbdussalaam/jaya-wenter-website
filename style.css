@@ -120,3 +120,61 @@ padding:40px 0;
 margin-top:60px;
 text-align:center;
   }
+/* MOBILE RESPONSIVE */
+
+@media screen and (max-width:768px){
+
+header .container{
+flex-direction:column;
+gap:15px;
+}
+
+.logo{
+height:45px;
+}
+
+.hero{
+padding:30px 0;
+}
+
+.hero-content{
+flex-direction:column;
+}
+
+.hero-text h1{
+font-size:30px;
+text-align:center;
+}
+
+.hero-text p{
+font-size:16px;
+text-align:center;
+}
+
+.hero-text{
+text-align:center;
+}
+
+.whatsapp-btn{
+display:inline-block;
+width:100%;
+max-width:300px;
+}
+
+.section-title{
+font-size:24px;
+}
+
+.gallery{
+grid-template-columns:1fr;
+}
+
+.tarif{
+padding:20px;
+}
+
+table{
+font-size:14px;
+}
+
+                           }
