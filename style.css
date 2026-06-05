@@ -62,11 +62,6 @@ color:#001d5a;
 margin-bottom:20px;
 }
 
-.hero-text p{
-font-size:20px;
-margin-bottom:25px;
-}
-
 .hero-image{
 flex:1;
 }
@@ -74,14 +69,6 @@ flex:1;
 .hero-image img{
 width:100%;
 border-radius:12px;
-box-shadow:0 5px 20px rgba(0,0,0,.1);
-}
-
-.section-title{
-text-align:center;
-margin:60px 0 30px;
-color:#001d5a;
-font-size:32px;
 }
 
 .gallery{
@@ -93,24 +80,6 @@ gap:20px;
 .gallery img{
 width:100%;
 border-radius:12px;
-box-shadow:0 4px 12px rgba(0,0,0,.1);
-}
-
-.tarif{
-background:white;
-padding:30px;
-border-radius:12px;
-margin-top:30px;
-}
-
-.tarif table{
-width:100%;
-border-collapse:collapse;
-}
-
-.tarif td{
-padding:12px;
-border-bottom:1px solid #ddd;
 }
 
 footer{
@@ -119,92 +88,8 @@ color:white;
 padding:40px 0;
 margin-top:60px;
 text-align:center;
-  }
-/* MOBILE RESPONSIVE */
-
-@media screen and (max-width:768px){
-
-header .container{
-flex-direction:column;
-gap:15px;
 }
 
-.logo{
-height:45px;
-}
-
-.hero{
-padding:30px 0;
-}
-
-.hero-content{
-flex-direction:column;
-}
-
- .hero-text h1{
-font-size:18px;
-line-height:1.4;
-text-align:center;
-margin-bottom:15px;
- } 
-
-.hero-image{
-margin-top:20px;
-}
-
-.hero-image img{
-max-width:320px;
-width:100%;
-display:block;
-margin:auto;
-}
-
-.hero-text p{
-font-size:15px;
-line-height:1.6;
-max-width:350px;
-margin:0 auto 20px;
-  }  
-
-.hero-text p{
-font-size:16px;
-text-align:center;
-}
-
-.hero-text{
-text-align:center;
-}
-
-.whatsapp-btn{
-display:inline-block;
-width:100%;
-max-width:300px;
-}
-
-.section-title{
-font-size:24px;
-}
-
-.gallery{
-grid-template-columns:1fr;
-}
-
-.tarif{
-padding:20px;
-}
-
-table{
-font-size:14px;
-}
-  
-}
-  
-
-.whatsapp-btn i{
-margin-right:8px;
-font-size:18px;
-}
-  
 .floating-wa{
 position:fixed;
 bottom:20px;
@@ -217,13 +102,39 @@ border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:30px;
+font-size:22px;
+font-weight:bold;
 text-decoration:none;
-box-shadow:0 4px 12px rgba(0,0,0,.3);
-z-index:999;
+z-index:99999;
 }
 
-.floating-wa:hover{
-transform:scale(1.1);
+@media screen and (max-width:768px){
+
+header .container{
+flex-direction:column;
+gap:15px;
+}
+
+.logo{
+height:45px;
+}
+
+.hero-content{
+flex-direction:column;
+}
+
+.hero-text{
+text-align:center;
+}
+
+.hero-text h1{
+font-size:18px;
+line-height:1.4;
+}
+
+.gallery{
+grid-template-columns:1fr;
+}
+
   }
-                           
+  
