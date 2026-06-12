@@ -17,9 +17,8 @@ max-width:1200px;
 margin:auto;
 }
 
-header{
-background:#001d5a;
-padding:15px 0;
+header .container{
+text-align:center;
 }
 
 header .container{
@@ -30,6 +29,8 @@ align-items:center;
 
 .logo{
 height:90px;
+display:block;
+margin:0 auto;
 }
 
 .whatsapp-btn{
@@ -304,35 +305,40 @@ text-decoration:underline;
 
 nav{
 display:flex;
+justify-content:center;
 flex-wrap:wrap;
-gap:15px;
-align-items:center;
+gap:20px;
+margin-top:15px;
 }
 
 nav a{
 text-decoration:none;
 font-weight:600;
-color:#222;
-padding:6px 10px;
+color:white;
+padding:8px 12px;
 border-radius:6px;
 transition:.2s;
 }
 
 nav a:hover{
-background:#f2f2f2;
+background:rgba(255,255,255,.15);
 }
 
 @media(max-width:768px){
 
+.logo{
+height:70px;
+}
+
 nav{
 justify-content:center;
-width:100%;
-margin-top:10px;
-gap:10px;
+gap:8px;
+margin-top:12px;
 }
 
 nav a{
-font-size:14px;
+font-size:13px;
+padding:6px 8px;
 }
 
-  }
+}
