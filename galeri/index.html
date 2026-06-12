@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Galeri Hasil Wenter | JAYA WENTER</title>
+
+<meta name="description" content="Galeri hasil wenter JAYA WENTER. Lihat before-after wenter celana, jaket, hoodie, kaos, kemeja, tas dan berbagai merk terkenal.">
+
+<link rel="stylesheet" href="../style.css">
+
+<style>
+
+.filter-bar{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+justify-content:center;
+margin:30px 0;
+}
+
+.filter-bar select{
+padding:10px;
+border-radius:8px;
+}
+
+.gallery-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.gallery-item{
+background:#fff;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.gallery-item img{
+width:100%;
+cursor:pointer;
+display:block;
+}
+
+.gallery-info{
+padding:15px;
+}
+
+.gallery-info h3{
+margin-bottom:10px;
+}
+
+.lightbox{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.9);
+}
+
+.lightbox img{
+max-width:90%;
+max-height:90%;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.lightbox span{
+position:absolute;
+top:20px;
+right:30px;
+font-size:40px;
+color:white;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="container">
+
+<a href="../index.html">
+
+<img src="../assets/logo_resmi_jaya_wenter.png"
+alt="JAYA WENTER"
+class="logo">
+
+</a>
+
+</div>
+
+</header>
+
+<section class="container">
+
+<h1 class="section-title">
+Galeri Hasil Wenter JAYA WENTER
+</h1>
+
+<p style="text-align:center;">
+Lihat berbagai hasil before-after wenter yang telah kami kerjakan.
+</p>
+
+<div class="filter-bar">
+
+<select id="kategoriFilter">
+
+<option value="all">Semua Jenis</option>
+
+<option value="celana">Celana</option>
+
+<option value="jaket">Jaket</option>
+
+<option value="hoodie">Hoodie</option>
+
+<option value="kaos">Kaos</option>
+
+<option value="kemeja">Kemeja</option>
+
+<option value="tas">Tas</option>
+
+<option value="lainnya">Lainnya</option>
+
+</select>
+
+<select id="merkFilter">
+
+<option value="all">Semua Merk</option>
+
+<option value="nike">Nike</option>
+
+<option value="adidas">Adidas</option>
+
+<option value="balenciaga">Balenciaga</option>
+
+<option value="3second">3 Second</option>
+
+<option value="lea">Lea</option>
+
+<option value="uniqlo">Uniqlo</option>
+
+<option value="erigo">Erigo</option>
+
+</select>
+
+</div>
+
+<div class="gallery-grid" id="galleryGrid">
+
+<!-- CONTOH ITEM -->
+
+<div class="gallery-item"
+data-kategori="jaket"
+data-merk="nike">
+
+<img
+src="images/jaket-nike-001.webp"
+alt="Wenter Jaket Nike Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Jaket Nike</h3>
+
+<p>
+Jaket Nike hitam yang warnanya pudar berhasil diwenter menjadi lebih pekat dan merata.
+</p>
+
+</div>
+
+</div>
+
+<!-- TAMBAHKAN ITEM BARU DI SINI -->
+
+</div>
+
+</section>
+
+<div id="lightbox" class="lightbox">
+
+<span onclick="closeLightbox()">&times;</span>
+
+<img id="lightboxImg">
+
+</div>
+
+<script>
+
+const kategoriFilter =
+document.getElementById("kategoriFilter");
+
+const merkFilter =
+document.getElementById("merkFilter");
+
+const items =
+document.querySelectorAll(".gallery-item");
+
+function filterGallery(){
+
+const kategori =
+kategoriFilter.value;
+
+const merk =
+merkFilter.value;
+
+items.forEach(item=>{
+
+const cocokKategori =
+kategori==="all" ||
+item.dataset.kategori===kategori;
+
+const cocokMerk =
+merk==="all" ||
+item.dataset.merk===merk;
+
+item.style.display =
+(cocokKategori && cocokMerk)
+? "block"
+: "none";
+
+});
+
+}
+
+kategoriFilter.addEventListener(
+"change",
+filterGallery
+);
+
+merkFilter.addEventListener(
+"change",
+filterGallery
+);
+
+function openLightbox(src){
+
+document.getElementById(
+"lightbox"
+).style.display="block";
+
+document.getElementById(
+"lightboxImg"
+).src=src;
+
+}
+
+function closeLightbox(){
+
+document.getElementById(
+"lightbox"
+).style.display="none";
+
+}
+
+</script>
+
+</body>
+                                 </html>
