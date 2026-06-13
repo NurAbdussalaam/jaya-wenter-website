@@ -355,3 +355,86 @@ padding:6px 8px;
 
 }
 
+/* ========================= */
+/* PILIHAN WARNA WENTER */
+/* ========================= */
+
+.warna-subtitle{
+text-align:center;
+margin-top:-15px;
+margin-bottom:30px;
+color:#666;
+}
+
+.warna-grid{
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:25px;
+margin-bottom:40px;
+}
+
+.warna-item{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 4px 12px rgba(0,0,0,.08);
+text-align:center;
+width:140px;
+transition:.3s;
+}
+
+.warna-item:hover{
+transform:translateY(-5px);
+}
+
+.warna-bulat{
+width:70px;
+height:70px;
+border-radius:50%;
+margin:0 auto 12px;
+border:3px solid #eee;
+}
+
+.hitam{
+background:#111111;
+}
+
+.biru{
+background:#0d2d6c;
+}
+
+.hijau{
+background:#1f4d2b;
+}
+
+.coklat{
+background:#4a2c17;
+}
+
+.abu{
+background:#555555;
+}
+
+.warna-item p{
+font-weight:bold;
+color:#333;
+}
+
+@media(max-width:768px){
+
+.warna-grid{
+gap:15px;
+}
+
+.warna-item{
+width:120px;
+padding:15px;
+}
+
+.warna-bulat{
+width:55px;
+height:55px;
+}
+
+}
