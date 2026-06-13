@@ -52,6 +52,91 @@ padding:15px;
 margin-bottom:10px;
 }
 
+/* ================================= */
+/* FILTER WARNA JAYA WENTER */
+/* ================================= */
+
+.warna-filter{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+margin:10px 0 35px;
+}
+
+.warna-item{
+text-align:center;
+cursor:pointer;
+transition:.2s;
+}
+
+.warna-item:hover{
+transform:translateY(-4px);
+}
+
+.warna-bulat{
+width:60px;
+height:60px;
+border-radius:50%;
+margin:auto;
+border:3px solid #ddd;
+margin-bottom:8px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.warna-item p{
+font-size:14px;
+font-weight:bold;
+margin:0;
+}
+
+/* WARNA */
+
+.hitam{
+background:#111111;
+}
+
+.biru{
+background:#0d2d6c;
+}
+
+.hijau{
+background:#1f4d2b;
+}
+
+.coklat{
+background:#4a2c17;
+}
+
+.abu{
+background:#666666;
+}
+
+.semua{
+background:
+linear-gradient(
+45deg,
+#111111,
+#0d2d6c,
+#1f4d2b,
+#4a2c17,
+#666666
+);
+}
+
+@media(max-width:768px){
+
+.warna-filter{
+gap:15px;
+}
+
+.warna-bulat{
+width:50px;
+height:50px;
+}
+
+}
+  
 .lightbox{
 display:none;
 position:fixed;
@@ -615,6 +700,7 @@ document.getElementById("kategoriFilter");
 const merkFilter =
 document.getElementById("merkFilter");
 
+let warnaAktif = "all";
 const warnaFilter =
 document.getElementById("warnaFilter");
   
@@ -629,9 +715,6 @@ kategoriFilter.value;
 const merk =
 merkFilter.value;
 
-const warna =
-warnaFilter.value;
-
 items.forEach(item=>{
 
 const cocokKategori =
@@ -643,8 +726,8 @@ merk==="all" ||
 item.dataset.merk===merk;
 
 const cocokWarna =
-warna==="all" ||
-item.dataset.warna===warna;
+warnaAktif==="all" ||
+item.dataset.warna===warnaAktif;
 
 item.style.display =
 (cocokKategori &&
@@ -671,6 +754,14 @@ warnaFilter.addEventListener(
 "change",
 filterGallery
 );
+
+function setWarna(warna){
+
+warnaAktif = warna;
+
+filterGallery();
+
+  }
   
 function openLightbox(src){
 
