@@ -587,6 +587,9 @@ document.getElementById("kategoriFilter");
 const merkFilter =
 document.getElementById("merkFilter");
 
+const warnaFilter =
+document.getElementById("warnaFilter");
+  
 const items =
 document.querySelectorAll(".gallery-item");
 
@@ -598,6 +601,9 @@ kategoriFilter.value;
 const merk =
 merkFilter.value;
 
+const warna =
+warnaFilter.value;
+
 items.forEach(item=>{
 
 const cocokKategori =
@@ -608,8 +614,14 @@ const cocokMerk =
 merk==="all" ||
 item.dataset.merk===merk;
 
+const cocokWarna =
+warna==="all" ||
+item.dataset.warna===warna;
+
 item.style.display =
-(cocokKategori && cocokMerk)
+(cocokKategori &&
+cocokMerk &&
+cocokWarna)
 ? "block"
 : "none";
 
@@ -627,6 +639,11 @@ merkFilter.addEventListener(
 filterGallery
 );
 
+warnaFilter.addEventListener(
+"change",
+filterGallery
+);
+  
 function openLightbox(src){
 
 document.getElementById(
