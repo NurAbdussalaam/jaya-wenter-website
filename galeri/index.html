@@ -74,6 +74,11 @@ transition:.2s;
 transform:translateY(-4px);
 }
 
+.warna-item.active .warna-bulat{
+border:4px solid #001d5a;
+transform:scale(1.1);
+}
+  
 .warna-bulat{
 width:60px;
 height:60px;
@@ -701,8 +706,6 @@ const merkFilter =
 document.getElementById("merkFilter");
 
 let warnaAktif = "all";
-const warnaFilter =
-document.getElementById("warnaFilter");
   
 const items =
 document.querySelectorAll(".gallery-item");
@@ -750,18 +753,23 @@ merkFilter.addEventListener(
 filterGallery
 );
 
-warnaFilter.addEventListener(
-"change",
-filterGallery
-);
 
 function setWarna(warna){
 
 warnaAktif = warna;
 
+document
+.querySelectorAll(".warna-item")
+.forEach(item=>{
+item.classList.remove("active");
+});
+
+event.currentTarget
+.classList.add("active");
+
 filterGallery();
 
-  }
+}
   
 function openLightbox(src){
 
