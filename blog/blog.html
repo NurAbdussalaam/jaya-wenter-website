@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Tips Pakaian & Wenter | JAYA WENTER Malang</title>
+<meta name="description" content="Tips merawat pakaian, cara mengatasi warna pudar, dan panduan memilih jasa wenter terbaik. Blog resmi JAYA WENTER Malang.">
+<style>
+/* ── SHARED DESIGN SYSTEM — JAYA WENTER ── */
+:root {
+  --ink:      #1A1207;
+  --ink2:     #4A3B28;
+  --ink3:     #7A6A55;
+  --cream:    #FAF6F0;
+  --cream2:   #F2EBE0;
+  --amber:    #C8760A;
+  --amber-l:  #FDF3E3;
+  --amber-d:  #7A4500;
+  --indigo:   #1E3A5F;
+  --green:    #1A5C3A;
+  --green-l:  #E6F4ED;
+  --border:   rgba(26,18,7,0.10);
+  --radius:   10px;
+  --r-lg:     18px;
+  --nav-h:    60px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Georgia',serif;background:var(--cream);color:var(--ink);line-height:1.65;font-size:16px}
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+.sans{font-family:system-ui,-apple-system,sans-serif}
+.container{max-width:1080px;margin:0 auto;padding:0 20px}
+section{padding:64px 0}
+.section-label{font-family:system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;display:block}
+.section-title{font-size:clamp(22px,4vw,36px);font-weight:700;line-height:1.2;color:var(--ink);margin-bottom:12px}
+.section-sub{font-family:system-ui,sans-serif;font-size:15px;color:var(--ink2);max-width:540px;margin-bottom:28px;line-height:1.6}
+.divider{border:none;border-top:1px solid var(--border)}
+.badge{display:inline-block;font-family:system-ui,sans-serif;font-size:11px;font-weight:600;padding:4px 12px;border-radius:99px;text-transform:uppercase;letter-spacing:.05em}
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:system-ui,sans-serif;font-weight:600;font-size:14px;padding:13px 24px;border-radius:var(--radius);cursor:pointer;border:none;text-decoration:none;transition:transform .15s,box-shadow .15s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--amber);color:#fff;box-shadow:0 4px 14px rgba(200,118,10,.3)}
+.btn-primary:hover{box-shadow:0 6px 22px rgba(200,118,10,.42);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--border)}
+.btn-ghost:hover{background:var(--cream2)}
+.btn-sm{font-size:13px;padding:10px 18px}
+/* Nav */
+nav{position:sticky;top:0;z-index:200;background:rgba(250,246,240,.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);height:var(--nav-h)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:100%;max-width:1080px;margin:0 auto;padding:0 20px;gap:16px}
+.nav-logo{font-size:17px;font-weight:700;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo-dot{width:9px;height:9px;border-radius:50%;background:var(--amber)}
+.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
+.nav-links a{font-family:system-ui,sans-serif;font-size:13px;font-weight:500;color:var(--ink2);text-decoration:none;padding:6px 11px;border-radius:var(--radius);transition:background .15s}
+.nav-links a:hover,.nav-links a.active{background:var(--cream2);color:var(--ink)}
+.nav-links a.active{font-weight:600}
+.nav-cta{margin-left:4px}
+/* Hamburger */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:none;border-radius:var(--radius)}
+.hamburger span{display:block;width:22px;height:2px;background:var(--ink);border-radius:2px;transition:all .25s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(250,246,240,.98);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:16px 20px 24px;z-index:199;flex-direction:column;gap:4px}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:system-ui,sans-serif;font-size:15px;font-weight:500;color:var(--ink2);text-decoration:none;padding:12px 14px;border-radius:var(--radius);transition:background .15s}
+.mobile-menu a:hover,.mobile-menu a.active{background:var(--cream2);color:var(--ink)}
+.mobile-menu .btn{margin-top:8px;justify-content:center}
+/* Trust strip */
+.trust-strip{background:var(--indigo);padding:20px 0}
+.trust-inner{display:grid;grid-template-columns:repeat(4,1fr)}
+.trust-item{text-align:center;padding:0 16px;border-right:1px solid rgba(255,255,255,.1)}
+.trust-item:last-child{border-right:none}
+.trust-num{font-size:26px;font-weight:700;color:var(--amber);line-height:1;font-family:system-ui,sans-serif}
+.trust-label{font-family:system-ui,sans-serif;font-size:11px;color:rgba(255,255,255,.6);margin-top:3px}
+/* Floating WA */
+.wa-float{position:fixed;bottom:22px;right:20px;z-index:998;display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.wa-bubble{background:#fff;color:var(--ink);font-family:system-ui,sans-serif;font-size:13px;font-weight:500;padding:9px 14px;border-radius:12px 12px 2px 12px;box-shadow:0 4px 18px rgba(0,0,0,.13);white-space:nowrap;animation:popIn .35s ease both}
+.wa-btn{width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;text-decoration:none;box-shadow:0 4px 18px rgba(37,211,102,.38);transition:transform .15s,box-shadow .15s;animation:popIn .35s .08s ease both}
+.wa-btn:hover{transform:scale(1.08);box-shadow:0 6px 26px rgba(37,211,102,.48)}
+.wa-btn svg{width:28px;height:28px;fill:#fff}
+/* Footer */
+footer{background:var(--ink);padding:48px 0 24px}
+.footer-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px}
+.footer-logo{font-size:17px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.footer-desc{font-family:system-ui,sans-serif;font-size:13px;color:rgba(255,255,255,.42);line-height:1.6}
+.footer-col-title{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-bottom:13px}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+.footer-links a{font-family:system-ui,sans-serif;font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .15s}
+.footer-links a:hover{color:var(--amber)}
+.footer-contacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.footer-contact-btn{background:rgba(255,255,255,.07);color:rgba(255,255,255,.55);border-radius:var(--radius);padding:7px 12px;font-family:system-ui,sans-serif;font-size:12px;text-decoration:none;transition:background .15s}
+.footer-contact-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.footer-bottom{margin-top:36px;padding-top:18px;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;font-family:system-ui,sans-serif;font-size:11px;color:rgba(255,255,255,.27);flex-wrap:wrap;gap:6px}
+/* Animations */
+@keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .45s ease,transform .45s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+/* Shared CTA section */
+.final-cta{background:var(--ink);padding:72px 0;text-align:center}
+.final-cta .section-label{color:var(--amber)}
+.final-cta .section-title{color:#fff;margin:0 auto 12px;max-width:520px}
+.final-cta-sub{font-family:system-ui,sans-serif;font-size:15px;color:rgba(255,255,255,.5);margin:0 auto 32px;max-width:440px}
+.final-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn-white{background:#fff;color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.1)}
+.btn-white:hover{box-shadow:0 6px 24px rgba(0,0,0,.15)}
+.final-detail{margin-top:18px;font-family:system-ui,sans-serif;font-size:12px;color:rgba(255,255,255,.28)}
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  section{padding:48px 0}
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  .trust-inner{grid-template-columns:repeat(2,1fr);gap:0}
+  .trust-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.08);padding:14px 12px}
+  .trust-item:nth-child(1),.trust-item:nth-child(2){border-right:1px solid rgba(255,255,255,.08)}
+  .trust-item:nth-child(3),.trust-item:nth-child(4){border-bottom:none}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .footer-inner>div:first-child{grid-column:span 2}
+  .wa-float{bottom:18px;right:16px}
+  .wa-bubble{font-size:12px}
+  .wa-btn{width:50px;height:50px}
+}
+@media(max-width:480px){
+  .container{padding:0 16px}
+  .trust-inner{grid-template-columns:repeat(2,1fr)}
+  .footer-inner{grid-template-columns:1fr}
+  .footer-inner>div:first-child{grid-column:span 1}
+}
+
+
+/* ── BLOG PAGE ── */
+.page-hero{background:var(--indigo);padding:52px 0 44px;text-align:center}
+.page-hero .section-label{color:rgba(255,255,255,.5)}
+.page-hero .section-title{color:#fff;margin-bottom:8px}
+.page-hero p{font-family:system-ui,sans-serif;font-size:15px;color:rgba(255,255,255,.55);margin:0 auto;max-width:460px}
+
+/* Blog search */
+.blog-search-wrap{display:flex;justify-content:center;padding:32px 0 0}
+.blog-search-box{position:relative;width:100%;max-width:480px}
+.blog-search-box input{width:100%;font-family:system-ui,sans-serif;font-size:14px;padding:13px 46px 13px 44px;border:1.5px solid var(--border);border-radius:var(--r-lg);background:#fff;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
+.blog-search-box input:focus{border-color:var(--amber);box-shadow:0 0 0 3px rgba(200,118,10,.12)}
+.blog-search-box input::placeholder{color:var(--ink3)}
+.blog-s-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none}
+
+/* Featured post */
+.featured-post{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;margin-bottom:48px;transition:box-shadow .2s}
+.featured-post:hover{box-shadow:0 8px 32px rgba(26,18,7,.09)}
+.fp-img{background:var(--indigo);min-height:280px;position:relative;overflow:hidden}
+.fp-img-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:72px;background:linear-gradient(135deg,var(--indigo) 0%,#2a5080 100%)}
+.fp-badge{position:absolute;top:16px;left:16px;background:var(--amber);color:#fff;font-family:system-ui,sans-serif;font-size:10px;font-weight:700;padding:4px 11px;border-radius:99px;text-transform:uppercase;letter-spacing:.05em}
+.fp-body{padding:32px 36px;display:flex;flex-direction:column;justify-content:center}
+.fp-cat{font-family:system-ui,sans-serif;font-size:11px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.fp-title{font-size:clamp(18px,2.5vw,24px);font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:12px}
+.fp-excerpt{font-family:system-ui,sans-serif;font-size:14px;color:var(--ink2);line-height:1.6;margin-bottom:20px}
+.fp-meta{display:flex;align-items:center;gap:12px;font-family:system-ui,sans-serif;font-size:12px;color:var(--ink3);margin-bottom:20px}
+.fp-dot{width:3px;height:3px;border-radius:50%;background:var(--ink3)}
+.fp-read{display:inline-flex;align-items:center;gap:6px;font-family:system-ui,sans-serif;font-size:13px;font-weight:600;color:var(--amber);text-decoration:none}
+.fp-read:hover{gap:10px}
+
+/* Blog grid */
+.blog-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.post-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.post-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.post-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(26,18,7,.1)}
+.post-thumb{background:var(--cream2);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;overflow:hidden}
+.post-thumb-bg{position:absolute;inset:0;background:linear-gradient(135deg,var(--cream2) 0%,var(--indigo-l) 100%)}
+.post-thumb-icon{position:relative;z-index:1;font-size:38px}
+.post-cat-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(26,18,7,.05);padding:6px 14px}
+.post-cat{font-family:system-ui,sans-serif;font-size:10px;font-weight:700;color:var(--amber);text-transform:uppercase;letter-spacing:.06em}
+.post-body{padding:18px 20px;flex:1;display:flex;flex-direction:column}
+.post-title{font-size:15px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:8px}
+.post-excerpt{font-family:system-ui,sans-serif;font-size:13px;color:var(--ink2);line-height:1.55;flex:1;margin-bottom:14px}
+.post-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--border)}
+.post-date{font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3)}
+.post-read{font-family:system-ui,sans-serif;font-size:11px;font-weight:600;color:var(--amber)}
+
+/* Tags */
+.tag-cloud{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0}
+.tag{font-family:system-ui,sans-serif;font-size:12px;font-weight:500;padding:6px 14px;border-radius:99px;background:var(--cream2);color:var(--ink2);cursor:pointer;border:1.5px solid transparent;transition:all .15s;text-decoration:none}
+.tag:hover,.tag.active{background:var(--amber-l);color:var(--amber-d);border-color:rgba(200,118,10,.2)}
+
+/* No results */
+.no-results{text-align:center;padding:48px 20px;display:none}
+.no-results.show{display:block}
+.no-results-icon{font-size:44px;margin-bottom:12px}
+.no-results-title{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.no-results-sub{font-family:system-ui,sans-serif;font-size:13px;color:var(--ink3)}
+
+/* Sidebar newsletter */
+.blog-layout{display:grid;grid-template-columns:1fr 280px;gap:40px;align-items:start}
+.sidebar{display:flex;flex-direction:column;gap:20px}
+.sidebar-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:22px}
+.sidebar-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.popular-list{list-style:none;display:flex;flex-direction:column;gap:0}
+.popular-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.popular-item:last-child{border-bottom:none;padding-bottom:0}
+.popular-num{font-family:system-ui,sans-serif;font-size:20px;font-weight:700;color:var(--cream2);line-height:1;flex-shrink:0;width:28px}
+.popular-title{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3}
+.popular-date{font-family:system-ui,sans-serif;font-size:11px;color:var(--ink3);margin-top:2px}
+.wa-card{background:var(--indigo);border-radius:var(--r-lg);padding:22px;text-align:center}
+.wa-card-icon{font-size:32px;margin-bottom:10px;display:block}
+.wa-card-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:6px}
+.wa-card-sub{font-family:system-ui,sans-serif;font-size:12px;color:rgba(255,255,255,.55);margin-bottom:16px;line-height:1.5}
+
+@media(max-width:900px){
+  .blog-layout{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .featured-post{grid-template-columns:1fr}
+  .fp-img{min-height:200px}
+  .fp-body{padding:22px 24px}
+}
+@media(max-width:600px){
+  .post-grid{grid-template-columns:1fr}
+  .featured-post{display:flex;flex-direction:column}
+}
+@media(max-width:768px){
+  .post-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .post-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a href="../" class="nav-logo"><div class="logo-dot"></div>JAYA WENTER</a>
+    <ul class="nav-links">
+      <li><a href="../">Beranda</a></li>
+      <li><a href="../#layanan">Layanan</a></li>
+      <li><a href="../galeri/">Galeri</a></li>
+      <li><a href="./" class="active">Blog</a></li>
+      <li><a href="../#harga">Harga</a></li>
+      <li><a href="../#testimoni">Ulasan</a></li>
+    </ul>
+    <a href="https://wa.me/6285325730777?text=Halo%20JAYA%20WENTER%2C%20saya%20mau%20konsultasi%20wenter" class="btn btn-primary btn-sm nav-cta" target="_blank">💬 Chat WA</a>
+    <button class="hamburger" id="hbg" aria-label="Menu" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="../">Beranda</a>
+  <a href="../#layanan">Layanan</a>
+  <a href="../galeri/">Galeri</a>
+  <a href="./" class="active">Blog</a>
+  <a href="../#harga">Harga</a>
+  <a href="../#testimoni">Ulasan</a>
+  <a href="https://wa.me/6285325730777" class="btn btn-primary" target="_blank">💬 Konsultasi Gratis</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <span class="section-label">Tips & Panduan</span>
+    <h1 class="section-title">Blog JAYA WENTER</h1>
+    <p>Tips merawat pakaian, cara mengatasi warna pudar, dan panduan wenter untuk pakaian kesayanganmu.</p>
+  </div>
+</div>
+
+<!-- BLOG CONTENT -->
+<section>
+  <div class="container">
+
+    <!-- Search -->
+    <div class="blog-search-wrap">
+      <div class="blog-search-box">
+        <span class="blog-s-icon">🔍</span>
+        <input type="search" id="blogSearch" placeholder="Cari artikel..." autocomplete="off">
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="tag-cloud" id="tagCloud">
+      <a class="tag active" data-tag="semua" href="#">Semua</a>
+      <a class="tag" data-tag="perawatan" href="#">Perawatan Pakaian</a>
+      <a class="tag" data-tag="wenter" href="#">Tips Wenter</a>
+      <a class="tag" data-tag="jeans" href="#">Jeans</a>
+      <a class="tag" data-tag="jaket" href="#">Jaket</a>
+      <a class="tag" data-tag="panduan" href="#">Panduan</a>
+    </div>
+
+    <div style="margin-top:36px" class="blog-layout">
+      <div>
+        <!-- Featured -->
+        <div class="featured-post reveal" id="featuredPost">
+          <div class="fp-img">
+            <div class="fp-img-inner">👖</div>
+            <div class="fp-badge">Artikel Utama</div>
+          </div>
+          <div class="fp-body">
+            <div class="fp-cat">Panduan Lengkap</div>
+            <h2 class="fp-title">Cara Menghitamkan Celana Jeans Kusam Tanpa Beli Baru</h2>
+            <p class="fp-excerpt">Warna jeans yang pudar bukan berarti harus beli baru. Pelajari penyebabnya dan cara mengembalikan warna hitam jeans dengan teknik wenter yang tepat.</p>
+            <div class="fp-meta">
+              <span>21 April 2025</span>
+              <div class="fp-dot"></div>
+              <span>5 menit baca</span>
+              <div class="fp-dot"></div>
+              <span>Panduan · Jeans</span>
+            </div>
+            <a href="https://wenter.my.id/blog/cara-menghitamkan-celana-jeans-kusam.html" class="fp-read">Baca Selengkapnya →</a>
+          </div>
+        </div>
+
+        <!-- Grid heading -->
+        <div class="blog-section-header">
+          <div>
+            <span class="section-label">Artikel Terbaru</span>
+            <h2 class="section-title" style="margin-bottom:0">Tips & Panduan</h2>
+          </div>
+          <span id="articleCount" class="sans" style="font-size:13px;color:var(--ink3)">6 artikel</span>
+        </div>
+
+        <!-- No results -->
+        <div class="no-results" id="noResults">
+          <div class="no-results-icon">📭</div>
+          <div class="no-results-title">Artikel tidak ditemukan</div>
+          <div class="no-results-sub">Coba kata kunci lain atau pilih kategori berbeda</div>
+        </div>
+
+        <!-- Posts grid -->
+        <div class="post-grid" id="postGrid"></div>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">🔥 Artikel Populer</div>
+          <ul class="popular-list">
+            <li class="popular-item">
+              <span class="popular-num">01</span>
+              <div>
+                <div class="popular-title">Cara Menghitamkan Celana Jeans Kusam</div>
+                <div class="popular-date sans">April 2025</div>
+              </div>
+            </li>
+            <li class="popular-item">
+              <span class="popular-num">02</span>
+              <div>
+                <div class="popular-title">Bahan Pakaian yang Bisa dan Tidak Bisa Diwenter</div>
+                <div class="popular-date sans">Maret 2025</div>
+              </div>
+            </li>
+            <li class="popular-item">
+              <span class="popular-num">03</span>
+              <div>
+                <div class="popular-title">Cara Merawat Pakaian agar Warna Tidak Cepat Pudar</div>
+                <div class="popular-date sans">Maret 2025</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="wa-card">
+          <span class="wa-card-icon">💬</span>
+          <div class="wa-card-title">Punya Pertanyaan?</div>
+          <p class="wa-card-sub">Konsultasikan kondisi bajumu langsung ke kami — gratis, tanpa komitmen.</p>
+          <a href="https://wa.me/6285325730777?text=Halo%20JAYA%20WENTER%2C%20saya%20baca%20blog%20dan%20mau%20konsultasi" class="btn btn-primary btn-sm" target="_blank" style="justify-content:center;width:100%">Chat Sekarang →</a>
+        </div>
+        <div class="sidebar-card">
+          <div class="sidebar-title">🏷️ Kategori</div>
+          <div class="tag-cloud" style="margin-top:0">
+            <a class="tag" href="#">Perawatan Pakaian</a>
+            <a class="tag" href="#">Tips Wenter</a>
+            <a class="tag" href="#">Jeans</a>
+            <a class="tag" href="#">Jaket</a>
+            <a class="tag" href="#">Panduan</a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="container">
+    <span class="section-label">Ada Pakaian Pudar?</span>
+    <h2 class="section-title">Jangan Buang Dulu — Kami Bisa Bantu</h2>
+    <p class="final-cta-sub">Konsultasi gratis tentang kondisi pakaianmu. Kami akan bantu cek apakah bisa diwenter.</p>
+    <div class="final-btns">
+      <a href="https://wa.me/6285325730777?text=Halo%20JAYA%20WENTER%2C%20saya%20baca%20blog%20dan%20mau%20konsultasi%20wenter" class="btn btn-primary" target="_blank">💬 Konsultasi via WA</a>
+      <a href="../galeri/" class="btn btn-white">Lihat Galeri →</a>
+    </div>
+    <p class="final-detail">Senin–Sabtu · 08.00–16.00 WIB · Kebonsari, Sukun, Malang</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo"><div class="logo-dot"></div>JAYA WENTER</div>
+        <p class="footer-desc">Jasa wenter & pewarnaan ulang pakaian profesional di Malang. Melayani seluruh Indonesia.</p>
+        <div class="footer-contacts">
+          <a href="https://wa.me/6285325730777" class="footer-contact-btn" target="_blank">📞 085325730777</a>
+          <a href="https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7" class="footer-contact-btn" target="_blank">📍 Google Maps</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Halaman</div>
+        <ul class="footer-links">
+          <li><a href="../">Beranda</a></li>
+          <li><a href="../galeri/">Galeri</a></li>
+          <li><a href="./">Blog</a></li>
+          <li><a href="../#harga">Harga</a></li>
+          <li><a href="../#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Layanan</div>
+        <ul class="footer-links">
+          <li><a href="../#layanan">Wenter Jeans</a></li>
+          <li><a href="../#layanan">Wenter Jaket</a></li>
+          <li><a href="../#layanan">Wenter Kaos</a></li>
+          <li><a href="../#layanan">Wenter Seragam</a></li>
+          <li><a href="../#agen-laundry">Jadi Agen</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Jam Operasional</div>
+        <p class="sans" style="font-size:13px;color:rgba(255,255,255,.45)">Senin – Sabtu<br>08.00 – 16.00 WIB</p>
+        <div style="margin-top:14px">
+          <div class="footer-col-title">Alamat</div>
+          <p class="sans" style="font-size:12px;color:rgba(255,255,255,.4)">Kebonsari Gg 4 No. 18A<br>Kebonsari, Sukun, Malang</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 JAYA WENTER · Garment Recolouring Service</span>
+      <span>Malang & Seluruh Indonesia</span>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<div class="wa-float">
+  <div class="wa-bubble" id="waBubble">Ada pakaian pudar? 👋</div>
+  <a href="https://wa.me/6285325730777?text=Halo%20JAYA%20WENTER%2C%20saya%20baca%20blog%20dan%20mau%20konsultasi" class="wa-btn" target="_blank" aria-label="Chat WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<script>
+const posts = [
+  { icon:'👖', cat:'Panduan · Jeans', tags:['jeans','panduan','wenter'], title:'Cara Menghitamkan Celana Jeans Kusam Tanpa Beli Baru', excerpt:'Pelajari penyebab warna jeans memudar dan cara menghitamkannya kembali agar tampak lebih pekat tanpa harus membeli baru.', date:'21 Apr 2025', read:'5 mnt', url:'https://wenter.my.id/blog/cara-menghitamkan-celana-jeans-kusam.html', bg:'#E8EFF8' },
+  { icon:'🧥', cat:'Tips Wenter · Jaket', tags:['jaket','wenter','perawatan'], title:'Bahan Pakaian yang Bisa dan Tidak Bisa Diwenter — Panduan Lengkap', excerpt:'Tidak semua bahan cocok untuk diwenter. Ketahui bahan yang aman dan bahan yang harus dihindari sebelum proses wenter.', date:'15 Mar 2025', read:'4 mnt', url:'https://wenter.my.id/blog/', bg:'#F2EBE0' },
+  { icon:'💧', cat:'Perawatan Pakaian', tags:['perawatan','panduan'], title:'Cara Merawat Pakaian agar Warna Tidak Cepat Pudar', excerpt:'7 kebiasaan sederhana yang bisa kamu lakukan sejak sekarang untuk menjaga warna pakaian tetap cerah dan tahan lama.', date:'10 Mar 2025', read:'3 mnt', url:'https://wenter.my.id/blog/', bg:'#E6F4ED' },
+  { icon:'⚠️', cat:'Tips Wenter', tags:['wenter','panduan'], title:'Kesalahan yang Sering Terjadi Sebelum Wenter Pakaian', excerpt:'Banyak orang datang ke jasa wenter dengan kondisi pakaian yang tidak siap. Ini 5 kesalahan umum dan cara menghindarinya.', date:'1 Mar 2025', read:'4 mnt', url:'https://wenter.my.id/blog/', bg:'#FDF3E3' },
+  { icon:'👕', cat:'Perawatan Pakaian · Jeans', tags:['jeans','perawatan'], title:'Berapa Sering Sebaiknya Celana Jeans Dicuci?', excerpt:'Terlalu sering mencuci jeans justru merusak serat dan memudahkan warna cepat luntur. Temukan frekuensi cuci yang ideal.', date:'18 Feb 2025', read:'3 mnt', url:'https://wenter.my.id/blog/', bg:'#E8EFF8' },
+  { icon:'🎽', cat:'Panduan · Wenter', tags:['wenter','panduan'], title:'Perbedaan Wenter dan Celup — Mana yang Lebih Baik untuk Bajumu?', excerpt:'Wenter dan celup sering disalahartikan. Kenali perbedaan proses, hasil, dan kapan masing-masing lebih tepat digunakan.', date:'5 Feb 2025', read:'5 mnt', url:'https://wenter.my.id/blog/', bg:'#F2EBE0' },
+];
+
+let activeTag = 'semua';
+let searchQ = '';
+
+function getFiltered() {
+  return posts.filter(p => {
+    const tagOk = activeTag === 'semua' || p.tags.includes(activeTag);
+    const q = searchQ.toLowerCase();
+    const searchOk = !q || p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q);
+    return tagOk && searchOk;
+  });
+}
+
+function renderPosts() {
+  const data = getFiltered();
+  const grid = document.getElementById('postGrid');
+  const noRes = document.getElementById('noResults');
+  const count = document.getElementById('articleCount');
+  count.textContent = data.length + ' artikel';
+  noRes.classList.toggle('show', data.length === 0);
+  grid.innerHTML = data.map(p => `
+    <a class="post-card reveal" href="${p.url}" target="_blank">
+      <div class="post-thumb" style="background:${p.bg}">
+        <div class="post-thumb-bg"></div>
+        <div class="post-thumb-icon">${p.icon}</div>
+        <div class="post-cat-bar"><span class="post-cat">${p.cat}</span></div>
+      </div>
+      <div class="post-body">
+        <div class="post-title">${p.title}</div>
+        <div class="post-excerpt">${p.excerpt}</div>
+        <div class="post-footer">
+          <span class="post-date">${p.date}</span>
+          <span class="post-read">${p.read} baca →</span>
+        </div>
+      </div>
+    </a>`).join('');
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.reveal').forEach((el,i) => {
+      setTimeout(() => el.classList.add('visible'), i * 70);
+    });
+  });
+}
+
+// Tags
+document.getElementById('tagCloud').addEventListener('click', e => {
+  const a = e.target.closest('[data-tag]');
+  if (!a) return;
+  e.preventDefault();
+  activeTag = a.dataset.tag;
+  document.querySelectorAll('[data-tag]').forEach(t => t.classList.toggle('active', t.dataset.tag === activeTag));
+  renderPosts();
+});
+
+// Search
+document.getElementById('blogSearch').addEventListener('input', e => {
+  searchQ = e.target.value;
+  renderPosts();
+});
+
+function toggleMenu() {
+  document.getElementById('hbg').classList.toggle('open');
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+setTimeout(() => { const b = document.getElementById('waBubble'); if(b) b.style.display='none'; }, 5000);
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+renderPosts();
+</script>
+</body>
+</html>
