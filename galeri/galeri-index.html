@@ -51,10 +51,10 @@
 .jwh-inner{
   max-width:1200px; margin:0 auto; padding:0 40px;
   display:flex; align-items:center; justify-content:space-between;
-  height:84px;
+  height:96px;
   transition:height .2s ease;
 }
-.jwh-header.jwh-sticky .jwh-inner{ height:64px; }
+.jwh-header.jwh-sticky .jwh-inner{ height:70px; }
 
 .jwh-logo img{ height:80px; width:auto; transition:height .2s ease; display:block; }
 .jwh-header.jwh-sticky .jwh-logo img{ height:52px; }
@@ -130,16 +130,20 @@
   padding:12px 0; border-bottom:1px solid rgba(0,0,0,.06);
   color:var(--jwh-ink); text-decoration:none;
 }
-.jwh-mobile-menu .jwh-cta{ justify-content:center; margin-top:14px; }
+.jwh-mobile-menu .jwh-cta{
+  justify-content:center; margin-top:14px;
+  width:100%; box-sizing:border-box;
+  padding:14px 20px; font-size:15px; white-space:normal;
+}
 
 @media(max-width:1024px){
   .jwh-nav{ display:none; }
   .jwh-loc-icon{ display:none; }
   .jwh-burger{ display:flex; }
   .jwh-mobile-menu{ display:block; }
-  .jwh-inner{ height:74px; padding:0 20px; }
+  .jwh-inner{ height:80px; padding:0 20px; }
   .jwh-logo img{ height:64px; }
-  .jwh-header.jwh-sticky .jwh-inner{ height:60px; }
+  .jwh-header.jwh-sticky .jwh-inner{ height:62px; }
   .jwh-header.jwh-sticky .jwh-logo img{ height:46px; }
 }
 @media(max-width:640px){
@@ -237,8 +241,6 @@
   width:100%;
   cursor:pointer;
   display:block;
-  aspect-ratio:4/3;
-  object-fit:cover;
 }
 .gallery-info{ padding:15px; }
 .gallery-info h3{ margin-bottom:10px; }
@@ -358,6 +360,9 @@ Lihat berbagai hasil before-after wenter yang telah kami kerjakan.
   <div class="chip" data-kw="topi">Topi</div>
   <div class="chip" data-kw="hitam">Hitam</div>
   <div class="chip" data-kw="biru">Biru Tua</div>
+  <div class="chip" data-kw="hijau">Hijau Tua</div>
+  <div class="chip" data-kw="coklat">Coklat Tua</div>
+  <div class="chip" data-kw="abu">Abu-Abu Tua</div>
   <div class="chip" data-kw="nike">Nike</div>
 </div>
 
@@ -598,6 +603,13 @@ function expandWord(word){
   return [w];
 }
 
+function wordMatch(haystack, term){
+  if(!term) return false;
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/\s+/g, "\\s+");
+  const re = new RegExp("(^|[^a-z0-9])" + escaped + "([^a-z0-9]|$)", "i");
+  return re.test(haystack);
+}
+
 const galleryItems = Array.from(document.querySelectorAll(".gallery-item")).map(el => {
   const title = el.querySelector("h3")?.textContent || "";
   const desc = el.querySelector("p")?.textContent || "";
@@ -623,7 +635,7 @@ function runSearch(query){
   galleryItems.forEach(({ el, haystack }) => {
     const matchesAll = words.length === 0 || words.every(word => {
       const candidates = expandWord(word);
-      return candidates.some(c => haystack.includes(c));
+      return candidates.some(c => wordMatch(haystack, c));
     });
     el.classList.toggle("hidden-item", !matchesAll);
     if (matchesAll) visibleCount++;
