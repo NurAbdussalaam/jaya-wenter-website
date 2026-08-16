@@ -15,11 +15,11 @@
 
 <p><b>1. Jenis token:</b></p>
 <select id="type">
-  <option value="recovery">recovery (dari email "Reset your password")</option>
   <option value="invite">invite (dari email undangan)</option>
+  <option value="recovery">recovery (dari email reset password)</option>
 </select>
 
-<p><b>2. Tempel token</b> (kode setelah <code>recovery_token=</code> atau <code>invite_token=</code> di email):</p>
+<p><b>2. Tempel token</b> (kode setelah <code>invite_token=</code> atau <code>recovery_token=</code>):</p>
 <input id="token" placeholder="Tempel kode token di sini">
 
 <p><b>3. Password baru:</b></p>
@@ -32,43 +32,66 @@
 <script>
 function log(s){ document.getElementById('out').textContent += s + '\n'; }
 
-async function tryVerify(type, token){
-  var r = await fetch('/.netlify/identity/verify', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({type: type, token: token})
-  });
-  var text = await r.text();
-  log('Verifikasi -> status ' + r.status + ' : ' + text.slice(0, 300));
-  if (r.ok) return JSON.parse(text);
-  return null;
-}
-
 async function go(){
   var type  = document.getElementById('type').value;
   var token = document.getElementById('token').value.trim();
   var pass  = document.getElementById('pass').value;
   var out   = document.getElementById('out');
   out.textContent = '';
-  log('Memproses...');
-  try {
-    var data = await tryVerify(type, token);
-    if (!data || !data.access_token) throw new Error('Verifikasi token gagal. Lihat log di atas.');
 
-    log('Verifikasi OK. Menyimpan password baru...');
+  log('Payload: ' + JSON.stringify({type: type, token: token}));
+
+  try {
+    var data = null;
+
+    /* Cara 1: POST JSON */
+    var r = await fetch('/.netlify/identity/verify', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({type: type, token: token})
+    });
+    var t = await r.text();
+    log('A) POST JSON  -> ' + r.status + ' : ' + t.slice(0, 200));
+    if (r.ok) { try { data = JSON.parse(t); } catch(e){} }
+
+    /* Cara 2: POST form-urlencoded */
+    if (!data) {
+      r = await fetch('/.netlify/identity/verify', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'type=' + encodeURIComponent(type) + '&token=' + encodeURIComponent(token)
+      });
+      t = await r.text();
+      log('B) POST form  -> ' + r.status + ' : ' + t.slice(0, 200));
+      if (r.ok) { try { data = JSON.parse(t); } catch(e){} }
+    }
+
+    /* Cara 3: GET query (mengandalkan cookie sesi) */
+    if (!data) {
+      r = await fetch('/.netlify/identity/verify?type=' + encodeURIComponent(type) + '&token=' + encodeURIComponent(token), {redirect: 'manual'});
+      t = await r.text().catch(function(){ return ''; });
+      log('C) GET query  -> ' + r.status + ' : ' + t.slice(0, 200));
+      if (r.ok || r.status === 302 || r.status === 0) {
+        try { data = JSON.parse(t); } catch(e){ data = {cookieAuth: true}; }
+      }
+    }
+
+    if (!data) throw new Error('Semua cara verifikasi gagal. Lihat log di atas.');
+    log('Verifikasi OK. Menyimpan password...');
+
+    /* Simpan password baru */
+    var headers = {'Content-Type': 'application/json'};
+    if (data.access_token) headers['Authorization'] = 'Bearer ' + data.access_token;
     var r2 = await fetch('/.netlify/identity/user', {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + data.access_token
-      },
+      headers: headers,
       body: JSON.stringify({password: pass})
     });
     var t2 = await r2.text();
-    log('Simpan password -> status ' + r2.status + ' : ' + t2.slice(0, 300));
+    log('Simpan password -> ' + r2.status + ' : ' + t2.slice(0, 200));
     if (!r2.ok) throw new Error('Gagal menyimpan password.');
 
-    log('BERHASIL! Silakan buka /admin/ dan login dengan email + password baru Anda.');
+    log('BERHASIL! Buka /admin/ dan login dengan email + password baru Anda.');
   } catch(e) {
     log('GAGAL: ' + e.message);
   }
