@@ -1,16 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <meta charset="utf-8">
-  <title>Aktivasi Akun Admin</title>
+<meta charset="utf-8">
+<title>Aktivasi Akun Admin</title>
+<style>
+  body{font-family:sans-serif;max-width:520px;margin:60px auto;padding:0 16px;}
+  input{width:100%;padding:10px;margin:6px 0 16px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;}
+  button{padding:10px 22px;border:none;border-radius:6px;background:#001d5a;color:#fff;font-weight:700;cursor:pointer;}
+  #out{margin-top:20px;white-space:pre-wrap;font-size:14px;}
+</style>
 </head>
 <body>
-  <p style="font-family:sans-serif;text-align:center;margin-top:60px;">
-    Jika jendela tidak muncul otomatis, klik tombol login di pojok kanan atas setelah widget dimuat.
-  </p>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    window.netlifyIdentity.init();
-  </script>
+<h2>Aktivasi Akun Admin</h2>
+
+<p><b>1. Tempel invite token</b> (kode setelah <code>invite_token=</code> di email undangan):</p>
+<input id="token" placeholder="Contoh: nPD3H4vEsY6pvdfA70akAQ">
+
+<p><b>2. Buat password baru:</b></p>
+<input id="pass" type="password" placeholder="Minimal 6 karakter">
+
+<button onclick="go()">Aktifkan Akun</button>
+
+<pre id="out"></pre>
+
+<script>
+async function go(){
+  var token = document.getElementById('token').value.trim();
+  var pass  = document.getElementById('pass').value;
+  var out   = document.getElementById('out');
+  out.textContent = 'Memproses...';
+  try {
+    // Verifikasi token undangan
+    var r = await fetch('/.netlify/identity/verify', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({type:'invite', token: token})
+    });
+    if (!r.ok) {
+      r = await fetch('/.netlify/identity/verify?type=invite&token=' + encodeURIComponent(token), {method:'POST'});
+    }
+    var data = await r.json();
+    if (!r.ok) throw new Error('Verifikasi token gagal: ' + JSON.stringify(data));
+
+    // Set password baru
+    var r2 = await fetch('/.netlify/identity/user', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + data.access_token
+      },
+      body: JSON.stringify({password: pass})
+    });
+    var d2 = await r2.json();
+    if (!r2.ok) throw new Error('Set password gagal: ' + JSON.stringify(d2));
+
+    out.textContent = 'BERHASIL! Akun aktif.\nSilakan buka /admin/ dan login dengan email + password baru Anda.';
+  } catch(e) {
+    out.textContent = 'GAGAL: ' + e.message;
+  }
+}
+</script>
 </body>
 </html>
