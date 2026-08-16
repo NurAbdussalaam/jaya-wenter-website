@@ -1,0 +1,50 @@
+backend:
+  name: github
+  repo: NurAbdussalaam/jaya-wenter-website
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "gallery"
+    label: "Galeri"
+    label_singular: "Foto Galeri"
+    file: "content/gallery.json"
+    editor:
+      preview: false
+    fields:
+      - name: "items"
+        label: "Daftar Foto"
+        widget: "list"
+        summary: "{{fields.title}}"
+        fields:
+          - { name: "image", label: "Foto", widget: "image" }
+          - { name: "alt", label: "Alt Text (SEO)", widget: "string" }
+          - { name: "title", label: "Judul", widget: "string" }
+          - { name: "description", label: "Deskripsi", widget: "text" }
+          - name: "kategori"
+            label: "Kategori"
+            widget: "select"
+            options: ["celana", "hoodie", "jaket", "kaos", "kemeja", "tas", "topi", "lainnya"]
+          - { name: "merk", label: "Merk (opsional)", widget: "string", required: false }
+          - { name: "warna", label: "Warna", widget: "select", options: ["hitam", "biru", "hijau", "coklat", "abu"] }
+
+  - name: "blog"
+    label: "Blog"
+    label_singular: "Postingan"
+    file: "content/blog.json"
+    editor:
+      preview: false
+    fields:
+      - name: "posts"
+        label: "Daftar Postingan"
+        widget: "list"
+        summary: "{{fields.title}} - {{fields.date}}"
+        fields:
+          - { name: "title", label: "Judul Postingan", widget: "string" }
+          - { name: "date", label: "Tanggal", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+          - { name: "category", label: "Kategori (opsional)", widget: "string", required: false }
+          - { name: "summary", label: "Ringkasan (opsional)", widget: "text", required: false }
+          - { name: "cover", label: "Gambar Cover (opsional)", widget: "image", required: false }
+          - { name: "body", label: "Isi Postingan", widget: "markdown" }
