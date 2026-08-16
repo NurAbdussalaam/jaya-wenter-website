@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QGVM89D5LW"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-QGVM89D5LW');
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,21 +18,10 @@
 <meta name="description" content="Galeri hasil wenter JAYA WENTER. Lihat before-after wenter celana, jaket, hoodie, kaos, kemeja, tas dan berbagai merk terkenal.">
 
 <link rel="stylesheet" href="../style.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-
-.filter-bar{
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-justify-content:center;
-margin:30px 0;
-}
-
-.filter-bar select{
-padding:10px;
-border-radius:8px;
-}
 
 .gallery-grid{
 display:grid;
@@ -52,96 +50,6 @@ padding:15px;
 margin-bottom:10px;
 }
 
-/* ================================= */
-/* FILTER WARNA JAYA WENTER */
-/* ================================= */
-
-.warna-filter{
-display:flex;
-justify-content:center;
-gap:25px;
-flex-wrap:wrap;
-margin:10px 0 35px;
-}
-
-.warna-item{
-text-align:center;
-cursor:pointer;
-transition:.2s;
-}
-
-.warna-item:hover{
-transform:translateY(-4px);
-}
-
-.warna-item.active .warna-bulat{
-border:4px solid #001d5a;
-transform:scale(1.1);
-}
-  
-.warna-bulat{
-width:60px;
-height:60px;
-border-radius:50%;
-margin:auto;
-border:3px solid #ddd;
-margin-bottom:8px;
-box-shadow:0 2px 8px rgba(0,0,0,.15);
-}
-
-.warna-item p{
-font-size:14px;
-font-weight:bold;
-margin:0;
-}
-
-/* WARNA */
-
-.hitam{
-background:#111111;
-}
-
-.biru{
-background:#0d2d6c;
-}
-
-.hijau{
-background:#1f4d2b;
-}
-
-.coklat{
-background:#4a2c17;
-}
-
-.abu{
-background:#666666;
-}
-
-.semua{
-background:
-linear-gradient(
-45deg,
-#111111,
-#0d2d6c,
-#1f4d2b,
-#4a2c17,
-#666666
-);
-}
-
-@media(max-width:768px){
-
-.warna-filter{
-gap:15px;
-}
-
-.warna-bulat{
-width:50px;
-height:50px;
-}
-
-}
-  
 .lightbox{
 display:none;
 position:fixed;
@@ -169,6 +77,204 @@ right:30px;
 font-size:40px;
 color:white;
 cursor:pointer;
+}
+
+/* ====================================================== */
+/* TOMBOL WA HEADER (konsisten dengan halaman lain)        */
+/* ====================================================== */
+.wenter-cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  color:#ffffff !important;
+  font-weight:700;
+  font-size:15px;
+  line-height:1;
+  padding:13px 24px;
+  border-radius:50px;
+  text-decoration:none !important;
+  box-shadow:0 4px 14px rgba(37,211,102,.35);
+  transition:transform .25s ease, box-shadow .25s ease;
+  white-space:nowrap;
+  border:none;
+  cursor:pointer;
+}
+.wenter-cta-btn i{ font-size:19px; }
+.wenter-cta-btn:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 10px 22px rgba(37,211,102,.5);
+}
+.wenter-cta-btn:active{ transform:translateY(0) scale(.98); }
+.wenter-cta-btn--nav{
+  padding:10px 18px;
+  font-size:13.5px;
+}
+@media (max-width:768px){
+  .wenter-cta-btn--nav{ width:100%; justify-content:center; }
+}
+
+/* ====================================================== */
+/* FITUR SEARCH GALERI (pengganti dropdown list lama)      */
+/* ====================================================== */
+.wenter-search-wrap{
+  max-width:900px;
+  margin:0 auto 35px;
+  padding:0 10px;
+}
+
+.wenter-search-box{
+  position:relative;
+  display:flex;
+  align-items:center;
+  background:#ffffff;
+  border:2px solid #e2e2e2;
+  border-radius:50px;
+  padding:6px 8px 6px 22px;
+  box-shadow:0 4px 14px rgba(0,0,0,.06);
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.wenter-search-box:focus-within{
+  border-color:#25D366;
+  box-shadow:0 4px 18px rgba(37,211,102,.25);
+}
+.wenter-search-box i.fa-search{
+  color:#9a9a9a;
+  font-size:16px;
+  margin-right:12px;
+}
+.wenter-search-box input{
+  flex:1;
+  border:none;
+  outline:none;
+  font-size:16px;
+  padding:12px 0;
+  background:transparent;
+  color:#222;
+}
+.wenter-search-box input::placeholder{
+  color:#b7b7b7;
+  font-style:italic;
+  opacity:1;
+}
+.wenter-search-clear{
+  border:none;
+  background:#f1f1f1;
+  color:#777;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  font-size:18px;
+  line-height:1;
+  cursor:pointer;
+  flex-shrink:0;
+  transition:background .2s ease;
+}
+.wenter-search-clear:hover{ background:#e2e2e2; }
+
+.wenter-keyword-group{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.wenter-keyword-label{
+  font-weight:700;
+  font-size:14px;
+  color:#555;
+  padding:9px 0;
+  flex-shrink:0;
+  min-width:52px;
+}
+.wenter-keyword-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.wenter-kw-btn{
+  border:2px solid #d9d9d9;
+  background:#ffffff;
+  color:#333;
+  font-weight:600;
+  font-size:14px;
+  padding:9px 18px;
+  border-radius:50px;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.wenter-kw-btn:hover{
+  border-color:#001d5a;
+  color:#001d5a;
+  transform:translateY(-1px);
+}
+.wenter-kw-btn.active{
+  background:#001d5a;
+  border-color:#001d5a;
+  color:#ffffff;
+  box-shadow:0 4px 12px rgba(0,29,90,.3);
+}
+
+/* Tombol warna: background = warna asli, tulisan tetap jelas */
+.wenter-kw-btn--warna{
+  color:#ffffff;
+  border:2px solid transparent;
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.wenter-warna-hitam{ background:#111111; }
+.wenter-warna-biru{ background:#0d2d6c; }
+.wenter-warna-hijau{ background:#1f4d2b; }
+.wenter-warna-coklat{ background:#4a2c17; }
+.wenter-warna-abu{ background:#666666; }
+
+.wenter-kw-btn--warna:hover{
+  filter:brightness(1.15);
+  color:#ffffff;
+}
+.wenter-kw-btn--warna.active{
+  border-color:#ffffff;
+  box-shadow:0 0 0 3px rgba(0,0,0,.25), 0 4px 14px rgba(0,0,0,.35);
+  transform:translateY(-1px) scale(1.04);
+}
+
+.wenter-search-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+#resultCount{
+  font-size:14px;
+  color:#666;
+  font-weight:600;
+}
+.wenter-reset-btn{
+  border:none;
+  background:none;
+  color:#128C7E;
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+  text-decoration:underline;
+  padding:4px 0;
+}
+.wenter-reset-btn:hover{ color:#001d5a; }
+
+.wenter-no-result{
+  display:none;
+  text-align:center;
+  padding:50px 20px;
+  color:#777;
+  font-size:16px;
+}
+.wenter-no-result i{
+  font-size:38px;
+  color:#cfcfcf;
+  display:block;
+  margin-bottom:12px;
 }
 
 </style>
@@ -215,11 +321,15 @@ Lokasi
 
 </a>
 
-<a href="https://wa.me/6285325730777"
-target="_blank">
-
-Pesan Layanan Wenter Sekarang
-
+<a class="wenter-cta-btn wenter-cta-btn--nav"
+href="https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..."
+target="_blank"
+onclick="gtag('event','whatsapp_click',{
+'event_category':'Lead',
+'event_label':'Galeri Nav CTA'
+});">
+<i class="fab fa-whatsapp" aria-hidden="true"></i>
+<span>Pesan Layanan Wenter Sekarang</span>
 </a>
 
 </nav>
@@ -238,117 +348,46 @@ Galeri Hasil Wenter JAYA WENTER
 Lihat berbagai hasil before-after wenter yang telah kami kerjakan.
 </p>
 
-<div class="filter-bar">
+<div class="wenter-search-wrap">
 
-<select id="kategoriFilter">
+  <div class="wenter-search-box">
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <input type="text" id="gallerySearch" placeholder="Contoh: kaos nike hitam" autocomplete="off">
+    <button type="button" id="searchClearBtn" class="wenter-search-clear" style="display:none;" aria-label="Hapus pencarian">&times;</button>
+  </div>
 
-<option value="all">Semua Jenis</option>
+  <div class="wenter-keyword-group">
+    <span class="wenter-keyword-label">Jenis</span>
+    <div class="wenter-keyword-buttons" id="kategoriButtons">
+      <button type="button" class="wenter-kw-btn" data-kategori="celana">Celana</button>
+      <button type="button" class="wenter-kw-btn" data-kategori="hoodie">Hoodie</button>
+      <button type="button" class="wenter-kw-btn" data-kategori="jaket">Jaket</button>
+      <button type="button" class="wenter-kw-btn" data-kategori="kaos">Kaos</button>
+      <button type="button" class="wenter-kw-btn" data-kategori="tas">Tas</button>
+      <button type="button" class="wenter-kw-btn" data-kategori="topi">Topi</button>
+      <button type="button" class="wenter-kw-btn" data-kategori="lainnya">Lainnya</button>
+    </div>
+  </div>
 
-<option value="celana">Celana</option>
+  <div class="wenter-keyword-group">
+    <span class="wenter-keyword-label">Warna</span>
+    <div class="wenter-keyword-buttons" id="warnaButtons">
+      <button type="button" class="wenter-kw-btn wenter-kw-btn--warna wenter-warna-hitam" data-warna="hitam">Hitam</button>
+      <button type="button" class="wenter-kw-btn wenter-kw-btn--warna wenter-warna-biru" data-warna="biru">Biru Tua</button>
+      <button type="button" class="wenter-kw-btn wenter-kw-btn--warna wenter-warna-hijau" data-warna="hijau">Hijau Tua</button>
+      <button type="button" class="wenter-kw-btn wenter-kw-btn--warna wenter-warna-coklat" data-warna="coklat">Coklat Tua</button>
+      <button type="button" class="wenter-kw-btn wenter-kw-btn--warna wenter-warna-abu" data-warna="abu">Abu-Abu Tua</button>
+    </div>
+  </div>
 
-<option value="jaket">Jaket</option>
-
-<option value="hoodie">Hoodie</option>
-
-<option value="kaos">Kaos</option>
-
-<option value="kemeja">Kemeja</option>
-
-<option value="tas">Tas</option>
-
-<option value="topi">Topi</option>
-
-<option value="lainnya">Lainnya</option>
-
-</select>
-
-<select id="merkFilter">
-
-<option value="all">Semua Merk</option>
-
-<option value="nike">Nike</option>
-
-<option value="adidas">Adidas</option>
-
-<option value="levis">Levis</option>
-
-<option value="3second">3 Second</option>
-
-<option value="lea">Lea</option>
-
-<option value="uniqlo">Uniqlo</option>
-
-<option value="cardinal">Cardinal</option>
-
-<option value="lee">Lee</option>
-
-<option value="emba">Emba</option>
-
-<option value="edwin">Edwin</option>
-
-<option value="dickies">Dickies</option>
-
-<option value="stussy">Stussy</option>
-
-<option value="maternal">Maternal</option>
-
-<option value="boss">Boss</option>
-
-<option value="stoneisland">Stone Island</option>
-
-<option value="nevada">Nevada</option>
-
-<option value="lacoste">Lacoste</option>
-
-<option value="zara">Zara</option>
-
-<option value="h&m">H&M</option>
-
-</select>
-  
-</div>
-
-<div class="warna-filter">
-
-<div class="warna-item" onclick="setWarna('hitam')">
-<div class="warna-bulat hitam"></div>
-<p>Hitam</p>
-</div>
-
-<div class="warna-item" onclick="setWarna('biru')">
-<div class="warna-bulat biru"></div>
-<p>Biru Tua</p>
-</div>
-
-<div class="warna-item" onclick="setWarna('hijau')">
-<div class="warna-bulat hijau"></div>
-<p>Hijau Tua</p>
-</div>
-
-<div class="warna-item" onclick="setWarna('coklat')">
-<div class="warna-bulat coklat"></div>
-<p>Coklat Tua</p>
-</div>
-
-<div class="warna-item" onclick="setWarna('abu')">
-<div class="warna-bulat abu"></div>
-<p>Abu-Abu Tua</p>
-</div>
-
-<div class="warna-item semua-warna"
-onclick="setWarna('all')">
-
-<div class="warna-bulat semua"></div>
-
-<p>Semua</p>
+  <div class="wenter-search-meta">
+    <span id="resultCount"></span>
+    <button type="button" id="resetFilterBtn" class="wenter-reset-btn">Reset Filter</button>
+  </div>
 
 </div>
-
-</div>  
 
 <div class="gallery-grid" id="galleryGrid">
-
-<!-- CONTOH ITEM -->
 
 <div class="gallery-item"
 data-kategori="topi"
@@ -371,8 +410,6 @@ Topi Nike hitam yang warnanya pudar diwenter menjadi hitam kembali.
 </div>
 
 </div>
-
-<!-- TAMBAHKAN ITEM BARU DI SINI -->
 
 <div class="gallery-item"
 data-kategori="celana"
@@ -933,6 +970,12 @@ Tas eiger yang warnanya memudar diwenter menjadi lebih pekat.
 </div>
 </div>
 
+<div class="wenter-no-result" id="noResultMsg">
+  <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+  Tidak ada hasil yang cocok dengan pencarian Anda.<br>
+  Coba kata kunci lain atau reset filter.
+</div>
+
 </section>
 
 <div id="lightbox" class="lightbox">
@@ -945,97 +988,197 @@ Tas eiger yang warnanya memudar diwenter menjadi lebih pekat.
 
 <script>
 
-const kategoriFilter =
-document.getElementById("kategoriFilter");
+const items = document.querySelectorAll(".gallery-item");
+const searchInput = document.getElementById("gallerySearch");
+const searchClearBtn = document.getElementById("searchClearBtn");
+const resetFilterBtn = document.getElementById("resetFilterBtn");
+const resultCountEl = document.getElementById("resultCount");
+const noResultMsg = document.getElementById("noResultMsg");
+const kategoriButtons = document.querySelectorAll("#kategoriButtons .wenter-kw-btn");
+const warnaButtons = document.querySelectorAll("#warnaButtons .wenter-kw-btn");
 
-const merkFilter =
-document.getElementById("merkFilter");
+let activeKategori = null;
+let activeWarna = null;
 
-let warnaAktif = "all";
-  
-const items =
-document.querySelectorAll(".gallery-item");
+/* Kata kunci JENIS. Hanya bahasa Indonesia, tanpa terjemahan/sinonim
+   supaya tidak "bentrok" dengan kata bahasa Inggris yang kebetulan
+   menjadi bagian dari kata lain (mis. "tas" vs "bag" di dalam "bagian"). */
+const categoryKeywords = {
+  "celana":"celana",
+  "jaket":"jaket",
+  "hoodie":"hoodie",
+  "kaos":"kaos",
+  "kemeja":"kemeja",
+  "tas":"tas",
+  "topi":"topi",
+  "lainnya":"lainnya",
+  "rok":"lainnya",
+  "dress":"lainnya"
+};
 
-function filterGallery(){
+/* Kata kunci WARNA (diurutkan dari frasa terpanjang agar terdeteksi lebih dulu). */
+const colorPhrases = [
+  ["abu abu tua","abu"],
+  ["abu-abu tua","abu"],
+  ["abu2 tua","abu"],
+  ["abu tua","abu"],
+  ["biru tua","biru"],
+  ["hijau tua","hijau"],
+  ["coklat tua","coklat"],
+  ["cokelat tua","coklat"],
+  ["hitam","hitam"],
+  ["biru","biru"],
+  ["hijau","hijau"],
+  ["coklat","coklat"],
+  ["cokelat","coklat"],
+  ["abu2","abu"],
+  ["abu","abu"]
+];
 
-const kategori =
-kategoriFilter.value;
-
-const merk =
-merkFilter.value;
-
-items.forEach(item=>{
-
-const cocokKategori =
-kategori==="all" ||
-item.dataset.kategori===kategori;
-
-const cocokMerk =
-merk==="all" ||
-item.dataset.merk===merk;
-
-const cocokWarna =
-warnaAktif==="all" ||
-item.dataset.warna===warnaAktif;
-
-item.style.display =
-(cocokKategori &&
-cocokMerk &&
-cocokWarna)
-? "block"
-: "none";
-
-});
-
+function normalize(str){
+  return (str || "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s&]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-kategoriFilter.addEventListener(
-"change",
-filterGallery
-);
+function escapeRegex(s){
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
 
-merkFilter.addEventListener(
-"change",
-filterGallery
-);
+function wholeWordMatch(haystack, word){
+  if(!word) return true;
+  const pattern = new RegExp("\\b" + escapeRegex(word) + "\\b", "i");
+  return pattern.test(haystack);
+}
 
+function parseQuery(raw){
+  let text = normalize(raw);
+  let kategori = null;
+  let warna = null;
 
-function setWarna(warna){
+  for(const [phrase, slug] of colorPhrases){
+    const re = new RegExp("\\b" + phrase.replace(/ /g, "\\s+") + "\\b", "i");
+    if(re.test(text)){
+      warna = slug;
+      text = text.replace(re, " ").replace(/\s+/g, " ").trim();
+      break;
+    }
+  }
 
-warnaAktif = warna;
+  for(const key of Object.keys(categoryKeywords)){
+    const re = new RegExp("\\b" + escapeRegex(key) + "\\b", "i");
+    if(re.test(text)){
+      kategori = categoryKeywords[key];
+      text = text.replace(re, " ").replace(/\s+/g, " ").trim();
+      break;
+    }
+  }
 
-document
-.querySelectorAll(".warna-item")
-.forEach(item=>{
-item.classList.remove("active");
+  const freeWords = text.split(" ").filter(Boolean);
+  return { kategori, warna, freeWords };
+}
+
+function applyFilters(){
+  const rawQuery = searchInput.value;
+  const parsed = parseQuery(rawQuery);
+
+  // Tombol keyword (klik manual) diprioritaskan; jika tidak ada tombol aktif,
+  // gunakan kategori/warna yang terdeteksi otomatis dari kotak pencarian.
+  const finalKategori = activeKategori || parsed.kategori;
+  const finalWarna = activeWarna || parsed.warna;
+
+  let visibleCount = 0;
+
+  items.forEach(item=>{
+    const dataKategori = item.dataset.kategori;
+    const dataWarna = item.dataset.warna;
+    const merk = (item.dataset.merk || "").toLowerCase();
+    const titleText = item.querySelector("h3") ? item.querySelector("h3").textContent : "";
+    const descText = item.querySelector("p") ? item.querySelector("p").textContent : "";
+    const haystack = normalize(titleText + " " + descText + " " + merk);
+
+    let match = true;
+
+    // Kategori & warna WAJIB cocok dengan metadata asli gambar,
+    // bukan hasil pencarian teks bebas pada deskripsi.
+    if(finalKategori && dataKategori !== finalKategori) match = false;
+    if(finalWarna && dataWarna !== finalWarna) match = false;
+
+    if(match && parsed.freeWords.length){
+      match = parsed.freeWords.every(word => wholeWordMatch(haystack, word));
+    }
+
+    item.style.display = match ? "" : "none";
+    if(match) visibleCount++;
+  });
+
+  const isFiltering = rawQuery.trim() !== "" || activeKategori || activeWarna;
+  resultCountEl.textContent = isFiltering ? `${visibleCount} hasil ditemukan` : "";
+  noResultMsg.style.display = (isFiltering && visibleCount === 0) ? "block" : "none";
+  searchClearBtn.style.display = rawQuery ? "inline-flex" : "none";
+}
+
+searchInput.addEventListener("input", applyFilters);
+
+searchClearBtn.addEventListener("click", ()=>{
+  searchInput.value = "";
+  searchClearBtn.style.display = "none";
+  applyFilters();
+  searchInput.focus();
 });
 
-event.currentTarget
-.classList.add("active");
+kategoriButtons.forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const val = btn.dataset.kategori;
+    if(activeKategori === val){
+      activeKategori = null;
+      btn.classList.remove("active");
+    } else {
+      activeKategori = val;
+      kategoriButtons.forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+    applyFilters();
+  });
+});
 
-filterGallery();
+warnaButtons.forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const val = btn.dataset.warna;
+    if(activeWarna === val){
+      activeWarna = null;
+      btn.classList.remove("active");
+    } else {
+      activeWarna = val;
+      warnaButtons.forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+    applyFilters();
+  });
+});
 
-}
-  
+resetFilterBtn.addEventListener("click", ()=>{
+  searchInput.value = "";
+  activeKategori = null;
+  activeWarna = null;
+  kategoriButtons.forEach(b=>b.classList.remove("active"));
+  warnaButtons.forEach(b=>b.classList.remove("active"));
+  applyFilters();
+});
+
 function openLightbox(src){
-
-document.getElementById(
-"lightbox"
-).style.display="block";
-
-document.getElementById(
-"lightboxImg"
-).src=src;
-
+  document.getElementById("lightbox").style.display = "block";
+  document.getElementById("lightboxImg").src = src;
 }
 
 function closeLightbox(){
-
-document.getElementById(
-"lightbox"
-).style.display="none";
-
+  document.getElementById("lightbox").style.display = "none";
 }
+
+// Inisialisasi awal
+applyFilters();
 
 </script>
 
@@ -1056,4 +1199,4 @@ style="background:#001d5a;">
 </section>
 
 </body>
-                                 </html>
+</html>
