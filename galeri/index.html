@@ -1,206 +1,1059 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Galeri Hasil Wenter - Jaya Wenter</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    /* Header Seragam Glassmorphism */
-    .navbar-custom {
-      background: rgba(255, 255, 255, 0.9) !important;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      transition: all 0.3s ease;
-    }
-    .navbar-brand img {
-      height: 45px;
-    }
-    .nav-link {
-      font-weight: 500;
-      color: #333 !important;
-      margin: 0 8px;
-      transition: color 0.2s;
-    }
-    .nav-link:hover, .nav-link.active {
-      color: #128C7E !important;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* Tombol CTA Pesan Sekarang Modern */
-    .btn-pesan-header {
-      background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-      color: #ffffff !important;
-      padding: 10px 24px;
-      font-weight: 600;
-      font-size: 14px;
-      border-radius: 50px;
-      border: none;
-      box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-    }
-    .btn-pesan-header:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
-      color: #ffffff !important;
-    }
+<title>Galeri Hasil Wenter | JAYA WENTER</title>
 
-    /* CSS Kustom Tombol Filter Warna dengan Kontras Tinggi */
-    .color-filter-btn {
-      border: 2px solid transparent;
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-weight: 600;
-      font-size: 14px;
-      color: #ffffff !important; /* Teks Putih agar terlihat jelas */
-      text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.8); /* Shadow lembut untuk keterbacaan ekstra */
-      transition: all 0.3s ease;
-      margin: 4px;
-      cursor: pointer;
-    }
-    .color-filter-btn:hover, .color-filter-btn.active {
-      transform: scale(1.05);
-      border-color: #ffffff;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-    }
+<meta name="description" content="Galeri hasil wenter JAYA WENTER. Lihat before-after wenter celana, jaket, hoodie, kaos, kemeja, tas dan berbagai merk terkenal.">
 
-    /* Warna Spesifik Tiap Tombol Filter */
-    .btn-color-all { background-color: #6c757d; }
-    .btn-color-hitam { background-color: #1a1a1a; }
-    .btn-color-biru-tua { background-color: #0d233a; }
-    .btn-color-hijau-tua { background-color: #1b4332; }
-    .btn-color-coklat-tua { background-color: #3d2314; }
-    .btn-color-abu-tua { background-color: #4a4e69; }
+<link rel="stylesheet" href="../style.css">
 
-    /* Galeri Card Transition */
-    .gallery-item {
-      transition: all 0.4s ease;
-    }
-    .gallery-item.hide {
-      display: none !important;
-    }
-  </style>
+<style>
+
+.filter-bar{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+justify-content:center;
+margin:30px 0;
+}
+
+.filter-bar select{
+padding:10px;
+border-radius:8px;
+}
+
+.gallery-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+.gallery-item{
+background:#fff;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.gallery-item img{
+width:100%;
+cursor:pointer;
+display:block;
+}
+
+.gallery-info{
+padding:15px;
+}
+
+.gallery-info h3{
+margin-bottom:10px;
+}
+
+/* ================================= */
+/* FILTER WARNA JAYA WENTER */
+/* ================================= */
+
+.warna-filter{
+display:flex;
+justify-content:center;
+gap:25px;
+flex-wrap:wrap;
+margin:10px 0 35px;
+}
+
+.warna-item{
+text-align:center;
+cursor:pointer;
+transition:.2s;
+}
+
+.warna-item:hover{
+transform:translateY(-4px);
+}
+
+.warna-item.active .warna-bulat{
+border:4px solid #001d5a;
+transform:scale(1.1);
+}
+  
+.warna-bulat{
+width:60px;
+height:60px;
+border-radius:50%;
+margin:auto;
+border:3px solid #ddd;
+margin-bottom:8px;
+box-shadow:0 2px 8px rgba(0,0,0,.15);
+}
+
+.warna-item p{
+font-size:14px;
+font-weight:bold;
+margin:0;
+}
+
+/* WARNA */
+
+.hitam{
+background:#111111;
+}
+
+.biru{
+background:#0d2d6c;
+}
+
+.hijau{
+background:#1f4d2b;
+}
+
+.coklat{
+background:#4a2c17;
+}
+
+.abu{
+background:#666666;
+}
+
+.semua{
+background:
+linear-gradient(
+45deg,
+#111111,
+#0d2d6c,
+#1f4d2b,
+#4a2c17,
+#666666
+);
+}
+
+@media(max-width:768px){
+
+.warna-filter{
+gap:15px;
+}
+
+.warna-bulat{
+width:50px;
+height:50px;
+}
+
+}
+  
+.lightbox{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.9);
+}
+
+.lightbox img{
+max-width:90%;
+max-height:90%;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.lightbox span{
+position:absolute;
+top:20px;
+right:30px;
+font-size:40px;
+color:white;
+cursor:pointer;
+}
+
+</style>
+
 </head>
+
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
-    <div class="container">
-      <a class="navbar-brand" href="index (beranda).html">
-        <strong style="font-size: 24px; color: #128C7E;">Jaya Wenter</strong>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="index (beranda).html">Beranda</a></li>
-          <li class="nav-item"><a class="nav-link" href="index (beranda).html#tentang">Tentang Kami</a></li>
-          <li class="nav-item"><a class="nav-link active" href="index (gallery).html">Galeri</a></li>
-          <li class="nav-item"><a class="nav-link" href="index (blog).html">Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="index (beranda).html#faq">FAQ</a></li>
-        </ul>
-        <div class="d-flex">
-          <a href="https://wa.me/6281234567890" target="_blank" class="btn-pesan-header">
-            <i class="fab fa-whatsapp"></i> Pesan Sekarang
-          </a>
-        </div>
-      </div>
-    </div>
-  </nav>
+<header>
 
-  <section class="py-5 text-center container">
-    <h2 class="mb-3 fw-bold">Galeri Hasil Warna Wenter</h2>
-    <p class="text-muted mb-4">Pilih kategori warna untuk melihat hasil akhir pewarnaan asli:</p>
+<div class="container">
 
-    <div class="d-flex flex-wrap justify-content-center mb-5">
-      <button class="color-filter-btn btn-color-all active" data-filter="all">Semua Warna</button>
-      <button class="color-filter-btn btn-color-hitam" data-filter="hitam">Hitam</button>
-      <button class="color-filter-btn btn-color-biru-tua" data-filter="biru-tua">Biru Tua</button>
-      <button class="color-filter-btn btn-color-hijau-tua" data-filter="hijau-tua">Hijau Tua</button>
-      <button class="color-filter-btn btn-color-coklat-tua" data-filter="coklat-tua">Coklat Tua</button>
-      <button class="color-filter-btn btn-color-abu-tua" data-filter="abu-tua">Abu-Abu Tua</button>
-    </div>
+<a href="../index.html">
 
-    <div class="row g-4" id="gallery-grid">
-      
-      <div class="col-md-4 gallery-item" data-color="hijau-tua">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">Jaket Parka Hijau Tua</h5>
-            <span class="badge bg-success">Wenter Hijau Tua</span>
-          </div>
-        </div>
-      </div>
+<img
+src="../assets/logo_resmi_jaya_wenter.png"
+alt="Logo JAYA WENTER"
+class="logo">
 
-      <div class="col-md-4 gallery-item" data-color="hitam">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">Celana Chino Hitam Pekat</h5>
-            <span class="badge bg-dark">Wenter Hitam</span>
-          </div>
-        </div>
-      </div>
+</a>
 
-      <div class="col-md-4 gallery-item" data-color="biru-tua">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">Celana Jeans Biru Tua</h5>
-            <span class="badge bg-primary">Wenter Biru Tua</span>
-          </div>
-        </div>
-      </div>
+<nav>
 
-      <div class="col-md-4 gallery-item" data-color="coklat-tua">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">Kemeja Coklat Tua</h5>
-            <span class="badge bg-secondary">Wenter Coklat Tua</span>
-          </div>
-        </div>
-      </div>
+<a href="../index.html">Beranda</a>
 
-      <div class="col-md-4 gallery-item" data-color="abu-tua">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">Sweater Abu-Abu Tua</h5>
-            <span class="badge bg-dark">Wenter Abu-Abu Tua</span>
-          </div>
-        </div>
-      </div>
+<a href="../index.html#layanan">Layanan</a>
 
-    </div>
-  </section>
+<a href="../index.html#faq">FAQ</a>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const filterButtons = document.querySelectorAll(".color-filter-btn");
-      const galleryItems = document.querySelectorAll(".gallery-item");
+<a href="../index.html#ketentuan-layanan">Ketentuan</a>
 
-      filterButtons.forEach(button => {
-        button.addEventListener("click", function () {
-          // Remove active state
-          filterButtons.forEach(btn => btn.classList.remove("active"));
-          this.classList.add("active");
+<a href="../galeri/">Galeri</a>
 
-          const selectedFilter = this.getAttribute("data-filter");
+<a href="../blog/">Blog</a>
 
-          galleryItems.forEach(item => {
-            const itemColor = item.getAttribute("data-color");
-            
-            if (selectedFilter === "all" || itemColor === selectedFilter) {
-              item.classList.remove("hide");
-            } else {
-              item.classList.add("hide");
-            }
-          });
-        });
-      });
-    });
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<a href="../index.html#agen-laundry">
+Agen Laundry
+</a>
+
+<a href="https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7"
+target="_blank">
+
+Lokasi
+
+</a>
+
+<a href="https://wa.me/6285325730777"
+target="_blank">
+
+Pesan Layanan Wenter Sekarang
+
+</a>
+
+</nav>
+
+</div>
+
+</header>
+
+<section class="container">
+
+<h1 class="section-title">
+Galeri Hasil Wenter JAYA WENTER
+</h1>
+
+<p style="text-align:center;">
+Lihat berbagai hasil before-after wenter yang telah kami kerjakan.
+</p>
+
+<div class="filter-bar">
+
+<select id="kategoriFilter">
+
+<option value="all">Semua Jenis</option>
+
+<option value="celana">Celana</option>
+
+<option value="jaket">Jaket</option>
+
+<option value="hoodie">Hoodie</option>
+
+<option value="kaos">Kaos</option>
+
+<option value="kemeja">Kemeja</option>
+
+<option value="tas">Tas</option>
+
+<option value="topi">Topi</option>
+
+<option value="lainnya">Lainnya</option>
+
+</select>
+
+<select id="merkFilter">
+
+<option value="all">Semua Merk</option>
+
+<option value="nike">Nike</option>
+
+<option value="adidas">Adidas</option>
+
+<option value="levis">Levis</option>
+
+<option value="3second">3 Second</option>
+
+<option value="lea">Lea</option>
+
+<option value="uniqlo">Uniqlo</option>
+
+<option value="cardinal">Cardinal</option>
+
+<option value="lee">Lee</option>
+
+<option value="emba">Emba</option>
+
+<option value="edwin">Edwin</option>
+
+<option value="dickies">Dickies</option>
+
+<option value="stussy">Stussy</option>
+
+<option value="maternal">Maternal</option>
+
+<option value="boss">Boss</option>
+
+<option value="stoneisland">Stone Island</option>
+
+<option value="nevada">Nevada</option>
+
+<option value="lacoste">Lacoste</option>
+
+<option value="zara">Zara</option>
+
+<option value="h&m">H&M</option>
+
+</select>
+  
+</div>
+
+<div class="warna-filter">
+
+<div class="warna-item" onclick="setWarna('hitam')">
+<div class="warna-bulat hitam"></div>
+<p>Hitam</p>
+</div>
+
+<div class="warna-item" onclick="setWarna('biru')">
+<div class="warna-bulat biru"></div>
+<p>Biru Tua</p>
+</div>
+
+<div class="warna-item" onclick="setWarna('hijau')">
+<div class="warna-bulat hijau"></div>
+<p>Hijau Tua</p>
+</div>
+
+<div class="warna-item" onclick="setWarna('coklat')">
+<div class="warna-bulat coklat"></div>
+<p>Coklat Tua</p>
+</div>
+
+<div class="warna-item" onclick="setWarna('abu')">
+<div class="warna-bulat abu"></div>
+<p>Abu-Abu Tua</p>
+</div>
+
+<div class="warna-item semua-warna"
+onclick="setWarna('all')">
+
+<div class="warna-bulat semua"></div>
+
+<p>Semua</p>
+
+</div>
+
+</div>  
+
+<div class="gallery-grid" id="galleryGrid">
+
+<!-- CONTOH ITEM -->
+
+<div class="gallery-item"
+data-kategori="topi"
+data-merk="nike"
+data-warna="hitam">
+
+<img
+src="images/wenter-malang-topi-nike.png"
+alt="Wenter Topi Nike Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Topi Nike</h3>
+
+<p>
+Topi Nike hitam yang warnanya pudar diwenter menjadi hitam kembali.
+</p>
+
+</div>
+
+</div>
+
+<!-- TAMBAHKAN ITEM BARU DI SINI -->
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk="l&g"
+data-warna="abu">
+
+<img
+src="images/jasa-wenter-malang-celana-l&g-abu.png"
+alt="Jasa Wenter Malang Celana Abu-Abu"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Jeans Abu-Abu L&G</h3>
+
+<p>
+Celana jeans yang warna asalnya abu-abu muda dan memudar diwenter menjadi abu-abu tua sehingga warnanya terlihat fresh.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="hoodie"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/jasa-wenter-malang-hoodie-belang.png"
+alt="Jasa Wenter Malang Hoodie Belang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Hoodie Hitam Belang </h3>
+
+<p>
+Hoodie yang warnanya belang bagian depan dan belakang diwenter sehingga bagus kembali warnanya.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="coklat">
+
+<img
+src="images/jasa-wenter-malang-celana-kendy-coklat.png"
+alt="Jasa Wenter Malang Celana Panjang Kendy"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Panjang Coklat Kendy</h3>
+
+<p>
+Celana panjang yang warnanya sudah pudar diwenter sehingga menjadi bagus kembali.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="abu">
+
+
+<img
+src="images/jasa-wenter-malang-celana-calvin-klein-abu.png"
+alt="Wenter Malang Celana Calvin Klein Abu2"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Panjang Abu2 Calvin Klein</h3>
+
+<p>
+Celana  yang warnanya sudah pudar diwenter sehingga warnanya menjadi bagus kembali.
+</p>
+
+</div>
+
+</div>
+  
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="abu">
+
+<img
+src="images/wenter-malang-celana-abu-abu.png"
+alt="Wenter Malang Celana Abu-Abu"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Jeans Abu-Abu</h3>
+
+<p>
+Celana jeans yang warna asalnya abu-abu muda dan memudar diwenter menjadi abu-abu tua.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="hoodie"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/jasa-wenter-malang-hoodie-kena-pemutih.png"
+alt="Jasa Wenter Malang Hoodie Kena Pemutih"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Hoodie Belang Kena Pemutih</h3>
+
+<p>
+Hoodie yang warnanya belang karena terkena pemutih diwenter sehingga bagus kembali warnanya. Hasilnya seperti punya 2 warna karena 2 bagian itu itu bahan kainnya berbeda.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/jasa-wenter-malang-celana-panjang-kena-pemutih.png"
+alt="Jasa Wenter Malang Celana Panjang Kena Pemutih"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Panjang Belang Kena Pemutih</h3>
+
+<p>
+Celana panjang yang warnanya belang karena terkena pemutih diwenter sehingga bagus kembali.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="hitam">
+
+
+<img
+src="images/wenter-malang-celana-cardinal-hitam.png"
+alt="Wenter Malang Celana Kain"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Kain Katun</h3>
+
+<p>
+Celana kain katun yang warna asalnya hijau yang sudah pudar dan belang dan diwenter menjadi hitam sehingga warnanya rata kembali.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="hoodie"
+data-merk=""
+data-warna="hitam">
+
+
+<img
+src="images/wenter-malang-hoodie.png"
+alt="Wenter Malang Hoodie"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Hoodie Hitam</h3>
+
+<p>
+Hoodie yang warnanya sudah memudar diwenter menjadi hitam kembali.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="biru">
+
+
+<img
+src="images/wenter-malang-jeans-biru.png"
+alt="Wenter Malang Celana Jeans"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Jeans Biru</h3>
+
+<p>
+Celana jeans biru yang warnanya memudar diwenter menjadi lebih pekat.
+</p>
+
+</div>
+
+</div>
+  
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="hijau"> 
+
+<img
+src="images/wenter-malang-celana-hijau.png"
+alt="Wenter Celana Panjang Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Jeans</h3>
+
+<p>
+Celana jeans hijau yang warnanya sudah memudar dan kelihatan belang diwenter menjadi lebih pekat.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="lainnya"
+data-merk=""
+data-warna="biru">
+
+<img
+src="images/jasa-wenter-malang-dress-denim-biru.png"
+alt="Wenter Dress Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Dress Denim</h3>
+
+<p>
+Dress denim biru yang warna aslinya biru langit diwenter menjadi warna biru tua.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/jasa-wenter-malang-celana-pendek-pudar-belang.png"
+alt="Wenter Celana Pendek Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Pendek Katun</h3>
+
+<p>
+Celana pendek yang warnanya memudar dan belang diwenter menjadi hitam.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="kaos"
+data-merk="nike"
+data-warna="hitam">  
+
+<img
+src="images/wenter-malang-kaos-nike.png"
+alt="Wenter Kaos Nike Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Kaos Nike</h3>
+
+<p>
+Kaos Nike yang warnanya asalnya biru muda diwenter menjadi hitam. Bordiran ikut kewenter menjadi hitam karena bordirannya dari benang katun
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk="uniqlo"
+data-warna="hitam">
+
+
+<img
+src="images/jasa-wenter-malang-celana-pendek-uniqlo.png"
+alt="Wenter Celana Pendek Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Pendek Uniqlo</h3>
+
+<p>
+Celana pendek Uniqlo yang warnanya memudar diwenter menjadi hitam kembali.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="kaos"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/jasa-wenter-malang-kaos-polri.png"
+alt="Wenter Kaos Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Kaos Polri</h3>
+
+<p>
+Kaos Polri yang warnanya asalnya krem diwenter menjadi hitam. Bordiran ikut kewenter hitam karena dari benang bordir katun
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="hoodie"
+data-merk="stoneisland"
+data-warna="hitam">
+
+
+<img
+src="images/jasa-wenter-malang-hoodie-stone-island.png"
+alt="Wenter Hoodie Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Hoodie Stone Island</h3>
+
+<p>
+Hoodie Stone Island yang warnanya memudar diwenter menjadi hitam kembali.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/jasa-wenter-malang-celana-belang.png"
+alt="Wenter Celana Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Jeans</h3>
+
+<p>
+Celana jeans yang warnanya memudar diwenter menjadi hitam kembali.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="jaket"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/jasa-wenter-malang-jaket-jeans-ganti-warna.png"
+alt="Wenter Jaket Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Jaket Jeans</h3>
+
+<p>
+Jaket jeans yang warnanya asalnya biru terang diwenter menjadi hitam.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="kaos"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/jasa-wenter-malang-kaos-dalam.png"
+alt="Wenter Kaos Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Kaos Dalam</h3>
+
+<p>
+Kaos dalam yang warnanya asalnya orange dirubah menjadi hitam.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="jaket"
+data-merk=""
+data-warna="biru">
+
+
+<img
+src="images/wenter-malang-jaket-jeans-biru.png"
+alt="Wenter Jaket Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Jaket Jeans</h3>
+
+<p>
+Jaket jeans yang warnanya asalnya biru cerah diwenter menjadi biru tua.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="lainnya"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/wenter-malang-rok-jeans.png"
+alt="Wenter Rok Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Rok Jeans</h3>
+
+<p>
+Rok jeans yang warnanya belang kena pemutih diwenter menjadi hitam agar tertutup belangnya.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="celana"
+data-merk=""
+data-warna="coklat">
+
+<img
+src="images/wenter-malang-celana-coklat.png"
+alt="Wenter Celana Jeans Coklat Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Celana Jeans Coklat</h3>
+
+<p>
+Celana jeans coklat yang warnanya memudar diwenter menjadi lebih pekat.
+</p>
+
+</div>
+
+</div>
+
+<div class="gallery-item"
+data-kategori="hoodie"
+data-merk=""
+data-warna="hitam">
+
+<img
+src="images/jasa-wenter-malang-jaket-hoodie.png"
+alt="Wenter Celana Jeans Coklat Malang"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Hoodie Hitam</h3>
+
+<p>
+Jaket hoodie yang warnanya memudar diwenter menjadi lebih pekat.
+</p>
+
+</div>
+
+</div>
+  
+<div class="gallery-item"
+data-kategori="tas"
+data-merk="eiger"
+data-warna="biru">
+
+
+<img
+src="images/wenter-malang-tas-eiger.png"
+alt="Wenter Malang Tas Eiger"
+onclick="openLightbox(this.src)">
+
+<div class="gallery-info">
+
+<h3>Tas Eiger</h3>
+
+<p>
+Tas eiger yang warnanya memudar diwenter menjadi lebih pekat.
+</p>
+
+</div>
+
+</div>
+</div>
+
+</section>
+
+<div id="lightbox" class="lightbox">
+
+<span onclick="closeLightbox()">&times;</span>
+
+<img id="lightboxImg">
+
+</div>
+
+<script>
+
+const kategoriFilter =
+document.getElementById("kategoriFilter");
+
+const merkFilter =
+document.getElementById("merkFilter");
+
+let warnaAktif = "all";
+  
+const items =
+document.querySelectorAll(".gallery-item");
+
+function filterGallery(){
+
+const kategori =
+kategoriFilter.value;
+
+const merk =
+merkFilter.value;
+
+items.forEach(item=>{
+
+const cocokKategori =
+kategori==="all" ||
+item.dataset.kategori===kategori;
+
+const cocokMerk =
+merk==="all" ||
+item.dataset.merk===merk;
+
+const cocokWarna =
+warnaAktif==="all" ||
+item.dataset.warna===warnaAktif;
+
+item.style.display =
+(cocokKategori &&
+cocokMerk &&
+cocokWarna)
+? "block"
+: "none";
+
+});
+
+}
+
+kategoriFilter.addEventListener(
+"change",
+filterGallery
+);
+
+merkFilter.addEventListener(
+"change",
+filterGallery
+);
+
+
+function setWarna(warna){
+
+warnaAktif = warna;
+
+document
+.querySelectorAll(".warna-item")
+.forEach(item=>{
+item.classList.remove("active");
+});
+
+event.currentTarget
+.classList.add("active");
+
+filterGallery();
+
+}
+  
+function openLightbox(src){
+
+document.getElementById(
+"lightbox"
+).style.display="block";
+
+document.getElementById(
+"lightboxImg"
+).src=src;
+
+}
+
+function closeLightbox(){
+
+document.getElementById(
+"lightbox"
+).style.display="none";
+
+}
+
+</script>
+
+<section class="container">
+
+<div style="text-align:center;margin:60px 0;">
+
+<a href="../index.html"
+class="whatsapp-btn"
+style="background:#001d5a;">
+
+← Kembali ke Beranda
+
+</a>
+
+</div>
+
+</section>
+
 </body>
-</html>
+                                 </html>
