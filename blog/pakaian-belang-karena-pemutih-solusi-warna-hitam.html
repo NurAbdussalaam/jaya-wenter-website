@@ -1,7 +1,15 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QGVM89D5LW"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-QGVM89D5LW');
+</script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +19,53 @@
 <meta name="description" content="Pakaian belang karena pemutih atau memiliki noda mencolok? Pelajari kenapa warna hitam menjadi pilihan terbaik untuk menutupi belang dan noda dibanding warna lainnya.">
 
 <link rel="stylesheet" href="../style.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+/* Tombol WA header (konsisten dengan halaman lain) */
+.wenter-cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  color:#ffffff !important;
+  font-weight:700;
+  font-size:15px;
+  line-height:1;
+  padding:13px 24px;
+  border-radius:50px;
+  text-decoration:none !important;
+  box-shadow:0 4px 14px rgba(37,211,102,.35);
+  transition:transform .25s ease, box-shadow .25s ease;
+  white-space:nowrap;
+  border:none;
+  cursor:pointer;
+}
+.wenter-cta-btn i{ font-size:19px; }
+.wenter-cta-btn:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 10px 22px rgba(37,211,102,.5);
+}
+.wenter-cta-btn:active{ transform:translateY(0) scale(.98); }
+.wenter-cta-btn--nav{
+  padding:10px 18px;
+  font-size:13.5px;
+}
+@media (max-width:768px){
+  .wenter-cta-btn--nav{ width:100%; justify-content:center; }
+}
+
+/* Gambar utama artikel */
+.blog-thumb-hero{
+  width:100%;
+  max-width:900px;
+  height:auto;
+  border-radius:10px;
+  margin:20px 0;
+  display:block;
+}
+</style>
 
 </head>
 
@@ -54,11 +109,15 @@ Lokasi
 
 </a>
 
-<a href="https://wa.me/6285325730777"
-target="_blank">
-
-WhatsApp
-
+<a class="wenter-cta-btn wenter-cta-btn--nav"
+href="https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..."
+target="_blank"
+onclick="gtag('event','whatsapp_click',{
+'event_category':'Lead',
+'event_label':'Blog Artikel Nav CTA'
+});">
+<i class="fab fa-whatsapp" aria-hidden="true"></i>
+<span>Pesan Layanan Wenter Sekarang</span>
 </a>
 
 </nav>
@@ -74,6 +133,11 @@ WhatsApp
 <h1>
 Pakaian Belang Karena Pemutih? Kenapa Warna Hitam Jadi Solusi Terbaik
 </h1>
+
+<img
+src="../assets/blog-pemutih-hitam.jpg"
+alt="Pakaian Belang Karena Pemutih? Kenapa Warna Hitam Jadi Solusi Terbaik"
+class="blog-thumb-hero">
 
 <p>
 Pernah nggak sih, tanpa sengaja pakaian kena pemutih? Awalnya cuma setetes kecil, tapi lama-lama muncul belang putih yang bikin mata langsung tertuju ke situ. Atau mungkin ada noda membandel yang sudah dicuci berkali-kali tapi tetap kelihatan jelas?
@@ -263,4 +327,3 @@ Jasa Wenter Malang Profesional
 
 </body>
 </html>
-```
