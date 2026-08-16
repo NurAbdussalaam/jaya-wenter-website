@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGVM89D5LW"></script>
 <script>
@@ -10,29 +9,20 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-QGVM89D5LW');
 </script>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Jasa Wenter Malang Terdekat | Wenter Jeans, Jaket, Kaos & Seragam - JAYA WENTER</title>
-
 <meta name="description" content="JAYA WENTER Malang melayani jasa wenter jeans, jaket, kaos, celana, hoodie, sweater, tas dan seragam. Hasil lebih pekat, merata dan tahan lama. Melayani Malang dan seluruh Indonesia.">
-
 <meta name="keywords" content="jasa wenter malang,wenter malang,wenter malang terdekat,wenter terdekat,wenter bagus malang,wenter,jasa wenter,wenter malang,wenter jeans,wenter jaket,wenter kaos,wenter seragam,wenter celana,jasa wantex malang,wantex terdekat">
-
 <link rel="canonical" href="https://wenter.my.id/">
-
 <meta property="og:title" content="Jasa Wenter Malang Profesional | JAYA WENTER">
 <meta property="og:description" content="Wenter jeans, jaket, kaos, seragam dan celana. Hasil lebih pekat, merata dan tahan lama.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://wenter.my.id/">
 <meta property="og:image" content="https://wenter.my.id/assets/before_after_1.png">
-
 <link rel="stylesheet" href="style.css">
-
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
 <script type="application/ld+json">
 {
 "@context":"https://schema.org",
@@ -51,367 +41,408 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 }
 </script>
 
+<!-- ====== CSS TAMBAHAN UNTUK TOMBOL BARU (tidak menimpa style.css lama) ====== -->
+<style>
+  /* Tombol WhatsApp utama (header, hero, agen) */
+  .wenter-cta-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:linear-gradient(135deg,#25D366,#128C7E);
+    color:#ffffff !important;
+    font-weight:700;
+    font-size:15px;
+    line-height:1;
+    padding:13px 24px;
+    border-radius:50px;
+    text-decoration:none !important;
+    box-shadow:0 4px 14px rgba(37,211,102,.35);
+    transition:transform .25s ease, box-shadow .25s ease;
+    white-space:nowrap;
+    border:none;
+    cursor:pointer;
+  }
+  .wenter-cta-btn i{ font-size:19px; }
+  .wenter-cta-btn:hover{
+    transform:translateY(-2px) scale(1.03);
+    box-shadow:0 10px 22px rgba(37,211,102,.5);
+  }
+  .wenter-cta-btn:active{ transform:translateY(0) scale(.98); }
+
+  .wenter-cta-btn--nav{
+    padding:10px 18px;
+    font-size:13.5px;
+  }
+  .wenter-cta-btn--hero{
+    padding:15px 32px;
+    font-size:16px;
+    margin-top:8px;
+  }
+  .wenter-cta-btn--agent{
+    padding:15px 30px;
+    font-size:16px;
+  }
+
+  /* Tombol "Lihat Semua Hasil Wenter" */
+  .wenter-gallery-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin-top:18px;
+    background:#ffffff;
+    color:#128C7E !important;
+    border:2px solid #128C7E;
+    font-weight:700;
+    font-size:15px;
+    padding:12px 26px;
+    border-radius:50px;
+    text-decoration:none !important;
+    transition:all .25s ease;
+  }
+  .wenter-gallery-btn:hover{
+    background:#128C7E;
+    color:#ffffff !important;
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(18,140,126,.35);
+  }
+  .wenter-gallery-btn:hover .wenter-arrow-icon{ transform:translateX(5px); }
+
+  /* Tombol "Lihat Review Google" */
+  .wenter-review-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:#ffffff;
+    border:2px solid #4285F4;
+    color:#4285F4 !important;
+    font-weight:700;
+    font-size:15px;
+    padding:12px 26px;
+    border-radius:50px;
+    text-decoration:none !important;
+    transition:all .25s ease;
+  }
+  .wenter-review-btn i{ color:#EA4335; transition:color .25s ease; }
+  .wenter-review-btn:hover{
+    background:#4285F4;
+    color:#ffffff !important;
+    box-shadow:0 8px 18px rgba(66,133,244,.4);
+    transform:translateY(-2px);
+  }
+  .wenter-review-btn:hover i{ color:#ffffff; }
+  .wenter-review-btn:hover .wenter-arrow-icon{ transform:translateX(5px); }
+
+  .wenter-arrow-icon{ transition:transform .25s ease; flex-shrink:0; }
+
+  /* Footer: tombol lokasi + nomor telepon */
+  .wenter-location-label{
+    color:#b9f6d1;
+    font-size:14px;
+    margin-bottom:8px;
+    letter-spacing:.3px;
+  }
+  .wenter-location-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:linear-gradient(135deg,#25D366,#128C7E);
+    color:#ffffff !important;
+    font-weight:700;
+    font-size:15px;
+    padding:13px 28px;
+    border-radius:50px;
+    text-decoration:none !important;
+    box-shadow:0 4px 14px rgba(37,211,102,.3);
+    transition:all .25s ease;
+  }
+  .wenter-location-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 22px rgba(37,211,102,.5);
+  }
+  .wenter-location-btn:hover .wenter-arrow-icon{ transform:translateX(5px); }
+
+  .wenter-phone-link{
+    display:inline-block;
+    font-weight:800;
+    font-size:23px;
+    letter-spacing:1px;
+    text-decoration:none !important;
+    background:linear-gradient(90deg,#4dffb0,#25D366 60%,#00c896);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 2px 10px rgba(37,211,102,.25);
+    transition:filter .25s ease;
+  }
+  .wenter-phone-link:hover{ filter:brightness(1.25); }
+
+  @media (max-width:768px){
+    .wenter-cta-btn--nav{
+      width:100%;
+      justify-content:center;
+    }
+  }
+</style>
+<!-- ====== AKHIR CSS TAMBAHAN ====== -->
+
 </head>
-  
-
 <body>
-
 <header>
-
 <div class="container">
-
 <a href="index.html">
-
 <img
 src="assets/logo_resmi_jaya_wenter.png"
 alt="Logo JAYA WENTER"
 class="logo">
-
 </a>
-
 <nav>
-
 <a href="index.html">Beranda</a>
-
 <a href="#layanan">Layanan</a>
-
 <a href="#faq">FAQ</a>
-
 <a href="#ketentuan-layanan">Ketentuan</a>
-
 <a href="galeri/">Galeri</a>
-
 <a href="blog/">Blog</a>
-
 <a href="#agen-laundry">Agen Laundry</a>
-
 <a href="https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7"
 target="_blank">
-
 Lokasi
-
 </a>
-
-<a href="https://wa.me/6285325730777"
-target="_blank">
-
-Pesan Layanan Wenter Sekarang
-
+<a class="wenter-cta-btn wenter-cta-btn--nav"
+href="https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..."
+target="_blank"
+onclick="gtag('event','whatsapp_click',{
+'event_category':'Lead',
+'event_label':'Header Nav CTA'
+});">
+<i class="fab fa-whatsapp" aria-hidden="true"></i>
+<span>Pesan Layanan Wenter Sekarang</span>
 </a>
-
 </nav>
-
 </div>
-
 </header>
 
-  
-
 <section class="hero">
-
 <div class="container">
-
 <div class="hero-content">
-
 <div class="hero-text">
-
 <h1>
 Jasa Wenter Malang Profesional
 </h1>
-
 <p>
 Mengembalikan warna jeans, jaket, kaos, celana, hoodie, sweater dan seragam yang pudar agar lebih pekat, merata dan memiliki tampilan baru.
 </p>
-
-<a class="whatsapp-btn"
-href="https://wa.me/6285325730777"
-target="_blank">
-
-Pesan Sekarang
-
+<a class="wenter-cta-btn wenter-cta-btn--hero"
+href="https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..."
+target="_blank"
+onclick="gtag('event','whatsapp_click',{
+'event_category':'Lead',
+'event_label':'Hero CTA'
+});">
+<i class="fab fa-whatsapp" aria-hidden="true"></i>
+<span>Pesan Sekarang</span>
 </a>
-
 </div>
-
 <div class="hero-image">
-
 <img src="assets/wenter-malang-celana-pendek.png"
 alt="Jasa Wenter Malang">
-
 </div>
-
 </div>
-
 </div>
-
 </section>
 
 <section class="container">
-
 <h2 class="section-title">
 Tentang JAYA WENTER
 </h2>
-
 <div class="tarif">
-
 <p>
 JAYA WENTER merupakan jasa wenter Malang yang melayani pewarnaan ulang pakaian pudar seperti jeans, jaket, kaos, celana, hoodie, sweater, tas dan seragam.
 </p>
-
 <p>
 Dengan proses wenter profesional, warna pakaian kembali lebih pekat, merata dan nyaman digunakan. Kami melayani pelanggan di Malang maupun seluruh Indonesia melalui layanan pengiriman.
 </p>
-
 </div>
-
 </section>
-  
-<section class="container">
 
 <section class="container">
-
+<section class="container">
 <h2 class="section-title">
 Keunggulan JAYA WENTER
 </h2>
-
 <div class="tarif">
-
 <p>
 <strong>WARNA BARU</strong><br>
 Lebih Pekat & Merata
 </p>
-
 <br>
-
 <p>
 <strong>SERAT AMAN</strong><br>
 Tetap Kuat
 </p>
-
 <br>
-
 <p>
 <strong>HASIL RAPI</strong><br>
 Tahan Lama
 </p>
-
 <br>
-
 <p>
 <strong>TAMPILAN BARU</strong><br>
 Mengubah Baju Lama Anda Agar Memiliki Tampilan Yang Baru
 </p>
-
 </div>
-
 </section>
-  
 
 <section id="galeri" class="container">
-
 <h2 class="section-title">
 Galeri Before After JAYA WENTER
 </h2>
-
 <p style="text-align:center;margin-bottom:25px;">
 Hasil wenter jeans, jaket, kaos, celana, tas dan berbagai pakaian yang telah kami kerjakan.
 </p>
-
 <div class="gallery">
-
 <img src="assets/wenter-malang-rok-jeans.png"
 alt="Jasa Wenter Malang Rok Kena Pemutih">
-
 <img src="assets/wenter-malang-celana-pendek.png"
 alt="Jasa Wenter Malang Celana Pendek">
-
 <img src="assets/wenter-malang-jaket-jeans-biru.png"
 alt="Jasa Wenter Malang Jaket Jeans Biru">
-    
 <img src="assets/wenter-malang-celana-hijau.png"
 alt="Jasa Wenter Malang Jaket Jeans Hijau">
-
 <img src="assets/wenter-malang-hoodie.png"
 alt="Jasa Wenter Malang Hoodie">
-
 <img src="assets/wenter-malang-tas-eiger.png"
-alt="Jasa Wenter Malang Tas Eiger">  
-
+alt="Jasa Wenter Malang Tas Eiger">
 <img src="assets/wenter-malang-topi-nike.png"
-alt="Jasa Wenter Malang Jaket Jeans Biru">  
-  
+alt="Jasa Wenter Malang Jaket Jeans Biru">
 <img src="assets/wenter-malang-kaos-nike.png"
 alt="Jasa Wenter Malang Kaos">
-
-  
-<a href="/galeri/">
-Lihat Semua Hasil Wenter →
-</a>  
-
+<a href="/galeri/" class="wenter-gallery-btn">
+<span>Lihat Semua Hasil Wenter</span>
+<svg class="wenter-arrow-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+<path d="M4 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</a>
 </div>
-
 </section>
 
 <section id="layanan" class="container">
-
 <h2 class="section-title">
 Layanan JAYA WENTER
 </h2>
-
 <div class="tarif">
-
 <p>
 <strong>Wenter Jeans</strong><br>
 Mengembalikan warna jeans pudar agar kembali lebih pekat dan merata.
 </p>
-
 <br>
-
 <p>
 <strong>Wenter Jaket & Hoodie</strong><br>
 Pewarnaan ulang jaket & hoodie berbahan katun maupun jeans.
 </p>
-
 <br>
-
 <p>
 <strong>Wenter Kaos</strong><br>
 Membuat warna kaos kusam kembali lebih segar dan menarik.
 </p>
-
 <br>
-
 <p>
 <strong>Wenter Celana</strong><br>
 Cocok untuk celana kerja maupun celana kasual berbahan katun dan jeans yang mulai memudar.
 </p>
-
 <br>
-
 <p>
 <strong>Wenter berbagai jenis pakaian lain berbahan katun </strong><br>
 Mengembalikan warna berbagai jenis pakaian berbahan katun agar tampak lebih rapi.
 </p>
-
 </div>
-
-</section> 
+</section>
 
 <section class="container">
-
 <h2 class="section-title">
 Pilihan Warna Wenter
 </h2>
-
 <p class="warna-subtitle">
 Tersedia 5 warna pilihan.
 </p>
-
 <div class="warna-grid">
-
 <div class="warna-item">
 <div class="warna-bulat hitam"></div>
 <p>Hitam</p>
 </div>
-
 <div class="warna-item">
 <div class="warna-bulat biru"></div>
 <p>Biru Tua</p>
 </div>
-
 <div class="warna-item">
 <div class="warna-bulat hijau"></div>
 <p>Hijau Tua</p>
 </div>
-
 <div class="warna-item">
 <div class="warna-bulat coklat"></div>
 <p>Coklat Tua</p>
 </div>
-
 <div class="warna-item">
 <div class="warna-bulat abu"></div>
 <p>Abu-Abu Tua</p>
 </div>
-
 </div>
-
 </section>
 
 <section class="container">
-
 <h2 class="section-title">
 Tarif Jasa Wenter Malang
 </h2>
-
 <div class="tarif">
-
 <table>
-
 <tr>
 <td>Celana Panjang</td>
 <td>Rp30.000</td>
 </tr>
-
 <tr>
 <td>Jaket</td>
 <td>Rp30.000</td>
 </tr>
-
 <tr>
 <td>Hoodie</td>
 <td>Rp30.000</td>
 </tr>
-
 <tr>
 <td>Sweater</td>
 <td>Rp30.000</td>
 </tr>
-
 <tr>
 <td>Kemeja</td>
 <td>Rp30.000</td>
 </tr>
-
 <tr>
 <td>Kaos</td>
 <td>Rp30.000</td>
 </tr>
-
 <tr>
 <td>Tas</td>
 <td>Rp30.000</td>
 </tr>
-  
 <tr>
 <td>Topi</td>
 <td>Rp25.000</td>
 </tr>
-
 <tr>
 <td>Sepatu</td>
 <td>Rp30.000</td>
 </tr>
-
 <tr>
 <td>Ukuran Jumbo</td>
 <td>Menyesuaikan</td>
 </tr>
-
 </table>
-
 </div>
-
 </section>
 
 <section class="container">
-
 <h2 class="section-title">
 Testimoni Pelanggan & Review Google
 </h2>
-
 <div class="tarif">
-
 <p>
 ⭐⭐⭐⭐⭐
 <strong>Mikazen</strong>
@@ -420,66 +451,54 @@ Hasilnya bagus dan sesuai,
 rekomended. Saya wenter 2 celana
 dan 2 jaket. Terima kasih.
 </p>
-
 <br><hr><br>
-
 <p>
 ⭐⭐⭐⭐⭐
 <strong>Rizky Safitri</strong>
 <br><br>
 Hasilnya bagus 😍😍😍
 </p>
-
 <br><hr><br>
-
 <p>
 ⭐⭐⭐⭐⭐
 <strong>Pelanggan Google</strong>
 <br><br>
 Banyak pelanggan mempercayakan jeans, jaket, kaos dan seragam mereka kepada JAYA WENTER.
 </p>
-
 <br><hr><br>
-
 <p>
 Lihat lebih banyak ulasan pelanggan melalui Google Maps:
 </p>
-
 <p>
 <a href="https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7"
-target="_blank">
-
-Lihat Review Google JAYA WENTER
-
+target="_blank"
+class="wenter-review-btn">
+<i class="fab fa-google" aria-hidden="true"></i>
+<span>Lihat Review Google JAYA WENTER</span>
+<svg class="wenter-arrow-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+<path d="M4 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 </a>
 </p>
-
 </div>
-  
 </section>
-  
-<section id="faq" class="container">
 
+<section id="faq" class="container">
 <h2 class="section-title">
 Pertanyaan yang Sering Diajukan (FAQ)
 </h2>
-
 <div class="faq-box">
-
 <details>
 <summary>Apa itu jasa wenter?</summary>
 <p>Jasa wenter atau jasa wantex adalah layanan pewarnaan ulang pakaian atau barang berbahan kain yang warnanya sudah pudar sehingga tampil lebih pekat dan segar kembali.</p>
 </details>
-
 <details>
 <summary>Pakaian atau barang apa saja yang bisa diwenter?</summary>
-<p>   Kami khusus menerima pakaian dan barang berbahan katun serta jeans seperti celana jeans, kaos, kemeja, jaket, hoodie, sweater, rok, topi, tas berbahan katun atau kanvas, sepatu berbahan kain tertentu, serta jenis pakaian lainnya yang berbahan katun atau jeans.</p>
+<p> Kami khusus menerima pakaian dan barang berbahan katun serta jeans seperti celana jeans, kaos, kemeja, jaket, hoodie, sweater, rok, topi, tas berbahan katun atau kanvas, sepatu berbahan kain tertentu, serta jenis pakaian lainnya yang berbahan katun atau jeans.</p>
 </details>
-
 <details>
 <summary>Apakah semua jenis bahan bisa diwenter?</summary>
-<p>   Tidak. Kami hanya menerima bahan katun dan jeans. Beberapa bahan yang tidak bisa diwenter dengan pewarna kami diantaranya :</p>
-
+<p> Tidak. Kami hanya menerima bahan katun dan jeans. Beberapa bahan yang tidak bisa diwenter dengan pewarna kami diantaranya :</p>
 <ul>
 <li>Polyester</li>
 <li>Parasut</li>
@@ -489,30 +508,24 @@ Pertanyaan yang Sering Diajukan (FAQ)
 <li>Bahan sintetis lainnya</li>
 </ul>
 </details>
-
 <details>
 <summary>
 Apakah warna bisa lebih pekat dari kondisi sekarang?
 </summary>
-
 <p>
 Dalam banyak kasus warna pakaian yang pudar dapat menjadi jauh lebih pekat dibanding kondisi sebelum diwenter, tergantung warna awal dan kondisi bahan.
 </p>
 </details>
-
 <details>
 <summary>Warna apa saja yang tersedia?</summary>
-<p>  Hitam, Biru Tua, Hijau Tua, Coklat Tua, dan Abu-Abu Tua.</p>
+<p> Hitam, Biru Tua, Hijau Tua, Coklat Tua, dan Abu-Abu Tua.</p>
 </details>
-
 <details>
 <summary>Berapa lama proses pengerjaan?</summary>
-<p>  Estimasi pengerjaan sekitar 3–7 hari atau menyesuaikan banyaknya pakaian dan antrian.</p>
+<p> Estimasi pengerjaan sekitar 3–7 hari atau menyesuaikan banyaknya pakaian dan antrian.</p>
 </details>
-
 <details>
 <summary>Berapa biaya jasa wenter?</summary>
-
 <ul>
 <li>Celana Panjang Rp30.000</li>
 <li>Jaket Rp30.000</li>
@@ -525,19 +538,14 @@ Dalam banyak kasus warna pakaian yang pudar dapat menjadi jauh lebih pekat diban
 <li>Topi Rp25.000</li>
 <li>Sepatu Rp30.000</li>
 </ul>
-
 </details>
-
 <details>
 <summary>Apakah bisa menerima pelanggan dari luar kota?</summary>
-<p>  Bisa. Kami melayani pelanggan dari seluruh Indonesia melalui jasa pengiriman.</p>
+<p> Bisa. Kami melayani pelanggan dari seluruh Indonesia melalui jasa pengiriman.</p>
 </details>
-
 <details>
 <summary>Apakah ada syarat khusus sebelum pakaian diwenter?</summary>
-
-<p>  Pakaian harus dipastikan berbahan katun atau jeans. Dan pastikan sudah bersih dan bebas dari:</p>
-
+<p> Pakaian harus dipastikan berbahan katun atau jeans. Dan pastikan sudah bersih dan bebas dari:</p>
 <ul>
 <li>Noda atau bekas minyak</li>
 <li>Noda atau bekas parfum</li>
@@ -548,266 +556,192 @@ Dalam banyak kasus warna pakaian yang pudar dapat menjadi jauh lebih pekat diban
 <li>Noda tinta</li>
 <li>Noda membandel lainnya</li>
 </ul>
-
 </details>
-
 </div>
-
-</section> 
+</section>
 
 <section class="container">
-
 <h2 class="section-title">
 Artikel Terbaru
 </h2>
-
 <div>
-
 <p>
-
 <a href="/blog/cara-menghitamkan-celana-jeans-kusam.html">
-
 <strong>
 Cara Menghitamkan Celana Jeans Kusam Tanpa Beli Baru
 </strong>
-
 </a>
-
 </p>
-
 <p>
 Pelajari penyebab warna jeans memudar dan cara menghitamkannya kembali agar tampak lebih pekat tanpa harus membeli baru.
 </p>
-
 <p>
-
 <a href="/blog/cara-menghitamkan-celana-jeans-kusam.html">
-
 Baca Selengkapnya →
-
 </a>
-
 </p>
-
 </div>
-
 </section>
 
 <section id="agen-laundry" class="container">
-
 <h2 class="section-title">
 Daftar Menjadi Agen Laundry JAYA WENTER
 </h2>
-
 <div class="tarif">
-
 <p>
 Kami membuka peluang kerja sama bagi pemilik laundry yang ingin menambah layanan wenter kepada pelanggan.
 </p>
-
 <p>
 Anda dapat menawarkan layanan wenter tanpa perlu memiliki peralatan maupun proses produksi sendiri.
 </p>
-
 <p>
 Cocok untuk laundry yang ingin meningkatkan omzet dan menambah layanan kepada pelanggan.
 </p>
-
 <br>
-
 <p>
 Isi formulir pendaftaran dan tim kami akan menghubungi Anda untuk menjelaskan skema kerja sama agen laundry.
 </p>
-
 <br>
 <p></p>
-
-<a class="whatsapp-btn"
-href="https://forms.gle/1rSobK1rQXVGpriE7"
+<a class="wenter-cta-btn wenter-cta-btn--agent"
+href="https://wa.me/6285325730777?text=Halo%20Jaya%20Wenter%2C%20Saya%20ingin%20mendaftar%20menjadi%20Agen..."
 target="_blank"
 onclick="gtag('event','agen_laundry_click',{
 'event_category':'Lead',
-'event_label':'Google Form Agen Laundry'
+'event_label':'WhatsApp Agen Laundry'
 });">
-
-Daftar Menjadi Agen
-
+<i class="fab fa-whatsapp" aria-hidden="true"></i>
+<span>Daftar Menjadi Agen</span>
 </a>
-
 </div>
-
 </section>
 
 <section class="container">
-
 <h2 class="section-title">
 Pakaian Kusam Tidak Harus Diganti
 </h2>
-
 <div class="tarif">
-
 <p>
 Percayakan kepada kami untuk mengembalikan warna pakaian Anda menjadi lebih pekat, merata dan tampak seperti baru kembali. Silahkan konsultasikan terlebih dahulu kepada kami.
 </p>
-
 <br>
-
 <a class="whatsapp-btn"
 href="https://wa.me/6285325730777"
 target="_blank">
-
 Konsultasi Sekarang
-
 </a>
-
 </div>
-
 </section>
 
 <section id="ketentuan-layanan" class="container">
-
 <h2 class="section-title">
 Ketentuan Pengguna Jasa
 </h2>
-
 <div class="faq-box">
-
 <details>
-
 <summary>
 Syarat dan Ketentuan Layanan JAYA WENTER
 </summary>
-
 <p></p>
 <h3>1. Jenis Bahan</h3>
-
 <p>
 Kami hanya menerima pakaian dan barang berbahan katun atau jeans. Pastikan pakaian yang Anda wenter berbahan katun atau jeans.
 </p>
 <p></p>
 <h3>2. Barang Tertinggal</h3>
-
 <p>
 Pastikan tidak ada uang, dokumen, kartu, kunci, perhiasan, atau barang berharga lainnya yang tertinggal di dalam pakaian.
 </p>
-
 <p>
 Kami tidak bertanggung jawab atas barang yang tertinggal.
 </p>
 <p></p>
 <h3>3. Kondisi Pakaian</h3>
-
 <p>
 Proses wenter melibatkan pemanasan hingga sekitar 75°C, perendaman, dan pengadukan berulang.
 </p>
-
 <p>
 Pastikan pakaian dalam kondisi layak untuk diproses.
 </p>
 <p></p>
 <h3>4. Kerusakan Akibat Kondisi Awal</h3>
-
 <p>
 Kami tidak bertanggung jawab atas kerusakan yang disebabkan oleh kondisi pakaian sebelum diwenter seperti kain rapuh, jahitan lemah, sablon retak, bordir rusak, resleting rusak, atau kerusakan akibat usia pakaian.
 </p>
 <p></p>
 <h3>5. Kebersihan Barang</h3>
-
 <p>
 Pakaian harus bebas dari noda minyak, parfum, deodorant, pemutih, cat, lem, tinta, dan noda lain yang menghambat penyerapan warna.
 </p>
 <p></p>
 <h3>6. Hasil Pewarnaan</h3>
-
 <p>
 Hasil akhir dipengaruhi warna awal, jenis bahan, kondisi kain, dan usia pakaian.
 </p>
-
 <p>
 Hasil tidak dapat dijamin sama persis dengan warna asli saat masih baru.
 </p>
 <p></p>
 <h3>7. Perbedaan Warna</h3>
-
 <p>
 Pelanggan memahami bahwa warna hasil akhir dapat berbeda dari contoh warna, foto referensi, atau perkiraan awal karena karakteristik bahan, warna awal, kondisi kain, usia pakaian, serta kondisi barang yang berbeda-beda.
 </p>
 <p></p>
 <h3>8. Barang yang Tidak Dapat Diproses</h3>
-
 <p>
 Kami berhak menolak pengerjaan barang yang:
 </p>
-
 <ul>
-  <li>Berisiko rusak saat diproses</li>
-  <li>Menggunakan bahan yang tidak sesuai</li>
-  <li>Memiliki kondisi yang tidak memungkinkan untuk mendapatkan hasil yang layak</li>
+<li>Berisiko rusak saat diproses</li>
+<li>Menggunakan bahan yang tidak sesuai</li>
+<li>Memiliki kondisi yang tidak memungkinkan untuk mendapatkan hasil yang layak</li>
 </ul>
-
 <p>
 Keputusan penerimaan atau penolakan barang sepenuhnya menjadi pertimbangan JAYA WENTER berdasarkan kondisi barang yang diterima.
 </p>
 <p></p>
 <h3>9. Komplain dan Klaim</h3>
-
 <p>
 Komplain terkait hasil pengerjaan wajib disampaikan paling lambat 3 (tiga) hari setelah barang diterima pelanggan.
 </p>
-
 <p>
 Komplain yang disampaikan setelah batas waktu tersebut dianggap tidak dapat diproses.
 </p>
-
 <p>
 Pelanggan wajib menyampaikan komplain secara jelas disertai foto atau informasi yang diperlukan agar dapat dilakukan pemeriksaan dan tindak lanjut.
 </p>
 <p></p>
 <h3>10. Persetujuan Pelanggan</h3>
-
 <p>
 Dengan menyerahkan, mengirimkan, atau memesan layanan JAYA WENTER, pelanggan dianggap telah membaca, memahami, mengetahui, dan menyetujui seluruh syarat dan ketentuan yang berlaku pada layanan JAYA WENTER.
 </p>
-
 <p>
 Pelanggan juga memahami bahwa hasil akhir pengerjaan dapat dipengaruhi oleh kondisi awal barang, jenis bahan, usia pakaian, serta faktor teknis lainnya yang telah dijelaskan dalam ketentuan ini.
-</p> 
+</p>
 <p></p>
 <h3>11. Penyelesaian Perselisihan</h3>
-
 <p>
 Apabila terdapat hal-hal yang belum diatur dalam ketentuan ini atau terjadi perbedaan pendapat antara pelanggan dan JAYA WENTER, maka penyelesaiannya akan diupayakan terlebih dahulu melalui musyawarah untuk mencapai kesepakatan bersama yang baik dan adil bagi kedua belah pihak.
 </p>
-
-  
-
 </details>
-
 </div>
-
 </section>
+
 <footer>
-
 <div class="container">
-
 <h3>JAYA WENTER</h3>
-
 <p>Garment Recolouring Service</p>
-
 <br>
-
 <p>
 WhatsApp :
-<a href="https://wa.me/6285325730777">
+<a href="https://wa.me/6285325730777" class="wenter-phone-link">
 085325730777
 </a>
 </p>
-
 <p>
 Melayani Malang & Seluruh Indonesia
 </p>
 <br>
-
 <p>
 Alamat :
 <br>
@@ -815,9 +749,7 @@ Kebonsari Gg 4 No. 18A
 <br>
 Kebonsari, Sukun, Malang
 </p>
-
 <br>
-
 <p>
 Jam Operasional :
 <br>
@@ -826,43 +758,35 @@ Senin - Sabtu
 08.00 - 16.00 WIB
 </p>
 <br>
-
 <div class="footer-links">
-
 <a href="#faq">FAQ</a>
-
 <a href="#ketentuan-layanan">
- Ketentuan Pengguna Jasa
+Ketentuan Pengguna Jasa
 </a>
-
 <a href="/blog/">
 Blog
 </a>
-
 <a href="https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7"
 target="_blank">
- Google Maps
+Google Maps
 </a>
-
 </div>
-
 </div>
-
 <br>
-
-<p>
+<p class="wenter-location-label">
 Temukan lokasi JAYA WENTER di Google Maps:
 </p>
-
 <p>
 <a href="https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7"
-target="_blank">
-
-Lihat Lokasi Kami
-
+target="_blank"
+class="wenter-location-btn">
+<i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+<span>Lihat Lokasi Kami</span>
+<svg class="wenter-arrow-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+<path d="M4 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
 </a>
 </p>
-
 </footer>
 
 <a href="https://wa.me/6285325730777"
@@ -886,7 +810,7 @@ z-index:99999;
 box-shadow:0 4px 12px rgba(0,0,0,.3);
 animation:pulse 2s infinite;
 ">
-<i class="fab fa-whatsapp"></i> 
+<i class="fab fa-whatsapp"></i>
 </a>
 <style>
 @keyframes pulse{
@@ -901,6 +825,5 @@ transform:scale(1);
 }
 }
 </style>
-  
 </body>
 </html>
