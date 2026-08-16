@@ -5,7 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blog Tips Pakaian & Wenter | JAYA WENTER Malang</title>
 <meta name="description" content="Tips merawat pakaian, cara mengatasi warna pudar, dan panduan memilih jasa wenter terbaik. Blog resmi JAYA WENTER Malang.">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
+/* Tombol WA header (identik dengan header di beranda & galeri) */
+.wenter-cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  color:#ffffff !important;
+  font-weight:700;
+  font-size:15px;
+  line-height:1;
+  padding:13px 24px;
+  border-radius:50px;
+  text-decoration:none !important;
+  box-shadow:0 4px 14px rgba(37,211,102,.35);
+  transition:transform .25s ease, box-shadow .25s ease;
+  white-space:nowrap;
+  border:none;
+  cursor:pointer;
+  font-family:system-ui,sans-serif;
+}
+.wenter-cta-btn i{ font-size:19px; }
+.wenter-cta-btn:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 10px 22px rgba(37,211,102,.5);
+}
+.wenter-cta-btn:active{ transform:translateY(0) scale(.98); }
+.wenter-cta-btn--nav{
+  padding:10px 18px;
+  font-size:13.5px;
+}
+.wenter-cta-btn--mobile{
+  justify-content:center;
+  margin-top:8px;
+  width:100%;
+}
 /* ── SHARED DESIGN SYSTEM — JAYA WENTER ── */
 :root {
   --ink:      #1A1207;
@@ -236,7 +273,10 @@ footer{background:var(--ink);padding:48px 0 24px}
       <li><a href="../#harga">Harga</a></li>
       <li><a href="../#testimoni">Ulasan</a></li>
     </ul>
-    <a href="https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..." class="btn btn-primary btn-sm nav-cta" target="_blank">Pesan Layanan Wenter Sekarang</a>
+    <a href="https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..." class="wenter-cta-btn wenter-cta-btn--nav nav-cta" target="_blank">
+      <i class="fab fa-whatsapp" aria-hidden="true"></i>
+      <span>Pesan Layanan Wenter Sekarang</span>
+    </a>
     <button class="hamburger" id="hbg" aria-label="Menu" onclick="toggleMenu()">
       <span></span><span></span><span></span>
     </button>
@@ -249,7 +289,10 @@ footer{background:var(--ink);padding:48px 0 24px}
   <a href="./" class="active">Blog</a>
   <a href="../#harga">Harga</a>
   <a href="../#testimoni">Ulasan</a>
-  <a href="https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..." class="btn btn-primary" target="_blank">Pesan Layanan Wenter Sekarang</a>
+  <a href="https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..." class="wenter-cta-btn wenter-cta-btn--mobile" target="_blank">
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+    <span>Pesan Layanan Wenter Sekarang</span>
+  </a>
 </div>
 
 <!-- PAGE HERO -->
