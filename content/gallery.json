@@ -1,0 +1,238 @@
+{
+  "items": [
+    {
+      "image": "images/wenter-malang-topi-nike.png",
+      "alt": "Wenter Topi Nike Malang",
+      "kategori": "topi",
+      "merk": "nike",
+      "warna": "hitam",
+      "title": "Topi Nike",
+      "description": "Topi Nike hitam yang warnanya pudar diwenter menjadi hitam kembali."
+    },
+    {
+      "image": "images/jasa-wenter-malang-celana-l&g-abu.png",
+      "alt": "Jasa Wenter Malang Celana Abu-Abu",
+      "kategori": "celana",
+      "merk": "l&g",
+      "warna": "abu",
+      "title": "Celana Jeans Abu-Abu L&G",
+      "description": "Celana jeans yang warna asalnya abu-abu muda dan memudar diwenter menjadi abu-abu tua sehingga warnanya terlihat fresh."
+    },
+    {
+      "image": "images/jasa-wenter-malang-hoodie-belang.png",
+      "alt": "Jasa Wenter Malang Hoodie Belang",
+      "kategori": "hoodie",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Hoodie Hitam Belang",
+      "description": "Hoodie yang warnanya belang bagian depan dan belakang diwenter sehingga bagus kembali warnanya."
+    },
+    {
+      "image": "images/jasa-wenter-malang-celana-kendy-coklat.png",
+      "alt": "Jasa Wenter Malang Celana Panjang Kendy",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "coklat",
+      "title": "Celana Panjang Coklat Kendy",
+      "description": "Celana panjang yang warnanya sudah pudar diwenter sehingga menjadi bagus kembali."
+    },
+    {
+      "image": "images/jasa-wenter-malang-celana-calvin-klein-abu.png",
+      "alt": "Wenter Malang Celana Calvin Klein Abu2",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "abu",
+      "title": "Celana Panjang Abu2 Calvin Klein",
+      "description": "Celana yang warnanya sudah pudar diwenter sehingga warnanya menjadi bagus kembali."
+    },
+    {
+      "image": "images/wenter-malang-celana-abu-abu.png",
+      "alt": "Wenter Malang Celana Abu-Abu",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "abu",
+      "title": "Celana Jeans Abu-Abu",
+      "description": "Celana jeans yang warna asalnya abu-abu muda dan memudar diwenter menjadi abu-abu tua."
+    },
+    {
+      "image": "images/jasa-wenter-malang-hoodie-kena-pemutih.png",
+      "alt": "Jasa Wenter Malang Hoodie Kena Pemutih",
+      "kategori": "hoodie",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Hoodie Belang Kena Pemutih",
+      "description": "Hoodie yang warnanya belang karena terkena pemutih diwenter sehingga bagus kembali warnanya. Hasilnya seperti punya 2 warna karena 2 bagian itu itu bahan kainnya berbeda."
+    },
+    {
+      "image": "images/jasa-wenter-malang-celana-panjang-kena-pemutih.png",
+      "alt": "Jasa Wenter Malang Celana Panjang Kena Pemutih",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Celana Panjang Belang Kena Pemutih",
+      "description": "Celana panjang yang warnanya belang karena terkena pemutih diwenter sehingga bagus kembali."
+    },
+    {
+      "image": "images/wenter-malang-celana-cardinal-hitam.png",
+      "alt": "Wenter Malang Celana Kain",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Celana Kain Katun",
+      "description": "Celana kain katun yang warna asalnya hijau yang sudah pudar dan belang dan diwenter menjadi hitam sehingga warnanya rata kembali."
+    },
+    {
+      "image": "images/wenter-malang-hoodie.png",
+      "alt": "Wenter Malang Hoodie",
+      "kategori": "hoodie",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Hoodie Hitam",
+      "description": "Hoodie yang warnanya sudah memudar diwenter menjadi hitam kembali."
+    },
+    {
+      "image": "images/wenter-malang-jeans-biru.png",
+      "alt": "Wenter Malang Celana Jeans",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "biru",
+      "title": "Celana Jeans Biru",
+      "description": "Celana jeans biru yang warnanya memudar diwenter menjadi lebih pekat."
+    },
+    {
+      "image": "images/wenter-malang-celana-hijau.png",
+      "alt": "Wenter Celana Panjang Malang",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "hijau",
+      "title": "Celana Jeans",
+      "description": "Celana jeans hijau yang warnanya sudah memudar dan kelihatan belang diwenter menjadi lebih pekat."
+    },
+    {
+      "image": "images/jasa-wenter-malang-dress-denim-biru.png",
+      "alt": "Wenter Dress Malang",
+      "kategori": "lainnya",
+      "merk": "",
+      "warna": "biru",
+      "title": "Dress Denim",
+      "description": "Dress denim biru yang warna aslinya biru langit diwenter menjadi warna biru tua."
+    },
+    {
+      "image": "images/jasa-wenter-malang-celana-pendek-pudar-belang.png",
+      "alt": "Wenter Celana Pendek Malang",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Celana Pendek Katun",
+      "description": "Celana pendek yang warnanya memudar dan belang diwenter menjadi hitam."
+    },
+    {
+      "image": "images/wenter-malang-kaos-nike.png",
+      "alt": "Wenter Kaos Nike Malang",
+      "kategori": "kaos",
+      "merk": "nike",
+      "warna": "hitam",
+      "title": "Kaos Nike",
+      "description": "Kaos Nike yang warnanya asalnya biru muda diwenter menjadi hitam. Bordiran ikut kewenter menjadi hitam karena bordirannya dari benang katun"
+    },
+    {
+      "image": "images/jasa-wenter-malang-celana-pendek-uniqlo.png",
+      "alt": "Wenter Celana Pendek Malang",
+      "kategori": "celana",
+      "merk": "uniqlo",
+      "warna": "hitam",
+      "title": "Celana Pendek Uniqlo",
+      "description": "Celana pendek Uniqlo yang warnanya memudar diwenter menjadi hitam kembali."
+    },
+    {
+      "image": "images/jasa-wenter-malang-kaos-polri.png",
+      "alt": "Wenter Kaos Malang",
+      "kategori": "kaos",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Kaos Polri",
+      "description": "Kaos Polri yang warnanya asalnya krem diwenter menjadi hitam. Bordiran ikut kewenter hitam karena dari benang bordir katun"
+    },
+    {
+      "image": "images/jasa-wenter-malang-hoodie-stone-island.png",
+      "alt": "Wenter Hoodie Malang",
+      "kategori": "hoodie",
+      "merk": "stoneisland",
+      "warna": "hitam",
+      "title": "Hoodie Stone Island",
+      "description": "Hoodie Stone Island yang warnanya memudar diwenter menjadi hitam kembali."
+    },
+    {
+      "image": "images/jasa-wenter-malang-celana-belang.png",
+      "alt": "Wenter Celana Malang",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Celana Jeans",
+      "description": "Celana jeans yang warnanya memudar diwenter menjadi hitam kembali."
+    },
+    {
+      "image": "images/jasa-wenter-malang-jaket-jeans-ganti-warna.png",
+      "alt": "Wenter Jaket Malang",
+      "kategori": "jaket",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Jaket Jeans",
+      "description": "Jaket jeans yang warnanya asalnya biru terang diwenter menjadi hitam."
+    },
+    {
+      "image": "images/jasa-wenter-malang-kaos-dalam.png",
+      "alt": "Wenter Kaos Malang",
+      "kategori": "kaos",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Kaos Dalam",
+      "description": "Kaos dalam yang warnanya asalnya orange dirubah menjadi hitam."
+    },
+    {
+      "image": "images/wenter-malang-jaket-jeans-biru.png",
+      "alt": "Wenter Jaket Malang",
+      "kategori": "jaket",
+      "merk": "",
+      "warna": "biru",
+      "title": "Jaket Jeans",
+      "description": "Jaket jeans yang warnanya asalnya biru cerah diwenter menjadi biru tua."
+    },
+    {
+      "image": "images/wenter-malang-rok-jeans.png",
+      "alt": "Wenter Rok Malang",
+      "kategori": "lainnya",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Rok Jeans",
+      "description": "Rok jeans yang warnanya belang kena pemutih diwenter menjadi hitam agar tertutup belangnya."
+    },
+    {
+      "image": "images/wenter-malang-celana-coklat.png",
+      "alt": "Wenter Celana Jeans Coklat Malang",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "coklat",
+      "title": "Celana Jeans Coklat",
+      "description": "Celana jeans coklat yang warnanya memudar diwenter menjadi lebih pekat."
+    },
+    {
+      "image": "images/jasa-wenter-malang-jaket-hoodie.png",
+      "alt": "Wenter Celana Jeans Coklat Malang",
+      "kategori": "hoodie",
+      "merk": "",
+      "warna": "hitam",
+      "title": "Hoodie Hitam",
+      "description": "Jaket hoodie yang warnanya memudar diwenter menjadi lebih pekat."
+    },
+    {
+      "image": "images/wenter-malang-tas-eiger.png",
+      "alt": "Wenter Malang Tas Eiger",
+      "kategori": "tas",
+      "merk": "eiger",
+      "warna": "biru",
+      "title": "Tas Eiger",
+      "description": "Tas eiger yang warnanya memudar diwenter menjadi lebih pekat."
+    }
+  ]
+}
