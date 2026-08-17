@@ -17,30 +17,38 @@ exports.handler = async function (event, context) {
   }
 
   const { url, token } = context.clientContext.identity;
+  const auth = { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' };
+  const logs = [];
 
+  // 1) Cari user berdasarkan email
   const listRes = await fetch(url + '/admin/users?per_page=100', {
     headers: { Authorization: 'Bearer ' + token }
   });
   const listData = await listRes.json();
   const users = listData.users || listData || [];
   const user = Array.isArray(users) ? users.find(u => u.email === body.email) : null;
+  logs.push('user lama: ' + (user ? user.id + ' | confirmed_at=' + user.confirmed_at : 'tidak ada'));
 
-  if (!user) {
-    return { statusCode: 404, headers, body: JSON.stringify({ error: 'User tidak ditemukan' }) };
+  // 2) Hapus user lama (yang statusnya belum confirmed)
+  if (user) {
+    const delRes = await fetch(url + '/admin/users/' + user.id, {
+      method: 'DELETE',
+      headers: { Authorization: 'Bearer ' + token }
+    });
+    logs.push('hapus user lama -> ' + delRes.status);
   }
 
-  const upRes = await fetch(url + '/admin/users/' + user.id, {
-    method: 'PUT',
-    headers: {
-      Authorization: 'Bearer ' + token,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ password: body.password, email_confirm: true })
+  // 3) Buat user baru: langsung berpassword DAN terkonfirmasi
+  const createRes = await fetch(url + '/admin/users', {
+    method: 'POST',
+    headers: auth,
+    body: JSON.stringify({ email: body.email, password: body.password, email_confirm: true })
   });
-  const upText = await upRes.text();
+  const created = await createRes.text();
+  logs.push('buat user baru -> ' + createRes.status + ' : ' + created.slice(0, 200));
 
-  if (!upRes.ok) {
-    return { statusCode: upRes.status, headers, body: JSON.stringify({ error: upText }) };
+  if (!createRes.ok) {
+    return { statusCode: createRes.status, headers, body: JSON.stringify({ error: created, logs: logs }) };
   }
-  return { statusCode: 200, headers, body: JSON.stringify({ ok: true }) };
+  return { statusCode: 200, headers, body: JSON.stringify({ ok: true, logs: logs }) };
 };
