@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGVM89D5LW"></script>
 <script>
@@ -23,7 +22,65 @@ gtag('config', 'G-QGVM89D5LW');
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-/* Tombol WA header (konsisten dengan halaman lain) */
+.blog-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+  margin-top:40px;
+}
+
+.blog-card{
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+
+.blog-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 6px 16px rgba(0,0,0,.15);
+}
+
+.blog-thumb{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+.blog-card-content{
+  padding:20px;
+}
+
+.blog-card-content h2{
+  font-size:18px;
+  margin-bottom:12px;
+  line-height:1.4;
+}
+
+.blog-card-content p{
+  color:#666;
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:16px;
+}
+
+.blog-button{
+  display:inline-block;
+  background:#001d5a;
+  color:#fff;
+  padding:10px 20px;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+  transition:background .2s ease;
+}
+
+.blog-button:hover{
+  background:#003399;
+}
+
 .wenter-cta-btn{
   display:inline-flex;
   align-items:center;
@@ -56,191 +113,50 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   .wenter-cta-btn--nav{ width:100%; justify-content:center; }
 }
 </style>
-
 </head>
 
 <body>
 
 <header>
-
 <div class="container">
-
 <a href="../index.html">
-
 <img
 src="../assets/logo_resmi_jaya_wenter.png"
 alt="Logo JAYA WENTER"
 class="logo">
-
 </a>
 
 <nav>
-
 <a href="../index.html">Beranda</a>
-
 <a href="../index.html#layanan">Layanan</a>
-
 <a href="../index.html#faq">FAQ</a>
-
 <a href="../index.html#ketentuan-layanan">Ketentuan</a>
-
 <a href="../galeri/">Galeri</a>
-
 <a href="../blog/">Blog</a>
-
-<a href="../index.html#agen-laundry">
-Agen Laundry
-</a>
-
-<a href="https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7"
-target="_blank">
-
-Lokasi
-
-</a>
+<a href="../index.html#agen-laundry">Agen Laundry</a>
+<a href="https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7" target="_blank">Lokasi</a>
 
 <a class="wenter-cta-btn wenter-cta-btn--nav"
 href="https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..."
 target="_blank"
-onclick="gtag('event','whatsapp_click',{
-'event_category':'Lead',
-'event_label':'Blog Nav CTA'
-});">
+onclick="gtag('event','whatsapp_click',{'event_category':'Lead','event_label':'Blog Nav CTA'});">
 <i class="fab fa-whatsapp" aria-hidden="true"></i>
 <span>Pesan Layanan Wenter Sekarang</span>
 </a>
-
 </nav>
-
 </div>
-
 </header>
   
 <section class="container">
 
-<h1 class="section-title">
-Blog JAYA WENTER
-</h1>
+<h1 class="section-title">Blog JAYA WENTER</h1>
 
 <p style="text-align:center;max-width:800px;margin:0 auto 40px;">
 Artikel seputar perawatan pakaian, solusi mengatasi warna pudar, serta informasi mengenai proses wenter agar pakaian kesayangan Anda kembali tampil lebih pekat dan menarik.
 </p>
 
-<div class="blog-grid">
-
-<article class="blog-card">
-
-<img
-src="../assets/jangan-buang-pakaian-kena-pemutih-thumbnail.png"
-alt="Jangan Buang Pakaian yang Kena Pemutih!"
-class="blog-thumb">
-
-<div class="blog-card-content">
-
-<h2>
-Jangan Buang Pakaian yang Kena Pemutih! Belang Bukan Akhir Ceritanya, Masih Bisa Bagus Lagi dan Hemat Ratusan Ribu Rupiah
-</h2>
-
-<p>
-Lebih Hemat Daripada Beli Baru. Layanan wenter sangat cocok untuk berbagai jenis pakaian...
-</p>
-
-<a href="jangan-buang-pakaian-kena-pemutih-dengan-thumbnail.html"
-class="blog-button">
-
-Baca Selengkapnya →
-
-</a>
-
-</div>
-
-</article>
-
-<article class="blog-card">
-
-<img
-src="../assets/blog-jeans-kusam.jpeg"
-alt="Cara Menghitamkan Celana Jeans Kusam"
-class="blog-thumb">
-
-<div class="blog-card-content">
-
-<h2>
-Cara Menghitamkan Celana Jeans Kusam Tanpa Merusak Serat
-</h2>
-
-<p>
-Celana jeans hitam yang sering dicuci akan mengalami pemudaran warna. Pelajari penyebabnya dan solusi terbaik untuk mengembalikan warna agar tampak lebih pekat.
-</p>
-
-<a href="cara-menghitamkan-celana-jeans-kusam.html"
-class="blog-button">
-
-Baca Selengkapnya →
-
-</a>
-
-</div>
-
-</article>
-
-<article class="blog-card">
-
-<img
-src="../assets/blog-wenter-vs-beli.jpg"
-alt="Wenter vs Beli Baru : Mana Lebih Hemat?"
-class="blog-thumb">
-
-<div class="blog-card-content">
-
-<h2>
-Wenter vs Beli Baru : Mana Lebih Hemat?
-</h2>
-
-<p>
-Perbandingan biaya dan manfaat antara melakukan wenter dengan membeli pakaian baru..
-</p>
-
-<a href="wenter-vs-beli-baru.html"
-class="blog-button">
-
-Baca Selengkapnya →
-
-</a>
-
-</div>
-
-</article>
-
-<article class="blog-card">
-
-<img
-src="../assets/blog-pemutih-hitam.jpg"
-alt="Pakaian Belang Karena Pemutih"
-class="blog-thumb">
-
-<div class="blog-card-content">
-
-<h2>
-Pakaian Belang Karena Pemutih? Kenapa Warna Hitam Jadi Solusi Terbaik
-</h2>
-
-<p>
-Belang karena pemutih atau noda mencolok sering kali lebih efektif ditutupi dengan warna hitam. Simak alasannya di sini.
-</p>
-
-<a
-href="pakaian-belang-karena-pemutih-solusi-warna-hitam.html"
-class="blog-button">
-
-Baca Selengkapnya →
-
-</a>
-
-</div>
-
-</article>
-
+<div class="blog-grid" id="blogGrid">
+  <!-- Blog cards akan di-render oleh JavaScript -->
 </div>
 
 </section>
@@ -248,54 +164,29 @@ Baca Selengkapnya →
 <br>
 
 <div style="text-align:center;">
-
 <a class="whatsapp-btn"
 href="https://wa.me/6285325730777?text=Halo%20Jaya%20Wenter%2C%20saya%20ingin%20konsultasi.."
 target="_blank">
-
 Konsultasi Via WhatsApp
-
 </a>
-
 </div>
 
 <section class="container">
-
 <div style="text-align:center;margin:60px 0;">
-
-<a href="../index.html"
-class="whatsapp-btn"
-style="background:#001d5a;">
-
+<a href="../index.html" class="whatsapp-btn" style="background:#001d5a;">
 ← Kembali ke Beranda
-
 </a>
-
 </div>
-
 </section>
 
 <footer>
-
 <div class="container">
-
-<p>
-© JAYA WENTER
-</p>
-
-<p>
-Jasa Wenter Malang Profesional
-</p>
-
-<p>
-<a href="../index.html">
-Kembali ke Beranda
-</a>
-</p>
-
+<p>© JAYA WENTER</p>
+<p>Jasa Wenter Malang Profesional</p>
+<p><a href="../index.html">Kembali ke Beranda</a></p>
 </div>
-
 </footer>
 
+<script src="/js/blog.js"></script>
 </body>
 </html>
