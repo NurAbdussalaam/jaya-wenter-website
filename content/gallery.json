@@ -1,6 +1,15 @@
 {
   "items": [
     {
+      "image": "images/1786929077633-Screenshot--164-.png",
+      "alt": "Tes",
+      "kategori": "celana",
+      "merk": "",
+      "warna": "coklat",
+      "title": "Tes",
+      "description": ""
+    },
+    {
       "image": "images/wenter-malang-topi-nike.png",
       "alt": "Wenter Topi Nike Malang",
       "kategori": "topi",
