@@ -21,6 +21,19 @@
  .row{display:flex;align-items:center;gap:12px;border-bottom:1px solid #eee;padding:10px 0;}
  .row img{width:64px;height:64px;object-fit:cover;border-radius:6px;}
  .row .info{flex:1;font-size:14px;}
+ .hint{font-size:12px;color:#666;font-weight:400;}
+ @media (max-width:600px){
+   body{margin:12px auto;padding:0 10px;}
+   h1{font-size:19px;}
+   .card{padding:16px;}
+   button{width:100%;margin-top:10px;}
+   .tabs button{width:100%;margin-right:0;}
+   .row{flex-wrap:wrap;}
+   .row img{width:52px;height:52px;}
+   .row .info{flex:1 1 55%;}
+   .row .del{width:auto;flex-shrink:0;}
+   input,select,textarea{font-size:16px;}
+ }
 </style>
 </head>
 <body>
@@ -50,6 +63,10 @@
     <label>Merk (opsional)</label><input id="g-merk">
     <label>Warna</label>
     <select id="g-warna"><option>hitam</option><option>biru</option><option>hijau</option><option>coklat</option><option>abu</option></select>
+    <label>Alt Text <span class="hint">(untuk SEO; kosongkan untuk pakai judul)</span></label>
+    <input id="g-alt" placeholder="Contoh: Jasa wenter celana jeans hitam di Malang">
+    <label>Keywords SEO <span class="hint">(pisahkan dengan koma)</span></label>
+    <input id="g-keys" placeholder="Contoh: wenter malang, celana jeans hitam, jasa pewarnaan baju">
     <button onclick="publishGaleri()">Terbitkan ke Website</button>
   </div>
 
@@ -88,6 +105,9 @@ function showTab(t){
   document.getElementById('tab-kelola').classList.toggle('hidden', t!=='kelola');
 }
 function cekPat(){ if(!localStorage.getItem('gh_pat')) throw new Error('Simpan token GitHub dulu di kotak atas.'); }
+function slugify(s){
+  return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60);
+}
 
 async function api(path, opts, method, body){
   opts = opts || {};
@@ -121,8 +141,10 @@ async function deleteFile(path, message){
   var r = await api('/repos/'+OWNER+'/'+REPO+'/contents/'+path, null, 'DELETE', { message:message, sha:f.sha, branch:BRANCH });
   if(!r.ok){ var t=await r.text(); throw new Error('Gagal menghapus '+path+' ('+r.status+'): '+t.slice(0,200)); }
 }
-async function uploadImage(file, folder){
-  var name = Date.now()+'-'+file.name.replace(/[^a-zA-Z0-9.-]/g,'-');
+async function uploadImageSEO(file, folder, textForSlug){
+  var ext = (file.name.split('.').pop() || 'png').toLowerCase();
+  var base = slugify(textForSlug) || 'foto';
+  var name = base + '-' + Date.now() + '.' + ext;
   var b64 = await readB64(file);
   await putFile(folder+name, b64, 'Upload '+name);
   return name;
@@ -136,20 +158,23 @@ async function publishGaleri(){
     var file = document.getElementById('g-file').files[0];
     var title = document.getElementById('g-title').value.trim();
     if(!file || !title) throw new Error('Foto dan judul wajib diisi.');
-    log('Mengunggah foto...');
-    var name = await uploadImage(file, 'galeri/images/');
+    var keys = document.getElementById('g-keys').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+    var alt  = document.getElementById('g-alt').value.trim() || title;
+    log('Mengunggah foto (nama file SEO)...');
+    var name = await uploadImageSEO(file, 'galeri/images/', title + ' ' + keys.join(' '));
     log('Foto terunggah: galeri/images/'+name);
     log('Memperbarui gallery.json...');
     var g = await getFile('content/gallery.json');
     var data = JSON.parse(g.text);
     data.items.unshift({
       image: 'images/'+name,
-      alt: title,
+      alt: alt,
       kategori: document.getElementById('g-kat').value,
       merk: document.getElementById('g-merk').value.trim(),
       warna: document.getElementById('g-warna').value,
       title: title,
-      description: document.getElementById('g-desc').value.trim()
+      description: document.getElementById('g-desc').value.trim(),
+      keywords: keys
     });
     await putFile('content/gallery.json', enc(JSON.stringify(data, null, 2)), 'Galeri baru: '+title, g.sha);
     log('SELESAI! Foto baru sudah masuk. Tampil di website setelah deploy Cloudflare (±1 menit).', 'ok');
@@ -166,7 +191,7 @@ async function publishBlog(){
     if(!title || !bodyTxt) throw new Error('Judul dan isi postingan wajib diisi.');
     var cover = '';
     var coverFile = document.getElementById('b-cover').files[0];
-    if(coverFile){ log('Mengunggah cover...'); cover = '/assets/uploads/' + await uploadImage(coverFile, 'assets/uploads/'); }
+    if(coverFile){ log('Mengunggah cover...'); cover = '/assets/uploads/' + await uploadImageSEO(coverFile, 'assets/uploads/', title); }
     log('Memperbarui blog.json...');
     var g = await getFile('content/blog.json');
     var data = JSON.parse(g.text);
@@ -192,9 +217,10 @@ async function loadGaleriList(){
     var data = JSON.parse(g.text);
     var html = '';
     data.items.forEach(function(it, i){
+      var kw = Array.isArray(it.keywords) ? it.keywords.join(', ') : (it.keywords||'');
       html += '<div class="row">'
         + '<img src="../galeri/' + it.image + '" alt="">'
-        + '<div class="info"><b>' + it.title + '</b><br><small>' + (it.kategori||'') + ' / ' + (it.warna||'') + '</small></div>'
+        + '<div class="info"><b>' + it.title + '</b><br><small>' + (it.kategori||'') + ' / ' + (it.warna||'') + (kw ? '<br>Keywords: '+kw : '') + '</small></div>'
         + '<button class="del" onclick="delGaleri(' + i + ')">Hapus</button>'
         + '</div>';
     });
