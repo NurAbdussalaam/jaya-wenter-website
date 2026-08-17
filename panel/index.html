@@ -13,6 +13,7 @@
  textarea{min-height:110px;}
  button{margin-top:14px;padding:11px 22px;border:none;border-radius:6px;background:#001d5a;color:#fff;font-weight:700;cursor:pointer;}
  button.secondary{background:#128C7E;}
+ button.mini{background:#888;padding:8px 14px;margin-top:6px;font-size:12px;}
  button.del{background:#b00020;padding:8px 14px;margin-top:0;}
  button.edit{background:#c77700;padding:8px 14px;margin-top:0;}
  #log{white-space:pre-wrap;font-size:13px;background:#f0f0f0;border-radius:6px;padding:10px;margin-top:14px;}
@@ -74,6 +75,7 @@
   <div id="tab-galeri">
     <div id="editBannerG" class="edit-banner hidden"><b>Mode Edit aktif</b>. Klik <b>Update</b> setelah mengubah.</div>
     <label>Foto <span class="hint">(kosongkan saat edit = pakai foto lama)</span></label><input id="g-file" type="file" accept="image/*">
+    <button class="mini" type="button" onclick="clearFile('g-file')">✕ Hapus file terpilih</button>
     <label>Judul</label><input id="g-title">
     <label>Deskripsi</label><textarea id="g-desc" style="min-height:60px;"></textarea>
     <label>Kategori</label><select id="g-kat"><option>celana</option><option>hoodie</option><option>jaket</option><option>kaos</option><option>kemeja</option><option>tas</option><option>topi</option><option>lainnya</option></select>
@@ -105,6 +107,7 @@
       <p id="b-ai-status" class="hint"></p>
     </div>
     <label>Cover (manual/AI)</label><input id="b-cover" type="file" accept="image/*">
+    <button class="mini" type="button" onclick="clearFile('b-cover')">✕ Hapus file terpilih</button>
     <label>Keywords SEO (koma)</label><input id="b-keys">
     <label>Isi Postingan (markdown)</label><textarea id="b-body"></textarea>
     <button id="b-submit" onclick="submitBlog()">Terbitkan ke Website</button>
@@ -112,15 +115,18 @@
   </div>
 
   <div id="tab-video" class="hidden">
-    <p class="hint">Foto before-after (kiri=sebelum, kanan=sesudah) → video 9:16 ±15 dtk. Foto tidak diedit.</p>
+    <p class="hint">Foto before-after (kiri=sebelum, kanan=sesudah) → video 9:16 ±15 dtk. Foto tidak dipotong.</p>
     <label>Foto dari Galeri</label><select id="v-gallery"><option value="">— atau upload —</option></select>
-    <label>Upload Foto</label><input id="v-file" type="file" accept="image/*">
+    <label>Upload Foto</label><input id="v-file" type="file" accept="image/*" onchange="onVideoFileChange()">
+    <button class="mini" type="button" onclick="clearFile('v-file')">✕ Hapus file terpilih</button>
     <label>Teks Hook</label><input id="v-hook" value="JANGAN DIBUANG!">
     <label>Keywords SEO (nama file & hashtag)</label><input id="v-keys">
     <label>Nomor WA (CTA)</label><input id="v-wa" value="0853-2573-0777">
     <label>🎵 Musik latar (opsional, mp3 bebas royalti)</label><input id="v-music" type="file" accept="audio/*">
+    <button class="mini" type="button" onclick="clearFile('v-music')">✕ Hapus musik terpilih</button>
+    <p class="hint">Musik otomatis dilepas setelah render selesai — video berikutnya default tanpa musik.</p>
     <div class="chk"><input type="checkbox" id="v-labels" checked> Label ❌ SEBELUM / ✅ SESUDAH</div>
-    <div class="chk"><input type="checkbox" id="v-original"> Mode Original (tanpa zoom/crop)</div>
+    <div class="chk"><input type="checkbox" id="v-original"> Mode Original (tanpa split)</div>
     <div class="chk"><input type="checkbox" id="v-badge"> Badge "100% FOTO ASLI" (opsional)</div>
     <button onclick="startVideo()">🎥 Render Video</button>
     <canvas id="v-canvas" width="1080" height="1920"></canvas>
@@ -130,7 +136,7 @@
   </div>
 
   <div id="tab-share" class="hidden">
-    <p class="hint">Bagikan video generate / video CapCut / foto / blog / teks ke sosmed. Video diupload dulu ke penyimpanan R2 Anda lalu dibagikan via URL.</p>
+    <p class="hint">Bagikan video generate / video CapCut / foto / blog / teks ke sosmed.</p>
     <label>Konten</label>
     <select id="sh-type" onchange="onShareType()">
       <option value="video-gen">🎥 Video hasil generate panel</option>
@@ -139,7 +145,7 @@
       <option value="blog">📝 Postingan blog</option>
       <option value="teks">✏️ Teks saja</option>
     </select>
-    <div id="sh-video-file-wrap" class="hidden"><label>File video</label><input id="sh-video" type="file" accept="video/*"></div>
+    <div id="sh-video-file-wrap" class="hidden"><label>File video</label><input id="sh-video" type="file" accept="video/*"><button class="mini" type="button" onclick="clearFile('sh-video')">✕ Hapus file terpilih</button></div>
     <div id="sh-foto-wrap" class="hidden"><label>Pilih foto</label><select id="sh-foto" onchange="autoCaption()"></select></div>
     <div id="sh-blog-wrap" class="hidden"><label>Pilih postingan</label><select id="sh-blog" onchange="autoCaption()"></select></div>
     <label>Keywords (hashtag)</label><input id="sh-keys" oninput="autoCaption()">
@@ -164,6 +170,7 @@ var OWNER='NurAbdussalaam', REPO='jaya-wenter-website', BRANCH='main';
 var currentEdit={type:null,index:-1}, aiCoverBlob=null, lastVideoBlob=null, lastVideoName='';
 function log(s,c){var e=document.getElementById('log');e.innerHTML+='<span class="'+(c||'')+'">'+s+'</span>\n';}
 function lsGet(k){return localStorage.getItem(k)||'';}
+function clearFile(id){document.getElementById(id).value='';}
 function savePat(){localStorage.setItem('gh_pat',document.getElementById('pat').value.trim());alert('Tersimpan.');}
 function clearPat(){localStorage.removeItem('gh_pat');document.getElementById('pat').value='';}
 function saveSettings(){
@@ -243,7 +250,8 @@ async function editBlog(i){try{cekPat();var p=JSON.parse((await getFile('content
 
 /* ---- Video ---- */
 var VW=1080,VH=1920;
-async function loadVideoGalleryOptions(){try{var d=JSON.parse((await getFile('content/gallery.json')).text),s=document.getElementById('v-gallery');s.innerHTML='<option value="">— atau upload —</option>';d.items.forEach(function(it){var o=document.createElement('option');o.value='../galeri/'+it.image;o.textContent=it.title;o.dataset.title=it.title;s.appendChild(o);});s.onchange=function(){if(s.value)document.getElementById('v-hook').value=(s.selectedOptions[0].dataset.title||'JANGAN DIBUANG!').toUpperCase()+'!';};}catch(e){}}
+async function loadVideoGalleryOptions(){try{var d=JSON.parse((await getFile('content/gallery.json')).text),s=document.getElementById('v-gallery');s.innerHTML='<option value="">— atau upload —</option>';d.items.forEach(function(it){var o=document.createElement('option');o.value='../galeri/'+it.image;o.textContent=it.title;o.dataset.title=it.title;s.appendChild(o);});s.onchange=function(){if(s.value){document.getElementById('v-hook').value=(s.selectedOptions[0].dataset.title||'JANGAN DIBUANG!').toUpperCase()+'!';clearFile('v-file');}};}catch(e){}}
+function onVideoFileChange(){var f=document.getElementById('v-file');if(f.files&&f.files[0])document.getElementById('v-gallery').value='';}
 function buildCaption(o){var L=[o.hook,'Hasil nyata jasa wenter Malang — before after tanpa editan.','Konsultasi gratis: '+o.wa+' • wenter.my.id'];var t=hashtags(o.keys);if(t)L.push(t);return L.join('\n');}
 function copyCaption(){var t=document.getElementById('v-caption').value;if(!t){alert('Render dulu.');return;}navigator.clipboard.writeText(t).then(function(){alert('Tersalin!');});}
 function loadImageSrc(s){return new Promise(function(r,j){var i=new Image();i.onload=function(){r(i);};i.onerror=function(){j(new Error('Gagal muat foto'));};i.src=s;});}
@@ -283,13 +291,14 @@ async function startVideo(){
         audioEl.play();
         log('🎵 Musik tercampur.');
       }catch(e){log('Musik gagal: '+e.message,'err');}
-    }
+    }else{log('Tanpa musik.');}
     var mime=MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')?'video/webm;codecs=vp9,opus':'video/webm';
     var rec=new MediaRecorder(new MediaStream(tracks),{mimeType:mime,videoBitsPerSecond:8000000});
     var chunks=[];
     rec.ondataavailable=function(e){if(e.data.size)chunks.push(e.data);};
     rec.onstop=function(){
       if(audioEl)audioEl.pause();
+      document.getElementById('v-music').value='';
       lastVideoBlob=new Blob(chunks,{type:'video/webm'});
       lastVideoName=(slugify(o.hook+' '+o.keys)||'video-wenter')+'.webm';
       var a=document.getElementById('v-download');a.href=URL.createObjectURL(lastVideoBlob);a.download=lastVideoName;a.classList.remove('hidden');
@@ -301,7 +310,7 @@ async function startVideo(){
   }catch(e){log('GAGAL: '+e.message,'err');}
 }
 
-/* ---- SHARE CENTER ---- */
+/* ---- SHARE ---- */
 async function loadShareOptions(){
   try{
     var gd=JSON.parse((await getFile('content/gallery.json')).text),fs=document.getElementById('sh-foto');
@@ -345,6 +354,7 @@ async function doShare(){
     if(document.getElementById('sh-ig').checked){try{await postIG(content,caption);log('✔ Instagram','ok');}catch(e){log('✖ Instagram: '+e.message,'err');}}
     if(document.getElementById('sh-th').checked){try{await postThreads(content,caption);log('✔ Threads','ok');}catch(e){log('✖ Threads: '+e.message,'err');}}
     if(document.getElementById('sh-tg').checked){try{await postTG(content,caption);log('✔ Telegram','ok');}catch(e){log('✖ Telegram: '+e.message,'err');}}
+    document.getElementById('sh-video').value='';
     log('Proses share selesai.','ok');
   }catch(e){log('GAGAL: '+e.message,'err');}
 }
