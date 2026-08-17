@@ -10,7 +10,7 @@
  .card{background:#fff;border-radius:10px;padding:20px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.08);}
  label{display:block;font-weight:700;margin:12px 0 4px;font-size:14px;}
  input,select,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-size:14px;}
- textarea{min-height:140px;}
+ textarea{min-height:120px;}
  button{margin-top:14px;padding:11px 22px;border:none;border-radius:6px;background:#001d5a;color:#fff;font-weight:700;cursor:pointer;}
  button.secondary{background:#128C7E;}
  button.del{background:#b00020;padding:8px 14px;margin-top:0;}
@@ -26,6 +26,9 @@
  .row .actions{display:flex;gap:8px;flex-shrink:0;}
  .hint{font-size:12px;color:#666;font-weight:400;}
  .edit-banner{background:#fff4e0;border:1px solid #f0c080;padding:10px;border-radius:6px;margin-bottom:14px;font-size:14px;color:#8a4a00;}
+ .chk{display:flex;align-items:center;gap:10px;margin:10px 0;font-weight:600;font-size:14px;}
+ .chk input{width:auto;}
+ #v-canvas{width:100%;max-width:250px;border-radius:10px;background:#000;display:block;margin:14px auto;}
  @media (max-width:600px){
    body{margin:12px auto;padding:0 10px;}
    h1{font-size:19px;}
@@ -35,7 +38,7 @@
    .row{flex-wrap:wrap;}
    .row img{width:52px;height:52px;}
    .row .info{flex:1 1 55%;}
-   .row .actions{width:100%;flex-direction:row;gap:8px;}
+   .row .actions{width:100%;}
    .row .actions button{flex:1;}
    input,select,textarea{font-size:16px;}
  }
@@ -56,12 +59,13 @@
   <div class="tabs">
     <button onclick="showTab('galeri')">+ Foto Galeri</button>
     <button onclick="showTab('blog')">+ Postingan Blog</button>
+    <button onclick="showTab('video')">🎥 Buat Video</button>
     <button onclick="showTab('kelola')">Kelola / Hapus</button>
   </div>
 
   <div id="tab-galeri">
     <div id="editBannerG" class="edit-banner hidden"><b>Mode Edit aktif</b>. Edit data lalu klik <b>Update</b>.</div>
-    <label>Foto <span class="hint">(otomatis jadi 2 versi: thumb + full; kosongkan saat edit untuk pakai foto lama)</span></label>
+    <label>Foto <span class="hint">(2 versi: thumb + full; kosongkan saat edit untuk pakai foto lama)</span></label>
     <input id="g-file" type="file" accept="image/*">
     <label>Judul</label><input id="g-title">
     <label>Deskripsi</label><textarea id="g-desc" style="min-height:70px;"></textarea>
@@ -70,9 +74,9 @@
     <label>Merk (opsional)</label><input id="g-merk">
     <label>Warna</label>
     <select id="g-warna"><option>hitam</option><option>biru</option><option>hijau</option><option>coklat</option><option>abu</option></select>
-    <label>Alt Text <span class="hint">(untuk SEO; kosongkan untuk pakai judul)</span></label>
+    <label>Alt Text <span class="hint">(SEO)</span></label>
     <input id="g-alt" placeholder="Contoh: Jasa wenter celana jeans hitam di Malang">
-    <label>Keywords SEO <span class="hint">(pisahkan dengan koma)</span></label>
+    <label>Keywords SEO <span class="hint">(pisahkan koma)</span></label>
     <input id="g-keys" placeholder="Contoh: wenter malang, celana jeans hitam">
     <button id="g-submit" onclick="submitGaleri()">Terbitkan ke Website</button>
     <button id="g-cancel" class="secondary hidden" onclick="cancelEdit()">Batal Edit</button>
@@ -86,12 +90,30 @@
     <label>Ringkasan (opsional)</label><input id="b-summary">
     <label>Cover <span class="hint">(otomatis dikompresi)</span></label>
     <input id="b-cover" type="file" accept="image/*">
-    <label>Keywords SEO <span class="hint">(pisahkan dengan koma)</span></label>
+    <label>Keywords SEO <span class="hint">(pisahkan koma)</span></label>
     <input id="b-keys" placeholder="Contoh: wenter malang, tips pewarnaan baju">
-    <label>Isi Postingan <span class="hint">(mendukung markdown)</span></label>
+    <label>Isi Postingan <span class="hint">(markdown)</span></label>
     <textarea id="b-body"></textarea>
     <button id="b-submit" onclick="submitBlog()">Terbitkan ke Website</button>
     <button id="b-cancel" class="secondary hidden" onclick="cancelEdit()">Batal Edit</button>
+  </div>
+
+  <div id="tab-video" class="hidden">
+    <p style="font-size:13px;color:#666;">Foto before-after Anda (kiri=sebelum, kanan=sesudah) diubah jadi video vertikal 9:16 ±15 detik. Foto TIDAK diedit — hanya ditampilkan dengan label & teks.</p>
+    <label>Foto dari Galeri</label>
+    <select id="v-gallery"><option value="">— atau upload manual di bawah —</option></select>
+    <label>Upload Foto Manual</label>
+    <input id="v-file" type="file" accept="image/*">
+    <label>Teks Hook <span class="hint">(otomatis dari judul, bisa diedit)</span></label>
+    <input id="v-hook" value="JANGAN DIBUANG!">
+    <label>Nomor WhatsApp (CTA)</label>
+    <input id="v-wa" value="0853-2573-0777">
+    <div class="chk"><input type="checkbox" id="v-labels" checked> Tampilkan label ❌ SEBELUM / ✅ SESUDAH</div>
+    <div class="chk"><input type="checkbox" id="v-original"> Mode Original (foto tampil utuh, TANPA zoom/crop)</div>
+    <div class="chk"><input type="checkbox" id="v-badge"> Badge "100% FOTO ASLI • TANPA EDITAN" (opsional)</div>
+    <button onclick="startVideo()">🎥 Render Video (±15 detik)</button>
+    <canvas id="v-canvas" width="1080" height="1920"></canvas>
+    <a id="v-download" class="hidden" download="video-wenter.webm" style="display:block;text-align:center;margin-top:10px;color:#0a7a34;font-weight:700;">⬇ Download Video</a>
   </div>
 
   <div id="tab-kelola" class="hidden">
@@ -114,9 +136,10 @@ function log(s, cls){ var el=document.getElementById('log'); el.innerHTML += '<s
 function savePat(){ localStorage.setItem('gh_pat', document.getElementById('pat').value.trim()); alert('Token tersimpan.'); }
 function clearPat(){ localStorage.removeItem('gh_pat'); document.getElementById('pat').value=''; }
 function showTab(t){
-  document.getElementById('tab-galeri').classList.toggle('hidden', t!=='galeri');
-  document.getElementById('tab-blog').classList.toggle('hidden', t!=='blog');
-  document.getElementById('tab-kelola').classList.toggle('hidden', t!=='kelola');
+  ['galeri','blog','video','kelola'].forEach(function(x){
+    document.getElementById('tab-'+x).classList.toggle('hidden', x!==t);
+  });
+  if(t==='video') loadVideoGalleryOptions();
 }
 function cekPat(){ if(!localStorage.getItem('gh_pat')) throw new Error('Simpan token GitHub dulu.'); }
 function slugify(s){ return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80); }
@@ -174,8 +197,6 @@ async function deleteFile(path, message){
   var r = await api('/repos/'+OWNER+'/'+REPO+'/contents/'+path, null, 'DELETE', { message:message, sha:f.sha, branch:BRANCH });
   if(!r.ok){ var t=await r.text(); throw new Error('Gagal menghapus '+path+' ('+r.status+'): '+t.slice(0,200)); }
 }
-
-/* Upload 2 versi untuk galeri: thumb (grid) + full (lightbox) */
 async function uploadGalleryPair(file, textForSlug){
   var base = slugify(textForSlug) || 'foto';
   var ts = Date.now();
@@ -188,8 +209,6 @@ async function uploadGalleryPair(file, textForSlug){
   await putFile('galeri/images/' + fullName,  fullB64,  'Upload ' + fullName);
   return { thumb: 'images/' + thumbName, full: 'images/' + fullName };
 }
-
-/* Upload 1 versi (untuk cover blog) */
 async function uploadImageSEO(file, folder, textForSlug){
   var base = slugify(textForSlug) || 'foto';
   var b64, ext;
@@ -223,7 +242,6 @@ function cancelEdit(){
 
 /* ---------- GALERI ---------- */
 async function submitGaleri(){ currentEdit.type==='galeri' ? await updateGaleri() : await publishGaleri(); }
-
 async function publishGaleri(){
   document.getElementById('log').innerHTML='';
   try{
@@ -235,13 +253,10 @@ async function publishGaleri(){
     var alt  = document.getElementById('g-alt').value.trim() || title;
     log('Mengunggah foto (2 versi)...');
     var pair = await uploadGalleryPair(file, title + ' ' + keys.join(' '));
-    log('Memperbarui gallery.json...');
     var g = await getFile('content/gallery.json');
     var data = JSON.parse(g.text);
     data.items.unshift({
-      image: pair.thumb,
-      full: pair.full,
-      alt: alt,
+      image: pair.thumb, full: pair.full, alt: alt,
       kategori: document.getElementById('g-kat').value,
       merk: document.getElementById('g-merk').value.trim(),
       warna: document.getElementById('g-warna').value,
@@ -254,7 +269,6 @@ async function publishGaleri(){
     clearGaleriForm();
   }catch(e){ log('GAGAL: '+e.message, 'err'); }
 }
-
 async function updateGaleri(){
   document.getElementById('log').innerHTML='';
   try{
@@ -266,7 +280,6 @@ async function updateGaleri(){
     if(!item) throw new Error('Item tidak ditemukan.');
     var title = document.getElementById('g-title').value.trim();
     if(!title) throw new Error('Judul wajib diisi.');
-
     var file = document.getElementById('g-file').files[0];
     if(file){
       var keys2 = document.getElementById('g-keys').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
@@ -274,10 +287,8 @@ async function updateGaleri(){
       var pair = await uploadGalleryPair(file, title + ' ' + keys2.join(' '));
       try{ await deleteFile('galeri/'+item.image, 'Ganti foto: '+item.image); }catch(e2){}
       if(item.full){ try{ await deleteFile('galeri/'+item.full, 'Ganti foto: '+item.full); }catch(e3){} }
-      item.image = pair.thumb;
-      item.full = pair.full;
+      item.image = pair.thumb; item.full = pair.full;
     }
-
     item.title = title;
     item.description = document.getElementById('g-desc').value.trim();
     item.kategori = document.getElementById('g-kat').value;
@@ -285,18 +296,15 @@ async function updateGaleri(){
     item.warna = document.getElementById('g-warna').value;
     item.alt = document.getElementById('g-alt').value.trim() || title;
     item.keywords = document.getElementById('g-keys').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
-
     await putFile('content/gallery.json', enc(JSON.stringify(data, null, 2)), 'Edit galeri: '+title, g.sha);
     log('SELESAI! Item "'+title+'" diperbarui.', 'ok');
     cancelEdit();
   }catch(e){ log('GAGAL: '+e.message, 'err'); }
 }
-
 async function editGaleri(i){
   try{
     cekPat();
-    var g = await getFile('content/gallery.json');
-    var item = JSON.parse(g.text).items[i];
+    var item = JSON.parse((await getFile('content/gallery.json')).text).items[i];
     if(!item) return;
     document.getElementById('g-title').value = item.title;
     document.getElementById('g-desc').value = item.description || '';
@@ -317,7 +325,6 @@ async function editGaleri(i){
 
 /* ---------- BLOG ---------- */
 async function submitBlog(){ currentEdit.type==='blog' ? await updateBlog() : await publishBlog(); }
-
 async function publishBlog(){
   document.getElementById('log').innerHTML='';
   try{
@@ -330,7 +337,6 @@ async function publishBlog(){
     var cover = '';
     var coverFile = document.getElementById('b-cover').files[0];
     if(coverFile){ log('Mengunggah cover...'); cover = '/assets/uploads/' + await uploadImageSEO(coverFile, 'assets/uploads/', title); }
-    log('Memperbarui blog.json...');
     var g = await getFile('content/blog.json');
     var data = JSON.parse(g.text);
     data.posts.unshift({
@@ -345,7 +351,6 @@ async function publishBlog(){
     clearBlogForm();
   }catch(e){ log('GAGAL: '+e.message, 'err'); }
 }
-
 async function updateBlog(){
   document.getElementById('log').innerHTML='';
   try{
@@ -374,12 +379,10 @@ async function updateBlog(){
     cancelEdit();
   }catch(e){ log('GAGAL: '+e.message, 'err'); }
 }
-
 async function editBlog(i){
   try{
     cekPat();
-    var g = await getFile('content/blog.json');
-    var post = JSON.parse(g.text).posts[i];
+    var post = JSON.parse((await getFile('content/blog.json')).text).posts[i];
     if(!post) return;
     document.getElementById('b-title').value = post.title;
     document.getElementById('b-date').value = post.date || new Date().toISOString().slice(0,10);
@@ -397,24 +400,177 @@ async function editBlog(i){
   }catch(e){ log('GAGAL: '+e.message, 'err'); }
 }
 
+/* ---------- VIDEO GENERATOR ---------- */
+var VW=1080, VH=1920;
+async function loadVideoGalleryOptions(){
+  try{
+    var data = JSON.parse((await getFile('content/gallery.json')).text);
+    var sel = document.getElementById('v-gallery');
+    sel.innerHTML = '<option value="">— atau upload manual di bawah —</option>';
+    data.items.forEach(function(it){
+      var o = document.createElement('option');
+      o.value = '../galeri/' + it.image;
+      o.textContent = it.title;
+      o.dataset.title = it.title;
+      sel.appendChild(o);
+    });
+    sel.onchange = function(){
+      if(sel.value) document.getElementById('v-hook').value = (sel.selectedOptions[0].dataset.title || 'JANGAN DIBUANG!').toUpperCase() + '!';
+    };
+  }catch(e){}
+}
+function loadImageSrc(src){
+  return new Promise(function(res, rej){
+    var img = new Image();
+    img.onload = function(){ res(img); };
+    img.onerror = function(){ rej(new Error('Gagal memuat foto.')); };
+    img.src = src;
+  });
+}
+function vbg(ctx,c){ ctx.fillStyle=c; ctx.fillRect(0,0,VW,VH); }
+function drawContain(ctx,img){
+  var s=Math.min(VW/img.width,VH/img.height);
+  var w=img.width*s,h=img.height*s;
+  ctx.drawImage(img,(VW-w)/2,(VH-h)/2,w,h);
+}
+function drawHalf(ctx,img,side,p,original){
+  if(original){ drawContain(ctx,img); return; }
+  var sw=img.width/2;
+  var sx= side===0?0:sw;
+  var zoom=1.05+0.10*p;
+  var scale=Math.max(VW/sw,VH/img.height)*zoom;
+  var dw=sw*scale, dh=img.height*scale;
+  ctx.drawImage(img,sx,0,sw,img.height,(VW-dw)/2,(VH-dh)/2,dw,dh);
+}
+function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function pill(ctx,text,cx,cy,bgc,fgc,size){
+  size=size||54;
+  ctx.font='700 '+size+'px Arial';
+  var w=ctx.measureText(text).width+70, h=size+50;
+  rr(ctx,cx-w/2,cy-h/2,w,h,h/2); ctx.fillStyle=bgc; ctx.fill();
+  ctx.fillStyle=fgc; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(text,cx,cy+4);
+}
+function frameHook(ctx,img,o,p){
+  vbg(ctx,'#f5f5f5'); drawContain(ctx,img);
+  ctx.globalAlpha=Math.min(1,p*3);
+  ctx.fillStyle='rgba(0,29,90,0.85)'; ctx.fillRect(0,0,VW,300);
+  ctx.font='900 92px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle='#f2b705';
+  ctx.fillText(o.hook, VW/2, 150, VW-140);
+  ctx.globalAlpha=1;
+}
+function frameBefore(ctx,img,o,p){
+  vbg(ctx,'#111'); drawHalf(ctx,img,0,p,o.original);
+  ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(0,VH-400,VW,400);
+  if(o.labels) pill(ctx,'❌ SEBELUM',VW/2,VH-220,'#b00020','#fff');
+  if(o.badge) pill(ctx,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-90,'rgba(0,0,0,0.6)','#7CFC7C',40);
+}
+function frameTrans(ctx,img,o,p){
+  vbg(ctx,'#001d5a');
+  ctx.save(); ctx.translate(VW/2,VH/2-150); ctx.rotate(-0.12);
+  ctx.fillStyle='#fff'; ctx.fillRect(-450+ p*0, -30, 900, 60);
+  ctx.beginPath(); ctx.moveTo(450,-90); ctx.lineTo(600,0); ctx.lineTo(450,90); ctx.closePath(); ctx.fill();
+  ctx.restore();
+  ctx.font='900 110px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle='#f2b705'; ctx.fillText('DIWENTER...',VW/2,VH/2+150);
+}
+function frameAfter(ctx,img,o,p){
+  vbg(ctx,'#111'); drawHalf(ctx,img,1,p,o.original);
+  ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(0,VH-400,VW,400);
+  if(o.labels) pill(ctx,'✅ SESUDAH',VW/2,VH-220,'#0a7a34','#fff');
+  if(o.badge) pill(ctx,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-90,'rgba(0,0,0,0.6)','#7CFC7C',40);
+}
+function frameFull(ctx,img,o,p){
+  vbg(ctx,'#f5f5f5'); drawContain(ctx,img);
+  pill(ctx,'JAYA WENTER • Hasil Nyata',VW/2,VH-140,'#001d5a','#fff',46);
+  if(o.badge) pill(ctx,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-40,'rgba(0,0,0,0.6)','#7CFC7C',40);
+}
+function frameCTA(ctx,o,p){
+  vbg(ctx,'#001d5a');
+  ctx.font='900 100px Arial'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle='#fff'; ctx.fillText('JAYA WENTER',VW/2,500);
+  ctx.font='600 52px Arial'; ctx.fillStyle='#cfd8ff';
+  ctx.fillText('Jasa Pewarnaan Ulang Pakaian Profesional',VW/2,620);
+  rr(ctx,VW/2-430,900,860,150,75); ctx.fillStyle='#25D366'; ctx.fill();
+  ctx.font='800 58px Arial'; ctx.fillStyle='#fff';
+  ctx.fillText('💬 Konsultasi Gratis',VW/2,978);
+  ctx.font='800 74px Arial'; ctx.fillStyle='#f2b705';
+  ctx.fillText(o.wa,VW/2,1200);
+  ctx.font='700 56px Arial'; ctx.fillStyle='#fff';
+  ctx.fillText('wenter.my.id',VW/2,1350);
+}
+function startVideo(){
+  document.getElementById('log').innerHTML='';
+  document.getElementById('v-download').classList.add('hidden');
+  var file = document.getElementById('v-file').files[0];
+  var selVal = document.getElementById('v-gallery').value;
+  var o = {
+    hook: document.getElementById('v-hook').value.trim() || 'JANGAN DIBUANG!',
+    wa: document.getElementById('v-wa').value.trim() || '0853-2573-0777',
+    labels: document.getElementById('v-labels').checked,
+    original: document.getElementById('v-original').checked,
+    badge: document.getElementById('v-badge').checked
+  };
+  var srcP = file ? Promise.resolve(URL.createObjectURL(file)) : (selVal ? Promise.resolve(selVal) : Promise.reject(new Error('Pilih foto dulu.')));
+  srcP.then(function(src){ return loadImageSrc(src); }).then(function(img){
+    log('Merender video ±15 detik... jangan tutup tab.');
+    var canvas = document.getElementById('v-canvas');
+    var ctx = canvas.getContext('2d');
+    var segs = [
+      {d:2.5,f:function(p){frameHook(ctx,img,o,p);}},
+      {d:3.0,f:function(p){frameBefore(ctx,img,o,p);}},
+      {d:1.2,f:function(p){frameTrans(ctx,img,o,p);}},
+      {d:3.5,f:function(p){frameAfter(ctx,img,o,p);}},
+      {d:2.3,f:function(p){frameFull(ctx,img,o,p);}},
+      {d:2.5,f:function(p){frameCTA(ctx,o,p);}}
+    ];
+    var total = segs.reduce(function(a,s){return a+s.d;},0);
+    var stream = canvas.captureStream(30);
+    var mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm';
+    var rec = new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:8000000});
+    var chunks=[];
+    rec.ondataavailable=function(e){ if(e.data.size) chunks.push(e.data); };
+    rec.onstop=function(){
+      var blob=new Blob(chunks,{type:'video/webm'});
+      var a=document.getElementById('v-download');
+      a.href=URL.createObjectURL(blob);
+      a.download=(slugify(o.hook)||'video-wenter')+'.webm';
+      a.classList.remove('hidden');
+      log('SELESAI! Video siap di-download (format .webm, cocok untuk YouTube Shorts; TikTok/IG Reels juga menerima).','ok');
+    };
+    var t0=performance.now();
+    rec.start();
+    (function tick(now){
+      var el=((now||performance.now())-t0)/1000;
+      if(el>=total){ rec.stop(); return; }
+      var acc=0;
+      for(var i=0;i<segs.length;i++){
+        if(el<acc+segs[i].d){ segs[i].f((el-acc)/segs[i].d); break; }
+        acc+=segs[i].d;
+      }
+      requestAnimationFrame(tick);
+    })(performance.now());
+  }).catch(function(e){ log('GAGAL: '+e.message,'err'); });
+}
+
 /* ---------- KELOLA ---------- */
 async function loadGaleriList(){
   document.getElementById('log').innerHTML='';
   try{
     cekPat();
     var data = JSON.parse((await getFile('content/gallery.json')).text);
-    var html = '';
-    data.items.forEach(function(it, i){
-      var kw = Array.isArray(it.keywords) ? it.keywords.join(', ') : (it.keywords||'');
-      html += '<div class="row"><img src="../galeri/' + it.image + '" alt="">'
-        + '<div class="info"><b>' + it.title + '</b><br><small>' + (it.kategori||'') + ' / ' + (it.warna||'') + (kw ? '<br>Keywords: '+kw : '') + '</small></div>'
-        + '<div class="actions"><button class="edit" onclick="editGaleri(' + i + ')">Edit</button>'
-        + '<button class="del" onclick="delGaleri(' + i + ')">Hapus</button></div></div>';
+    var html='';
+    data.items.forEach(function(it,i){
+      var kw = Array.isArray(it.keywords)?it.keywords.join(', '):(it.keywords||'');
+      html += '<div class="row"><img src="../galeri/'+it.image+'" alt="">'
+        +'<div class="info"><b>'+it.title+'</b><br><small>'+(it.kategori||'')+' / '+(it.warna||'')+(kw?'<br>Keywords: '+kw:'')+'</small></div>'
+        +'<div class="actions"><button class="edit" onclick="editGaleri('+i+')">Edit</button>'
+        +'<button class="del" onclick="delGaleri('+i+')">Hapus</button></div></div>';
     });
     document.getElementById('g-list').innerHTML = html || '<p>Tidak ada item.</p>';
-  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+  }catch(e){ log('GAGAL: '+e.message,'err'); }
 }
-
 async function delGaleri(i){
   if(!confirm('Hapus item galeri ini?')) return;
   document.getElementById('log').innerHTML='';
@@ -424,32 +580,29 @@ async function delGaleri(i){
     var data = JSON.parse(g.text);
     var item = data.items[i];
     if(!item) throw new Error('Item tidak ditemukan.');
-    data.items.splice(i, 1);
-    await putFile('content/gallery.json', enc(JSON.stringify(data, null, 2)), 'Hapus galeri: '+item.title, g.sha);
-    log('Item "'+item.title+'" dihapus.');
-    try{ await deleteFile('galeri/'+item.image, 'Hapus file: '+item.image); }catch(e2){}
-    if(item.full){ try{ await deleteFile('galeri/'+item.full, 'Hapus file: '+item.full); }catch(e3){} }
-    log('SELESAI. Deploy ±1 menit.', 'ok');
+    data.items.splice(i,1);
+    await putFile('content/gallery.json', enc(JSON.stringify(data,null,2)), 'Hapus galeri: '+item.title, g.sha);
+    try{ await deleteFile('galeri/'+item.image,'Hapus file: '+item.image); }catch(e2){}
+    if(item.full){ try{ await deleteFile('galeri/'+item.full,'Hapus file: '+item.full); }catch(e3){} }
+    log('SELESAI. Item "'+item.title+'" dihapus.','ok');
     loadGaleriList();
-  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+  }catch(e){ log('GAGAL: '+e.message,'err'); }
 }
-
 async function loadBlogList(){
   document.getElementById('log').innerHTML='';
   try{
     cekPat();
     var data = JSON.parse((await getFile('content/blog.json')).text);
-    var html = '';
-    data.posts.forEach(function(p, i){
-      var kw = Array.isArray(p.keywords) ? p.keywords.join(', ') : '';
-      html += '<div class="row"><div class="info"><b>' + p.title + '</b><br><small>' + (p.date||'') + (p.link ? ' (statis)' : '') + (kw ? '<br>Keywords: '+kw : '') + '</small></div>'
-        + '<div class="actions"><button class="edit" onclick="editBlog(' + i + ')">Edit</button>'
-        + '<button class="del" onclick="delBlog(' + i + ')">Hapus</button></div></div>';
+    var html='';
+    data.posts.forEach(function(p,i){
+      var kw = Array.isArray(p.keywords)?p.keywords.join(', '):'';
+      html += '<div class="row"><div class="info"><b>'+p.title+'</b><br><small>'+(p.date||'')+(p.link?' (statis)':'')+(kw?'<br>Keywords: '+kw:'')+'</small></div>'
+        +'<div class="actions"><button class="edit" onclick="editBlog('+i+')">Edit</button>'
+        +'<button class="del" onclick="delBlog('+i+')">Hapus</button></div></div>';
     });
     document.getElementById('b-list').innerHTML = html || '<p>Tidak ada postingan.</p>';
-  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+  }catch(e){ log('GAGAL: '+e.message,'err'); }
 }
-
 async function delBlog(i){
   if(!confirm('Hapus postingan blog ini?')) return;
   document.getElementById('log').innerHTML='';
@@ -459,11 +612,11 @@ async function delBlog(i){
     var data = JSON.parse(g.text);
     var p = data.posts[i];
     if(!p) throw new Error('Postingan tidak ditemukan.');
-    data.posts.splice(i, 1);
-    await putFile('content/blog.json', enc(JSON.stringify(data, null, 2)), 'Hapus blog: '+p.title, g.sha);
-    log('SELESAI. Postingan "'+p.title+'" dihapus.', 'ok');
+    data.posts.splice(i,1);
+    await putFile('content/blog.json', enc(JSON.stringify(data,null,2)), 'Hapus blog: '+p.title, g.sha);
+    log('SELESAI. Postingan "'+p.title+'" dihapus.','ok');
     loadBlogList();
-  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+  }catch(e){ log('GAGAL: '+e.message,'err'); }
 }
 
 document.getElementById('b-date').value = new Date().toISOString().slice(0,10);
