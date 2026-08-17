@@ -13,10 +13,14 @@
  textarea{min-height:140px;}
  button{margin-top:14px;padding:11px 22px;border:none;border-radius:6px;background:#001d5a;color:#fff;font-weight:700;cursor:pointer;}
  button.secondary{background:#128C7E;}
+ button.del{background:#b00020;padding:8px 14px;margin-top:0;}
  #log{white-space:pre-wrap;font-size:13px;background:#f0f0f0;border-radius:6px;padding:10px;margin-top:14px;}
  .tabs button{margin-right:8px;margin-top:0;}
  .hidden{display:none;}
  .ok{color:#0a7a34;} .err{color:#b00020;}
+ .row{display:flex;align-items:center;gap:12px;border-bottom:1px solid #eee;padding:10px 0;}
+ .row img{width:64px;height:64px;object-fit:cover;border-radius:6px;}
+ .row .info{flex:1;font-size:14px;}
 </style>
 </head>
 <body>
@@ -34,6 +38,7 @@
   <div class="tabs">
     <button onclick="showTab('galeri')">+ Foto Galeri</button>
     <button onclick="showTab('blog')">+ Postingan Blog</button>
+    <button onclick="showTab('kelola')">Kelola / Hapus</button>
   </div>
 
   <div id="tab-galeri">
@@ -58,6 +63,16 @@
     <button onclick="publishBlog()">Terbitkan ke Website</button>
   </div>
 
+  <div id="tab-kelola" class="hidden">
+    <b>Foto Galeri</b>
+    <button class="secondary" onclick="loadGaleriList()">Muat Daftar Galeri</button>
+    <div id="g-list"></div>
+
+    <b style="display:block;margin-top:24px;">Postingan Blog</b>
+    <button class="secondary" onclick="loadBlogList()">Muat Daftar Blog</button>
+    <div id="b-list"></div>
+  </div>
+
   <div id="log"></div>
 </div>
 
@@ -67,14 +82,21 @@ var OWNER='NurAbdussalaam', REPO='jaya-wenter-website', BRANCH='main';
 function log(s, cls){ var el=document.getElementById('log'); el.innerHTML += '<span class="'+(cls||'')+'">'+s+'</span>\n'; }
 function savePat(){ localStorage.setItem('gh_pat', document.getElementById('pat').value.trim()); alert('Token tersimpan di browser ini.'); }
 function clearPat(){ localStorage.removeItem('gh_pat'); document.getElementById('pat').value=''; }
-function showTab(t){ document.getElementById('tab-galeri').classList.toggle('hidden', t!=='galeri'); document.getElementById('tab-blog').classList.toggle('hidden', t!=='blog'); }
+function showTab(t){
+  document.getElementById('tab-galeri').classList.toggle('hidden', t!=='galeri');
+  document.getElementById('tab-blog').classList.toggle('hidden', t!=='blog');
+  document.getElementById('tab-kelola').classList.toggle('hidden', t!=='kelola');
+}
+function cekPat(){ if(!localStorage.getItem('gh_pat')) throw new Error('Simpan token GitHub dulu di kotak atas.'); }
 
-async function api(path, opts){
+async function api(path, opts, method, body){
   opts = opts || {};
+  opts.method = method || 'GET';
   opts.headers = Object.assign({
     'Authorization':'Bearer '+localStorage.getItem('gh_pat'),
     'Accept':'application/vnd.github+json'
   }, opts.headers||{});
+  if(body){ opts.body = JSON.stringify(body); opts.headers['Content-Type']='application/json'; }
   return await fetch('https://api.github.com'+path, opts);
 }
 function enc(s){ return btoa(unescape(encodeURIComponent(s))); }
@@ -90,9 +112,14 @@ async function getFile(path){
 async function putFile(path, base64, message, sha){
   var body = { message:message, content:base64, branch:BRANCH };
   if(sha) body.sha = sha;
-  var r = await api('/repos/'+OWNER+'/'+REPO+'/contents/'+path, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  var r = await api('/repos/'+OWNER+'/'+REPO+'/contents/'+path, null, 'PUT', body);
   if(!r.ok){ var t=await r.text(); throw new Error('Gagal menyimpan '+path+' ('+r.status+'): '+t.slice(0,200)); }
   return await r.json();
+}
+async function deleteFile(path, message){
+  var f = await getFile(path);
+  var r = await api('/repos/'+OWNER+'/'+REPO+'/contents/'+path, null, 'DELETE', { message:message, sha:f.sha, branch:BRANCH });
+  if(!r.ok){ var t=await r.text(); throw new Error('Gagal menghapus '+path+' ('+r.status+'): '+t.slice(0,200)); }
 }
 async function uploadImage(file, folder){
   var name = Date.now()+'-'+file.name.replace(/[^a-zA-Z0-9.-]/g,'-');
@@ -101,10 +128,11 @@ async function uploadImage(file, folder){
   return name;
 }
 
+/* ---------- TAMBAH GALERI ---------- */
 async function publishGaleri(){
   document.getElementById('log').innerHTML='';
   try{
-    if(!localStorage.getItem('gh_pat')) throw new Error('Simpan token GitHub dulu di kotak atas.');
+    cekPat();
     var file = document.getElementById('g-file').files[0];
     var title = document.getElementById('g-title').value.trim();
     if(!file || !title) throw new Error('Foto dan judul wajib diisi.');
@@ -124,14 +152,15 @@ async function publishGaleri(){
       description: document.getElementById('g-desc').value.trim()
     });
     await putFile('content/gallery.json', enc(JSON.stringify(data, null, 2)), 'Galeri baru: '+title, g.sha);
-    log('SELESAI! Foto baru sudah masuk. Website wenter.my.id tampil setelah deploy Cloudflare (±1 menit).', 'ok');
+    log('SELESAI! Foto baru sudah masuk. Tampil di website setelah deploy Cloudflare (±1 menit).', 'ok');
   }catch(e){ log('GAGAL: '+e.message, 'err'); }
 }
 
+/* ---------- TAMBAH BLOG ---------- */
 async function publishBlog(){
   document.getElementById('log').innerHTML='';
   try{
-    if(!localStorage.getItem('gh_pat')) throw new Error('Simpan token GitHub dulu di kotak atas.');
+    cekPat();
     var title = document.getElementById('b-title').value.trim();
     var bodyTxt = document.getElementById('b-body').value.trim();
     if(!title || !bodyTxt) throw new Error('Judul dan isi postingan wajib diisi.');
@@ -151,6 +180,81 @@ async function publishBlog(){
     });
     await putFile('content/blog.json', enc(JSON.stringify(data, null, 2)), 'Blog baru: '+title, g.sha);
     log('SELESAI! Postingan blog tersimpan di content/blog.json.', 'ok');
+  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+}
+
+/* ---------- KELOLA / HAPUS ---------- */
+async function loadGaleriList(){
+  document.getElementById('log').innerHTML='';
+  try{
+    cekPat();
+    var g = await getFile('content/gallery.json');
+    var data = JSON.parse(g.text);
+    var html = '';
+    data.items.forEach(function(it, i){
+      html += '<div class="row">'
+        + '<img src="../galeri/' + it.image + '" alt="">'
+        + '<div class="info"><b>' + it.title + '</b><br><small>' + (it.kategori||'') + ' / ' + (it.warna||'') + '</small></div>'
+        + '<button class="del" onclick="delGaleri(' + i + ')">Hapus</button>'
+        + '</div>';
+    });
+    document.getElementById('g-list').innerHTML = html || '<p>Tidak ada item.</p>';
+  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+}
+
+async function delGaleri(i){
+  if(!confirm('Hapus item galeri ini dari website?')) return;
+  document.getElementById('log').innerHTML='';
+  try{
+    cekPat();
+    var g = await getFile('content/gallery.json');
+    var data = JSON.parse(g.text);
+    var item = data.items[i];
+    if(!item) throw new Error('Item tidak ditemukan. Muat ulang daftar.');
+    data.items.splice(i, 1);
+    await putFile('content/gallery.json', enc(JSON.stringify(data, null, 2)), 'Hapus galeri: '+item.title, g.sha);
+    log('Item "'+item.title+'" dihapus dari gallery.json.');
+    try{
+      await deleteFile('galeri/'+item.image, 'Hapus file: '+item.image);
+      log('File foto ikut dihapus dari repo.', 'ok');
+    }catch(e2){
+      log('Catatan: file foto tidak terhapus ('+e2.message+'), tapi item sudah hilang dari website.');
+    }
+    log('SELESAI. Website diperbarui setelah deploy Cloudflare (±1 menit).', 'ok');
+    loadGaleriList();
+  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+}
+
+async function loadBlogList(){
+  document.getElementById('log').innerHTML='';
+  try{
+    cekPat();
+    var g = await getFile('content/blog.json');
+    var data = JSON.parse(g.text);
+    var html = '';
+    data.posts.forEach(function(p, i){
+      html += '<div class="row">'
+        + '<div class="info"><b>' + p.title + '</b><br><small>' + (p.date||'') + '</small></div>'
+        + '<button class="del" onclick="delBlog(' + i + ')">Hapus</button>'
+        + '</div>';
+    });
+    document.getElementById('b-list').innerHTML = html || '<p>Tidak ada postingan.</p>';
+  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+}
+
+async function delBlog(i){
+  if(!confirm('Hapus postingan blog ini?')) return;
+  document.getElementById('log').innerHTML='';
+  try{
+    cekPat();
+    var g = await getFile('content/blog.json');
+    var data = JSON.parse(g.text);
+    var p = data.posts[i];
+    if(!p) throw new Error('Postingan tidak ditemukan. Muat ulang daftar.');
+    data.posts.splice(i, 1);
+    await putFile('content/blog.json', enc(JSON.stringify(data, null, 2)), 'Hapus blog: '+p.title, g.sha);
+    log('SELESAI. Postingan "'+p.title+'" dihapus.', 'ok');
+    loadBlogList();
   }catch(e){ log('GAGAL: '+e.message, 'err'); }
 }
 </script>
