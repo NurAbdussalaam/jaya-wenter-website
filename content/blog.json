@@ -1,3 +1,40 @@
 {
-  "posts": []
+  "posts": [
+    {
+      "title": "Jangan Buang Pakaian yang Kena Pemutih! Belang Bukan Akhir Ceritanya, Masih Bisa Bagus Lagi dan Hemat Ratusan Ribu Rupiah",
+      "date": "2024-01-15",
+      "category": "Tips Perawatan",
+      "summary": "Lebih Hemat Daripada Beli Baru. Layanan wenter sangat cocok untuk berbagai jenis pakaian yang terkena pemutih atau noda membandel.",
+      "cover": "../assets/jangan-buang-pakaian-kena-pemutih-thumbnail.png",
+      "link": "jangan-buang-pakaian-kena-pemutih-dengan-thumbnail.html",
+      "body": ""
+    },
+    {
+      "title": "Cara Menghitamkan Celana Jeans Kusam Tanpa Merusak Serat",
+      "date": "2024-01-10",
+      "category": "Tips Perawatan",
+      "summary": "Celana jeans hitam yang sering dicuci akan mengalami pemudaran warna. Pelajari penyebabnya dan solusi terbaik untuk mengembalikan warna agar tampak lebih pekat.",
+      "cover": "../assets/blog-jeans-kusam.jpeg",
+      "link": "cara-menghitamkan-celana-jeans-kusam.html",
+      "body": ""
+    },
+    {
+      "title": "Wenter vs Beli Baru : Mana Lebih Hemat?",
+      "date": "2024-01-05",
+      "category": "Tips Hemat",
+      "summary": "Perbandingan biaya dan manfaat antara melakukan wenter dengan membeli pakaian baru.",
+      "cover": "../assets/blog-wenter-vs-beli.jpg",
+      "link": "wenter-vs-beli-baru.html",
+      "body": ""
+    },
+    {
+      "title": "Pakaian Belang Karena Pemutih? Kenapa Warna Hitam Jadi Solusi Terbaik",
+      "date": "2024-01-01",
+      "category": "Tips Perawatan",
+      "summary": "Belang karena pemutih atau noda mencolok sering kali lebih efektif ditutupi dengan warna hitam. Simak alasannya di sini.",
+      "cover": "../assets/blog-pemutih-hitam.jpg",
+      "link": "pakaian-belang-karena-pemutih-solusi-warna-hitam.html",
+      "body": ""
+    }
+  ]
 }
