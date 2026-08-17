@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Admin JAYA WENTER</title>
+<style>
+ body{font-family:sans-serif;max-width:720px;margin:30px auto;padding:0 16px;background:#f7f8fa;}
+ h1{font-size:22px;}
+ .card{background:#fff;border-radius:10px;padding:20px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+ label{display:block;font-weight:700;margin:12px 0 4px;font-size:14px;}
+ input,select,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-size:14px;}
+ textarea{min-height:140px;}
+ button{margin-top:14px;padding:11px 22px;border:none;border-radius:6px;background:#001d5a;color:#fff;font-weight:700;cursor:pointer;}
+ button.secondary{background:#128C7E;}
+ #log{white-space:pre-wrap;font-size:13px;background:#f0f0f0;border-radius:6px;padding:10px;margin-top:14px;}
+ .tabs button{margin-right:8px;margin-top:0;}
+ .hidden{display:none;}
+ .ok{color:#0a7a34;} .err{color:#b00020;}
+</style>
+</head>
+<body>
+<h1>Panel Admin JAYA WENTER</h1>
+
+<div class="card" id="setupCard">
+  <b>1. Sambungkan akun GitHub</b>
+  <p style="font-size:13px;">Tempel Personal Access Token Anda. Token hanya disimpan di browser ini dan hanya dikirim ke GitHub.</p>
+  <input id="pat" type="password" placeholder="github_pat_...">
+  <button onclick="savePat()">Simpan Token</button>
+  <button class="secondary" onclick="clearPat()">Hapus Token</button>
+</div>
+
+<div class="card">
+  <div class="tabs">
+    <button onclick="showTab('galeri')">+ Foto Galeri</button>
+    <button onclick="showTab('blog')">+ Postingan Blog</button>
+  </div>
+
+  <div id="tab-galeri">
+    <label>Foto</label><input id="g-file" type="file" accept="image/*">
+    <label>Judul</label><input id="g-title">
+    <label>Deskripsi</label><textarea id="g-desc" style="min-height:70px;"></textarea>
+    <label>Kategori</label>
+    <select id="g-kat"><option>celana</option><option>hoodie</option><option>jaket</option><option>kaos</option><option>kemeja</option><option>tas</option><option>topi</option><option>lainnya</option></select>
+    <label>Merk (opsional)</label><input id="g-merk">
+    <label>Warna</label>
+    <select id="g-warna"><option>hitam</option><option>biru</option><option>hijau</option><option>coklat</option><option>abu</option></select>
+    <button onclick="publishGaleri()">Terbitkan ke Website</button>
+  </div>
+
+  <div id="tab-blog" class="hidden">
+    <label>Judul Postingan</label><input id="b-title">
+    <label>Tanggal</label><input id="b-date" type="date">
+    <label>Kategori (opsional)</label><input id="b-cat">
+    <label>Ringkasan (opsional)</label><input id="b-summary">
+    <label>Cover (opsional)</label><input id="b-cover" type="file" accept="image/*">
+    <label>Isi Postingan</label><textarea id="b-body"></textarea>
+    <button onclick="publishBlog()">Terbitkan ke Website</button>
+  </div>
+
+  <div id="log"></div>
+</div>
+
+<script>
+var OWNER='NurAbdussalaam', REPO='jaya-wenter-website', BRANCH='main';
+
+function log(s, cls){ var el=document.getElementById('log'); el.innerHTML += '<span class="'+(cls||'')+'">'+s+'</span>\n'; }
+function savePat(){ localStorage.setItem('gh_pat', document.getElementById('pat').value.trim()); alert('Token tersimpan di browser ini.'); }
+function clearPat(){ localStorage.removeItem('gh_pat'); document.getElementById('pat').value=''; }
+function showTab(t){ document.getElementById('tab-galeri').classList.toggle('hidden', t!=='galeri'); document.getElementById('tab-blog').classList.toggle('hidden', t!=='blog'); }
+
+async function api(path, opts){
+  opts = opts || {};
+  opts.headers = Object.assign({
+    'Authorization':'Bearer '+localStorage.getItem('gh_pat'),
+    'Accept':'application/vnd.github+json'
+  }, opts.headers||{});
+  return await fetch('https://api.github.com'+path, opts);
+}
+function enc(s){ return btoa(unescape(encodeURIComponent(s))); }
+function dec(b64){ return decodeURIComponent(escape(atob(b64.replace(/\n/g,'')))); }
+function readB64(file){ return new Promise(function(res, rej){ var fr=new FileReader(); fr.onload=function(){ res(fr.result.split(',')[1]); }; fr.onerror=rej; fr.readAsDataURL(file); }); }
+
+async function getFile(path){
+  var r = await api('/repos/'+OWNER+'/'+REPO+'/contents/'+path);
+  if(!r.ok) throw new Error('Gagal membaca '+path+' ('+r.status+')');
+  var d = await r.json();
+  return { sha:d.sha, text: dec(d.content) };
+}
+async function putFile(path, base64, message, sha){
+  var body = { message:message, content:base64, branch:BRANCH };
+  if(sha) body.sha = sha;
+  var r = await api('/repos/'+OWNER+'/'+REPO+'/contents/'+path, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+  if(!r.ok){ var t=await r.text(); throw new Error('Gagal menyimpan '+path+' ('+r.status+'): '+t.slice(0,200)); }
+  return await r.json();
+}
+async function uploadImage(file, folder){
+  var name = Date.now()+'-'+file.name.replace(/[^a-zA-Z0-9.-]/g,'-');
+  var b64 = await readB64(file);
+  await putFile(folder+name, b64, 'Upload '+name);
+  return name;
+}
+
+async function publishGaleri(){
+  document.getElementById('log').innerHTML='';
+  try{
+    if(!localStorage.getItem('gh_pat')) throw new Error('Simpan token GitHub dulu di kotak atas.');
+    var file = document.getElementById('g-file').files[0];
+    var title = document.getElementById('g-title').value.trim();
+    if(!file || !title) throw new Error('Foto dan judul wajib diisi.');
+    log('Mengunggah foto...');
+    var name = await uploadImage(file, 'galeri/images/');
+    log('Foto terunggah: galeri/images/'+name);
+    log('Memperbarui gallery.json...');
+    var g = await getFile('content/gallery.json');
+    var data = JSON.parse(g.text);
+    data.items.unshift({
+      image: 'images/'+name,
+      alt: title,
+      kategori: document.getElementById('g-kat').value,
+      merk: document.getElementById('g-merk').value.trim(),
+      warna: document.getElementById('g-warna').value,
+      title: title,
+      description: document.getElementById('g-desc').value.trim()
+    });
+    await putFile('content/gallery.json', enc(JSON.stringify(data, null, 2)), 'Galeri baru: '+title, g.sha);
+    log('SELESAI! Foto baru sudah masuk. Website wenter.my.id tampil setelah deploy Cloudflare (±1 menit).', 'ok');
+  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+}
+
+async function publishBlog(){
+  document.getElementById('log').innerHTML='';
+  try{
+    if(!localStorage.getItem('gh_pat')) throw new Error('Simpan token GitHub dulu di kotak atas.');
+    var title = document.getElementById('b-title').value.trim();
+    var bodyTxt = document.getElementById('b-body').value.trim();
+    if(!title || !bodyTxt) throw new Error('Judul dan isi postingan wajib diisi.');
+    var cover = '';
+    var coverFile = document.getElementById('b-cover').files[0];
+    if(coverFile){ log('Mengunggah cover...'); cover = '/assets/uploads/' + await uploadImage(coverFile, 'assets/uploads/'); }
+    log('Memperbarui blog.json...');
+    var g = await getFile('content/blog.json');
+    var data = JSON.parse(g.text);
+    data.posts.unshift({
+      title: title,
+      date: document.getElementById('b-date').value || new Date().toISOString().slice(0,10),
+      category: document.getElementById('b-cat').value.trim(),
+      summary: document.getElementById('b-summary').value.trim(),
+      cover: cover,
+      body: bodyTxt
+    });
+    await putFile('content/blog.json', enc(JSON.stringify(data, null, 2)), 'Blog baru: '+title, g.sha);
+    log('SELESAI! Postingan blog tersimpan di content/blog.json.', 'ok');
+  }catch(e){ log('GAGAL: '+e.message, 'err'); }
+}
+</script>
+</body>
+</html>
