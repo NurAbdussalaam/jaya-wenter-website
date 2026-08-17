@@ -59,6 +59,7 @@
   <label>IG User ID</label><input id="s-ig">
   <label>Telegram Bot Token</label><input id="s-tg" type="password">
   <label>Telegram Channel</label><input id="s-tgch" placeholder="@jayawenter_update">
+  <label>OpenAI API Key (opsional, untuk DALL·E)</label><input id="s-oai" type="password">
   <button onclick="saveSettings()">💾 Simpan Semua Pengaturan</button>
   <p class="hint">Semua tersimpan hanya di browser ini.</p>
 </div>
@@ -98,6 +99,8 @@
     <label>Ringkasan</label><input id="b-summary">
     <div class="ai-box">
       <b>🎨 Gambar AI untuk Cover (opsional)</b>
+      <label>Provider AI</label>
+      <select id="b-ai-provider"><option value="pollinations">Pollinations (gratis, ditingkatkan)</option><option value="openai">OpenAI DALL·E (butuh API key)</option></select>
       <label>Prompt</label><input id="b-ai-prompt">
       <button class="secondary" type="button" onclick="fillPromptFromTitle()">↓ Dari Judul</button>
       <label>Gaya</label><select id="b-ai-style"><option value="realistic photo">Foto Realistis</option><option value="flat illustration">Ilustrasi Flat</option><option value="watercolor illustration">Cat Air</option><option value="3d render">3D</option></select>
@@ -181,6 +184,7 @@ function saveSettings(){
   localStorage.setItem('ig_id',document.getElementById('s-ig').value.trim());
   localStorage.setItem('tg_token',document.getElementById('s-tg').value.trim());
   localStorage.setItem('tg_channel',document.getElementById('s-tgch').value.trim());
+  localStorage.setItem('openai_key',document.getElementById('s-oai').value.trim());
   alert('Pengaturan tersimpan di browser ini.');
 }
 function loadSettings(){
@@ -192,6 +196,7 @@ function loadSettings(){
   document.getElementById('s-ig').value=lsGet('ig_id');
   document.getElementById('s-tg').value=lsGet('tg_token');
   document.getElementById('s-tgch').value=lsGet('tg_channel');
+  document.getElementById('s-oai').value=lsGet('openai_key');
 }
 function showTab(t){
   ['galeri','blog','video','share','kelola'].forEach(function(x){document.getElementById('tab-'+x).classList.toggle('hidden',x!==t);});
@@ -224,7 +229,36 @@ async function uploadVideoToR2(blob,name){
 
 /* ---- AI ---- */
 function fillPromptFromTitle(){var t=document.getElementById('b-title').value.trim();if(t)document.getElementById('b-ai-prompt').value=t+', realistic photo, soft daylight, no text';}
-async function generateAI(){var p=document.getElementById('b-ai-prompt').value.trim();if(!p){alert('Isi prompt.');return;}var st=document.getElementById('b-ai-style').value,seed=Math.floor(Math.random()*1e6);var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(p+', '+st+', no text, no watermark')+'?width=1200&height=800&nologo=true&seed='+seed;var s=document.getElementById('b-ai-status');s.textContent='Membuat gambar...';try{var r=await fetch(url);if(!r.ok)throw new Error('HTTP '+r.status);aiCoverBlob=await r.blob();var pv=document.getElementById('b-ai-preview');pv.src=URL.createObjectURL(aiCoverBlob);pv.classList.remove('hidden');document.getElementById('b-ai-use').classList.remove('hidden');s.textContent='Siap. Klik "Jadikan Cover" atau Generate lagi.';}catch(e){s.textContent='Gagal: '+e.message;}}
+function b64ToBlob(b64,type){var bin=atob(b64);var arr=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return new Blob([arr],{type:type});}
+async function generateAI(){
+  var p=document.getElementById('b-ai-prompt').value.trim();
+  if(!p){alert('Isi prompt.');return;}
+  var prov=document.getElementById('b-ai-provider').value;
+  var st=document.getElementById('b-ai-style').value;
+  var s=document.getElementById('b-ai-status');
+  s.textContent='Membuat gambar... (bisa ±30 detik)';
+  try{
+    if(prov==='openai'){
+      var key=lsGet('openai_key');
+      if(!key)throw new Error('Isi OpenAI API Key di kartu pengaturan.');
+      var r=await fetch('https://api.openai.com/v1/images/generations',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-image-1',prompt:p+', '+st+', no text, no watermark',size:'1536x1024'})});
+      var d=await r.json();
+      if(!r.ok)throw new Error((d.error&&d.error.message)||('HTTP '+r.status));
+      aiCoverBlob=b64ToBlob(d.data[0].b64_json,'image/png');
+    }else{
+      var seed=Math.floor(Math.random()*1e6);
+      var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(p+', '+st+', professional quality, highly detailed, no text, no watermark')+'?width=1280&height=832&nologo=true&model=flux&enhance=true&seed='+seed;
+      var r2=await fetch(url);
+      if(!r2.ok)throw new Error('HTTP '+r2.status);
+      aiCoverBlob=await r2.blob();
+    }
+    var pv=document.getElementById('b-ai-preview');
+    pv.src=URL.createObjectURL(aiCoverBlob);
+    pv.classList.remove('hidden');
+    document.getElementById('b-ai-use').classList.remove('hidden');
+    s.textContent='Siap. Klik "Jadikan Cover" atau Generate lagi.';
+  }catch(e){s.textContent='Gagal: '+e.message;}
+}
 function useAICover(){if(!aiCoverBlob)return;var f=new File([aiCoverBlob],'ai-cover-'+Date.now()+'.jpg',{type:'image/jpeg'});var dt=new DataTransfer();dt.items.add(f);document.getElementById('b-cover').files=dt.files;document.getElementById('b-ai-status').textContent='✔ Terpasang sebagai cover.';}
 
 /* ---- Impor lama ---- */
