@@ -5,30 +5,24 @@
 <title>Aktivasi Akun Admin</title>
 <style>
   body{font-family:sans-serif;max-width:560px;margin:50px auto;padding:0 16px;}
-  input,select{width:100%;padding:10px;margin:6px 0 16px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;}
+  input{width:100%;padding:10px;margin:6px 0 16px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;}
   button{padding:10px 22px;border:none;border-radius:6px;background:#001d5a;color:#fff;font-weight:700;cursor:pointer;}
   #out{margin-top:20px;white-space:pre-wrap;font-size:13px;background:#f4f4f4;padding:10px;border-radius:6px;}
 </style>
 </head>
 <body>
-<h2>Aktivasi / Reset Password Admin</h2>
+<h2>Aktivasi Akun Admin</h2>
 
-<p><b>1. Email akun:</b></p>
+<p><b>Email:</b></p>
 <input id="email" value="nur.abdussalaam@gmail.com">
 
-<p><b>2. Jenis token:</b></p>
-<select id="type">
-  <option value="invite">invite</option>
-  <option value="recovery">recovery</option>
-</select>
-
-<p><b>3. Tempel token:</b></p>
-<input id="token" placeholder="Kode setelah invite_token= atau recovery_token=">
-
-<p><b>4. Password baru:</b></p>
+<p><b>Password baru:</b></p>
 <input id="pass" type="password" placeholder="Minimal 6 karakter">
 
-<button onclick="go()">Aktifkan / Simpan Password</button>
+<p><b>Secret:</b></p>
+<input id="secret" placeholder="Isi dengan nilai BOOTSTRAP_SECRET">
+
+<button onclick="go()">Aktifkan Akun</button>
 
 <pre id="out"></pre>
 
@@ -36,56 +30,25 @@
 function log(s){ document.getElementById('out').textContent += s + '\n'; }
 
 async function go(){
-  var email = document.getElementById('email').value.trim();
-  var type  = document.getElementById('type').value;
-  var token = document.getElementById('token').value.trim();
-  var pass  = document.getElementById('pass').value;
-  var out   = document.getElementById('out');
+  var email  = document.getElementById('email').value.trim();
+  var pass   = document.getElementById('pass').value;
+  var secret = document.getElementById('secret').value;
+  var out    = document.getElementById('out');
   out.textContent = '';
-  log('Mencoba beberapa format body...');
+  log('Mengirim permintaan...');
 
-  var bodies = [
-    {type: type, token: token},
-    {type: type, otp: token},
-    {verification_type: type, token: token},
-    {type: type, token: token, email: email},
-    {verification_type: type, token: token, email: email},
-    {kind: type, token: token},
-    {token_hash: token, type: type}
-  ];
-
-  var data = null;
-  for (var i = 0; i < bodies.length; i++) {
-    var r = await fetch('/.netlify/identity/verify', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(bodies[i])
-    });
-    var t = await r.text();
-    log('[' + (i+1) + '] ' + JSON.stringify(bodies[i]).slice(0, 90) + '  -> ' + r.status + ' : ' + t.slice(0, 120));
-    if (r.ok) { try { data = JSON.parse(t); break; } catch(e){} }
-  }
-
-  if (!data || !data.access_token) {
-    log('GAGAL: belum ada format yang diterima server. Kirim screenshot log ini.');
-    return;
-  }
-
-  log('Verifikasi OK. Menyimpan password...');
-  var r2 = await fetch('/.netlify/identity/user', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + data.access_token
-    },
-    body: JSON.stringify({password: pass})
+  var r = await fetch('/.netlify/functions/setpass', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({email: email, password: pass, secret: secret})
   });
-  var t2 = await r2.text();
-  log('Simpan password -> ' + r2.status + ' : ' + t2.slice(0, 200));
-  if (r2.ok) {
+  var t = await r.text();
+  log('Status ' + r.status + ' : ' + t.slice(0, 300));
+
+  if (r.ok) {
     log('BERHASIL! Buka /admin/ dan login dengan email + password baru.');
   } else {
-    log('GAGAL simpan password. Kirim screenshot log ini.');
+    log('GAGAL. Kirim screenshot log ini.');
   }
 }
 </script>
