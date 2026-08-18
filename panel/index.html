@@ -70,6 +70,7 @@
     <button onclick="showTab('galeri')">+ Foto Galeri</button>
     <button onclick="showTab('blog')">+ Blog</button>
     <button onclick="showTab('video')">🎥 Video</button>
+    <button onclick="showTab('kompres')">🗜️ Kompres</button>
     <button onclick="showTab('share')">📤 Share</button>
     <button onclick="showTab('kelola')">Kelola</button>
   </div>
@@ -100,7 +101,7 @@
     <label>Ringkasan</label><input id="b-summary">
     <div class="ai-box">
       <b>🎨 Gambar AI untuk Cover (opsional)</b>
-      <p class="hint">Provider AI akan otomatis dipilih sesuai ketersediaan. Jika Imagen 3 habis kuotanya, Pollinations dipakai otomatis.</p>
+      <p class="hint">Jika Imagen 3 habis kuotanya, Pollinations dipakai otomatis.</p>
       <label>Provider AI</label>
       <select id="b-ai-provider">
         <option value="auto">🤖 Otomatis (Imagen 3 → Pollinations)</option>
@@ -145,11 +146,26 @@
     <button class="secondary" type="button" onclick="copyCaption()">📋 Copy Caption</button>
   </div>
 
+  <div id="tab-kompres" class="hidden">
+    <p class="hint">Kompres video besar (mis. 407 MB) agar bisa dishare ke Telegram (batas 50 MB). Proses = durasi video (real-time), biarkan tab terbuka. Hasil .mp4 bila browser mendukung, selain itu .webm (Telegram & Facebook menerima keduanya).</p>
+    <label>File video</label><input id="c-file" type="file" accept="video/*">
+    <button class="mini" type="button" onclick="clearFile('c-file')">✕ Hapus file terpilih</button>
+    <label>Resolusi hasil</label>
+    <select id="c-res">
+      <option value="720">720p — disarankan (±25-40 MB / 3 menit)</option>
+      <option value="480">480p — paling hemat (±12-20 MB / 3 menit)</option>
+    </select>
+    <button onclick="compressVideo()">🗜️ Kompres Video</button>
+    <p id="c-progress" class="hint"></p>
+    <a id="c-download" class="hidden" style="display:block;text-align:center;margin-top:10px;color:#0a7a34;font-weight:700;">⬇ Download Hasil Kompres</a>
+    <button id="c-use" class="secondary hidden" type="button" onclick="useCompressedForShare()">📤 Pakai untuk Tab Share</button>
+  </div>
+
   <div id="tab-share" class="hidden">
-    <p class="hint">Bagikan video generate / video CapCut / foto / blog / teks ke sosmed.</p>
+    <p class="hint">Bagikan video generate / video kompres / video CapCut / foto / blog / teks ke sosmed.</p>
     <label>Konten</label>
     <select id="sh-type" onchange="onShareType()">
-      <option value="video-gen">🎥 Video hasil generate panel</option>
+      <option value="video-gen">🎥 Video siap pakai (generate/kompres)</option>
       <option value="video-file">🎥 Upload video (CapCut dll)</option>
       <option value="foto">📷 Foto galeri</option>
       <option value="blog">📝 Postingan blog</option>
@@ -177,7 +193,7 @@
 
 <script>
 var OWNER='NurAbdussalaam', REPO='jaya-wenter-website', BRANCH='main';
-var currentEdit={type:null,index:-1}, aiCoverBlob=null, lastVideoBlob=null, lastVideoName='';
+var currentEdit={type:null,index:-1}, aiCoverBlob=null, lastVideoBlob=null, lastVideoName='', compressedBlob=null, compressedName='';
 function log(s,c){var e=document.getElementById('log');e.innerHTML+='<span class="'+(c||'')+'">'+s+'</span>\n';}
 function lsGet(k){return localStorage.getItem(k)||'';}
 function clearFile(id){document.getElementById(id).value='';}
@@ -208,7 +224,7 @@ function loadSettings(){
   document.getElementById('s-oai').value=lsGet('openai_key');
 }
 function showTab(t){
-  ['galeri','blog','video','share','kelola'].forEach(function(x){document.getElementById('tab-'+x).classList.toggle('hidden',x!==t);});
+  ['galeri','blog','video','kompres','share','kelola'].forEach(function(x){document.getElementById('tab-'+x).classList.toggle('hidden',x!==t);});
   if(t==='video')loadVideoGalleryOptions();
   if(t==='blog')loadBlogEditOptions();
   if(t==='share')loadShareOptions();
@@ -216,6 +232,7 @@ function showTab(t){
 function cekPat(){if(!lsGet('gh_pat'))throw new Error('Simpan token GitHub dulu.');}
 function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80);}
 function kb(b){return Math.round(b.length*0.75/1024);}
+function mb(b){return Math.round(b/1048576*10)/10;}
 function hashtags(keys){return keys.split(',').map(function(s){return s.trim();}).filter(Boolean).map(function(s){return '#'+s.toLowerCase().replace(/[^a-z0-9]+/g,'');}).join(' ');}
 async function api(p,o,m,b){o=o||{};o.method=m||'GET';o.headers=Object.assign({'Authorization':'Bearer '+lsGet('gh_pat'),'Accept':'application/vnd.github+json'},o.headers||{});if(b){o.body=JSON.stringify(b);o.headers['Content-Type']='application/json';}return await fetch('https://api.github.com'+p,o);}
 function enc(s){return btoa(unescape(encodeURIComponent(s)));}
@@ -284,14 +301,11 @@ async function generateAI(){
       blob=await tryImagen(key,p+', '+st+', no text, no watermark'); used='Imagen 3';
     } else {
       var key=lsGet('gemini_key');
-      var err1='';
       if(key){
         try{ blob=await tryImagen(key,p+', '+st+', no text, no watermark'); used='Imagen 3'; }
-        catch(e){ err1=e.message; s.textContent='Imagen gagal ('+err1+'). Beralih ke Pollinations...'; }
+        catch(e){ s.textContent='Imagen gagal ('+e.message+'). Beralih ke Pollinations...'; }
       }
-      if(!blob){
-        blob=await tryPollinations(p,st); used='Pollinations';
-      }
+      if(!blob){ blob=await tryPollinations(p,st); used='Pollinations'; }
     }
     aiCoverBlob=blob;
     var pv=document.getElementById('b-ai-preview');
@@ -386,6 +400,72 @@ async function startVideo(){
   }catch(e){log('GAGAL: '+e.message,'err');}
 }
 
+/* ---- KOMPRES VIDEO ---- */
+function pickMime(){
+  if(MediaRecorder.isTypeSupported('video/mp4;codecs=avc1.42E01E,mp4a.40.2'))return{m:'video/mp4;codecs=avc1.42E01E,mp4a.40.2',ext:'mp4'};
+  if(MediaRecorder.isTypeSupported('video/mp4'))return{m:'video/mp4',ext:'mp4'};
+  if(MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus'))return{m:'video/webm;codecs=vp9,opus',ext:'webm'};
+  return{m:'video/webm',ext:'webm'};
+}
+async function compressVideo(){
+  document.getElementById('log').innerHTML='';
+  document.getElementById('c-download').classList.add('hidden');
+  document.getElementById('c-use').classList.add('hidden');
+  var file=document.getElementById('c-file').files[0];
+  if(!file){alert('Pilih video dulu.');return;}
+  var targetH=+document.getElementById('c-res').value;
+  var prog=document.getElementById('c-progress');
+  prog.textContent='Memuat video...';
+  try{
+    var video=document.createElement('video');
+    video.src=URL.createObjectURL(file);
+    video.playsInline=true;
+    await new Promise(function(res,rej){video.onloadedmetadata=res;video.onerror=function(){rej(new Error('Format video tidak didukung browser ini.'));};});
+    var scale=Math.min(1,targetH/video.videoHeight);
+    var W=Math.max(2,Math.round(video.videoWidth*scale/2)*2),H=Math.max(2,Math.round(video.videoHeight*scale/2)*2);
+    var canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;
+    var ctx=canvas.getContext('2d');
+    var stream=canvas.captureStream(30);
+    var actx=null;
+    try{
+      var AC=window.AudioContext||window.webkitAudioContext;actx=new AC();
+      var node=actx.createMediaElementSource(video);
+      var dest=actx.createMediaStreamDestination();
+      node.connect(dest);
+      stream=new MediaStream(stream.getVideoTracks().concat(dest.stream.getAudioTracks()));
+    }catch(e){}
+    var mm=pickMime();
+    var vbr=targetH===720?1500000:800000;
+    var rec=new MediaRecorder(stream,{mimeType:mm.m,videoBitsPerSecond:vbr,audioBitsPerSecond:96000});
+    var chunks=[];
+    rec.ondataavailable=function(e){if(e.data.size)chunks.push(e.data);};
+    rec.onstop=function(){
+      if(actx)actx.close();
+      compressedBlob=new Blob(chunks,{type:mm.m.indexOf('mp4')===0?'video/mp4':'video/webm'});
+      compressedName=(slugify(file.name)||'video')+'-kompres.'+mm.ext;
+      var a=document.getElementById('c-download');
+      a.href=URL.createObjectURL(compressedBlob);
+      a.download=compressedName;
+      a.classList.remove('hidden');
+      document.getElementById('c-use').classList.remove('hidden');
+      prog.textContent='SELESAI: '+mb(file.size)+' MB → '+mb(compressedBlob.size)+' MB';
+      log('Kompres selesai: '+mb(file.size)+' MB → '+mb(compressedBlob.size)+' MB','ok');
+    };
+    var drawing=true;
+    (function draw(){if(!drawing)return;ctx.drawImage(video,0,0,W,H);if(!video.ended)requestAnimationFrame(draw);})();
+    video.ontimeupdate=function(){prog.textContent='Mengompres... '+Math.round((video.currentTime/video.duration)*100)+'% — biarkan tab terbuka';};
+    video.onended=function(){drawing=false;setTimeout(function(){rec.stop();},300);};
+    rec.start();
+    await video.play();
+    log('Mengompres real-time ±'+Math.round(video.duration)+' dtk... jangan tutup tab.');
+  }catch(e){log('GAGAL: '+e.message,'err');prog.textContent='';}
+}
+function useCompressedForShare(){
+  if(!compressedBlob)return;
+  lastVideoBlob=compressedBlob;lastVideoName=compressedName;
+  alert('Video kompres siap! Buka tab 📤 Share → konten "Video siap pakai" → Share.');
+}
+
 /* ---- SHARE ---- */
 async function loadShareOptions(){
   try{
@@ -421,7 +501,7 @@ async function doShare(){
     var tags=hashtags(document.getElementById('sh-keys').value);
     if(tags)caption+='\n\n'+tags;
     var content={kind:'text'};
-    if(t==='video-gen'){if(!lastVideoBlob)throw new Error('Render video dulu di tab 🎥.');log('Upload video ke R2...');content={kind:'video',url:await uploadVideoToR2(lastVideoBlob,lastVideoName)};}
+    if(t==='video-gen'){if(!lastVideoBlob)throw new Error('Render/kompres video dulu.');log('Upload video ke R2...');content={kind:'video',url:await uploadVideoToR2(lastVideoBlob,lastVideoName)};}
     else if(t==='video-file'){var vf=document.getElementById('sh-video').files[0];if(!vf)throw new Error('Pilih file video.');log('Upload video ke R2...');content={kind:'video',url:await uploadVideoToR2(vf,slugify(vf.name)+'-'+Date.now()+'.mp4')};}
     else if(t==='foto'){var gi=JSON.parse((await getFile('content/gallery.json')).text).items[+document.getElementById('sh-foto').value||0];content={kind:'image',url:'https://wenter.my.id/galeri/'+(gi.full||gi.image)};}
     else if(t==='blog'){var bp=JSON.parse((await getFile('content/blog.json')).text).posts[+document.getElementById('sh-blog').value||0];if(bp.cover){var c=bp.cover;if(c.indexOf('http')!==0)c='https://wenter.my.id'+(c.indexOf('/')===0?c:'/'+c);content={kind:'image',url:c};}else content={kind:'text'};}
