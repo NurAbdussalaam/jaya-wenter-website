@@ -12,6 +12,7 @@
  input,select,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;font-size:14px;}
  textarea{min-height:110px;}
  button{margin-top:14px;padding:11px 22px;border:none;border-radius:6px;background:#001d5a;color:#fff;font-weight:700;cursor:pointer;}
+ button:disabled{opacity:.55;cursor:not-allowed;}
  button.secondary{background:#128C7E;}
  button.mini{background:#888;padding:8px 14px;margin-top:6px;font-size:12px;}
  button.del{background:#b00020;padding:8px 14px;margin-top:0;}
@@ -98,7 +99,7 @@
     <div id="editBannerB" class="edit-banner hidden"><b>Mode Edit aktif</b>. Klik <b>Update</b> setelah mengubah.</div>
     <label>✏️ Edit postingan yang ada</label>
     <select id="b-edit-select" onchange="onBlogEditSelect(this.value)"><option value="">— Postingan baru —</option></select>
-    <button class="secondary" type="button" onclick="importOldPosts()">📥 Impor Postingan Lama (sekali)</button>
+    <button id="btn-impor" class="secondary" type="button" onclick="importOldPosts()">📥 Impor Postingan Lama (sekali)</button>
     <label>Judul</label><input id="b-title">
     <label>Tanggal</label><input id="b-date" type="date">
     <label>Kategori (opsional)</label><input id="b-cat">
@@ -116,7 +117,7 @@
       <label>Prompt <span class="hint">(bahasa Indonesia boleh)</span></label><input id="b-ai-prompt" placeholder="Contoh: foto celana jeans hitam pudar terlipat di meja kayu, cahaya studio, realistis">
       <button class="secondary" type="button" onclick="fillPromptFromTitle()">↓ Dari Judul</button>
       <label>Gaya</label><select id="b-ai-style"><option value="realistic photo">Foto Realistis</option><option value="flat illustration">Ilustrasi Flat</option><option value="watercolor illustration">Cat Air</option><option value="3d render">3D</option></select>
-      <button class="secondary" type="button" onclick="generateAI()">🎨 Generate</button>
+      <button id="btn-genai" class="secondary" type="button" onclick="generateAI()">🎨 Generate</button>
       <button class="secondary hidden" type="button" id="b-ai-use" onclick="useAICover()">✔ Jadikan Cover</button>
       <img id="b-ai-preview" class="hidden" style="width:100%;border-radius:8px;margin-top:10px;" alt="Preview">
       <p id="b-ai-status" class="hint"></p>
@@ -142,13 +143,13 @@
     <p class="hint">Musik otomatis dilepas setelah render selesai.</p>
     <label>🎭 Logo JAYA WENTER (upload sekali, untuk frame akhir)</label>
     <input id="v-logo" type="file" accept="image/png,image/jpeg,image/webp">
-    <button class="mini" type="button" onclick="saveLogo()">💾 Simpan Logo ke Panel</button>
+    <button id="btn-logo" class="mini" type="button" onclick="saveLogo()">💾 Simpan Logo ke Panel</button>
     <p id="v-logo-status" class="hint">Logo saat ini: default (/assets/logo_resmi_jaya_wenter.png)</p>
     <div class="chk"><input type="checkbox" id="v-cinematic" checked> 🎬 Mode Sinematik (AI hapus background + zoom halus + logo akhir)</div>
     <div class="chk"><input type="checkbox" id="v-labels" checked> Label ❌ SEBELUM / ✅ SESUDAH</div>
     <div class="chk"><input type="checkbox" id="v-original"> Mode Original (foto utuh, tanpa split)</div>
     <div class="chk"><input type="checkbox" id="v-badge"> Badge "100% FOTO ASLI" (opsional)</div>
-    <button onclick="startVideo()">🎥 Render Video</button>
+    <button id="btn-render" onclick="startVideo()">🎥 Render Video</button>
     <canvas id="v-canvas" width="1080" height="1920"></canvas>
     <a id="v-download" class="hidden" download="video-wenter.webm" style="display:block;text-align:center;color:#0a7a34;font-weight:700;">⬇ Download Video</a>
     <label>Caption + Hashtag</label><textarea id="v-caption" style="min-height:80px;"></textarea>
@@ -164,7 +165,7 @@
       <option value="720">720p — disarankan (±25-40 MB / 3 menit)</option>
       <option value="480">480p — paling hemat (±12-20 MB / 3 menit)</option>
     </select>
-    <button onclick="compressVideo()">🗜️ Kompres Video</button>
+    <button id="btn-kompres" onclick="compressVideo()">🗜️ Kompres Video</button>
     <p id="c-progress" class="hint"></p>
     <a id="c-download" class="hidden" style="display:block;text-align:center;margin-top:10px;color:#0a7a34;font-weight:700;">⬇ Download Hasil Kompres</a>
     <button id="c-use" class="secondary hidden" type="button" onclick="useCompressedForShare()">📤 Pakai untuk Tab Share</button>
@@ -189,7 +190,7 @@
     <div class="chk"><input type="checkbox" id="sh-ig" checked> Instagram</div>
     <div class="chk"><input type="checkbox" id="sh-th"> Threads</div>
     <div class="chk"><input type="checkbox" id="sh-tg"> Telegram</div>
-    <button onclick="doShare()">📤 Share Sekarang</button>
+    <button id="btn-share" onclick="doShare()">📤 Share Sekarang</button>
   </div>
 
   <div id="tab-ai" class="hidden">
@@ -206,7 +207,7 @@
     </select>
     <div id="ai-tool-desc" class="ai-tool-desc"></div>
     <div id="ai-inputs"></div>
-    <button class="ai" onclick="runAITool()">🤖 Generate</button>
+    <button id="btn-aitool" class="ai" onclick="runAITool()">🤖 Generate</button>
     <p id="ai-status" class="hint"></p>
     <label>Hasil</label>
     <div id="ai-output" class="ai-output">— hasil akan muncul di sini —</div>
@@ -612,7 +613,7 @@ function loadJWLogo(){
   });
 }
 
-/* ---- AI BACKGROUND REMOVAL (imgly, gratis, di browser) ---- */
+/* ---- AI BACKGROUND REMOVAL ---- */
 async function getImgly(){
   if(imglyMod) return imglyMod;
   imglyMod=await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1/+esm');
@@ -628,7 +629,6 @@ async function extractCloth(img,side){
   var mod=await getImgly();
   var out=await mod.removeBackground(blob);
   var cut=await loadImageSrc(URL.createObjectURL(out));
-  /* trim margin transparan */
   var tc=document.createElement('canvas'); tc.width=cut.width; tc.height=cut.height;
   var tctx=tc.getContext('2d'); tctx.drawImage(cut,0,0);
   var d=tctx.getImageData(0,0,tc.width,tc.height).data;
@@ -665,8 +665,6 @@ function drawGradientBg(ctx){
   ctx.fillStyle=g;
   ctx.fillRect(0,0,VW,VH);
 }
-
-/* Gambar pakaian hasil ekstrak: tengah + padding + zoom sinematik + bayangan lembut */
 function drawCloth(ctx,cloth,p){
   drawGradientBg(ctx);
   if(!cloth)return;
@@ -683,8 +681,6 @@ function drawCloth(ctx,cloth,p){
   ctx.drawImage(cloth.img,dx,dy,dw,dh);
   ctx.restore();
 }
-
-/* Frame sinematik */
 function fHookNew(ctx,clothB,o,p){
   drawCloth(ctx,clothB,0);
   ctx.globalAlpha=Math.min(1,p*3);
@@ -707,8 +703,6 @@ function fAfterNew(ctx,clothA,o,p){
 }
 function fTrans(c,i,o,p){vbg(c,'#001d5a');c.save();c.translate(VW/2,VH/2-150);c.rotate(-0.12);c.fillStyle='#fff';c.fillRect(-450,-30,900,60);c.beginPath();c.moveTo(450,-90);c.lineTo(600,0);c.lineTo(450,90);c.closePath();c.fill();c.restore();c.font='900 110px Arial';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#f2b705';c.fillText('DIWENTER...',VW/2,VH/2+150);}
 function fCTA(c,o,p){vbg(c,'#001d5a');c.font='900 100px Arial';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#fff';c.fillText('JAYA WENTER',VW/2,500);c.font='600 52px Arial';c.fillStyle='#cfd8ff';c.fillText(TAGLINE,VW/2,620);rr(c,VW/2-430,900,860,150,75);c.fillStyle='#25D366';c.fill();c.font='800 58px Arial';c.fillStyle='#fff';c.fillText('💬 Konsultasi Gratis',VW/2,978);c.font='800 74px Arial';c.fillStyle='#f2b705';c.fillText(o.wa,VW/2,1200);c.font='700 56px Arial';c.fillStyle='#fff';c.fillText('wenter.my.id',VW/2,1350);}
-
-/* Frame logo akhir: fade-in + zoom perlahan + tagline baru */
 function drawLogoFrame(ctx,logo,p){
   drawGradientBg(ctx);
   var scale=lerp(0.65,1.15,easeInOutCubic(p));
@@ -739,7 +733,7 @@ function drawLogoFrame(ctx,logo,p){
   ctx.globalAlpha=1;
 }
 
-/* ---- Fallback (jika AI gagal): metode lama ---- */
+/* ---- Fallback ---- */
 function drawContain(c,i){var s=Math.min(VW/i.width,VH/i.height),w=i.width*s,h=i.height*s;c.drawImage(i,(VW-w)/2,(VH-h)/2,w,h);}
 function drawSmartHalf(ctx,img,side,p,bounds){
   drawGradientBg(ctx);
@@ -777,6 +771,7 @@ function fAfter(c,i,o,p,bounds){drawSmartHalf(c,i,1,p,bounds);c.fillStyle='rgba(
 function fFull(c,i,o,p){vbg(c,'#f5f5f5');drawContain(c,i);pill(c,'JAYA WENTER • '+TAGLINE,VW/2,VH-140,'#001d5a','#fff',40);if(o.badge)pill(c,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-40,'rgba(0,0,0,0.6)','#7CFC7C',40);}
 
 async function startVideo(){
+  var _done; var doneP=new Promise(function(r){_done=r;});
   document.getElementById('log').innerHTML='';
   document.getElementById('v-download').classList.add('hidden');
   var file=document.getElementById('v-file').files[0],selV=document.getElementById('v-gallery').value,music=document.getElementById('v-music').files[0];
@@ -796,7 +791,7 @@ async function startVideo(){
 
     var clothB=null,clothA=null,bounds=null,logo=null;
     if(o.cinematic && !o.original){
-      log('🤖 AI menghapus background & tulisan (pertama kali ±unduh model, selanjutnya cepat)...');
+      log('🤖 AI menghapus background & tulisan...');
       try{ clothB=await extractCloth(img,0); log('✔ Pakaian BEFORE terekstrak bersih'); }
       catch(e){ log('⚠ Before: AI gagal ('+e.message+') → pakai fallback','err'); }
       try{ clothA=await extractCloth(img,1); log('✔ Pakaian AFTER terekstrak bersih'); }
@@ -854,10 +849,12 @@ async function startVideo(){
       var a=document.getElementById('v-download');a.href=URL.createObjectURL(lastVideoBlob);a.download=lastVideoName;a.classList.remove('hidden');
       document.getElementById('v-caption').value=buildCaption(o);
       log('SELESAI! Video siap download / di-share di tab 📤.','ok');
+      _done();
     };
     var t0=performance.now();rec.start();
     (function tick(now){var el=((now||performance.now())-t0)/1000;if(el>=total){rec.stop();return;}var acc=0;for(var i=0;i<segs.length;i++){if(el<acc+segs[i].d){segs[i].f((el-acc)/segs[i].d);break;}acc+=segs[i].d;}requestAnimationFrame(tick);})(performance.now());
-  }catch(e){log('GAGAL: '+e.message,'err');}
+  }catch(e){log('GAGAL: '+e.message,'err');_done();}
+  return doneP;
 }
 
 /* ---- KOMPRES VIDEO ---- */
@@ -868,11 +865,12 @@ function pickMime(){
   return{m:'video/webm',ext:'webm'};
 }
 async function compressVideo(){
+  var _done; var doneP=new Promise(function(r){_done=r;});
   document.getElementById('log').innerHTML='';
   document.getElementById('c-download').classList.add('hidden');
   document.getElementById('c-use').classList.add('hidden');
   var file=document.getElementById('c-file').files[0];
-  if(!file){alert('Pilih video dulu.');return;}
+  if(!file){alert('Pilih video dulu.');_done();return doneP;}
   var targetH=+document.getElementById('c-res').value;
   var prog=document.getElementById('c-progress');
   prog.textContent='Memuat video...';
@@ -910,6 +908,7 @@ async function compressVideo(){
       document.getElementById('c-use').classList.remove('hidden');
       prog.textContent='SELESAI: '+mb(file.size)+' MB → '+mb(compressedBlob.size)+' MB';
       log('Kompres selesai: '+mb(file.size)+' MB → '+mb(compressedBlob.size)+' MB','ok');
+      _done();
     };
     var drawing=true;
     (function draw(){if(!drawing)return;ctx.drawImage(video,0,0,W,H);if(!video.ended)requestAnimationFrame(draw);})();
@@ -918,7 +917,8 @@ async function compressVideo(){
     rec.start();
     await video.play();
     log('Mengompres real-time ±'+Math.round(video.duration)+' dtk... jangan tutup tab.');
-  }catch(e){log('GAGAL: '+e.message,'err');prog.textContent='';}
+  }catch(e){log('GAGAL: '+e.message,'err');prog.textContent='';_done();}
+  return doneP;
 }
 function useCompressedForShare(){
   if(!compressedBlob)return;
@@ -1020,6 +1020,41 @@ async function loadGaleriList(){document.getElementById('log').innerHTML='';try{
 async function delGaleri(i){if(!confirm('Hapus item ini?'))return;document.getElementById('log').innerHTML='';try{cekPat();var g=await getFile('content/gallery.json'),d=JSON.parse(g.text),it=d.items[i];d.items.splice(i,1);await putFile('content/gallery.json',enc(JSON.stringify(d,null,2)),'Hapus galeri: '+it.title,g.sha);try{await deleteFile('galeri/'+it.image,'');}catch(e){}if(it.full){try{await deleteFile('galeri/'+it.full,'');}catch(e){}}log('SELESAI dihapus.','ok');loadGaleriList();}catch(e){log('GAGAL: '+e.message,'err');}}
 async function loadBlogList(){document.getElementById('log').innerHTML='';try{cekPat();var d=JSON.parse((await getFile('content/blog.json')).text),h='';d.posts.forEach(function(p,i){h+='<div class="row"><div class="info"><b>'+p.title+'</b><br><small>'+(p.date||'')+(p.link?' (statis)':'')+'</small></div><div class="actions"><button class="edit" onclick="editBlog('+i+')">Edit</button><button class="del" onclick="delBlog('+i+')">Hapus</button></div></div>';});document.getElementById('b-list').innerHTML=h||'<p>Kosong</p>';}catch(e){log('GAGAL: '+e.message,'err');}}
 async function delBlog(i){if(!confirm('Hapus postingan ini?'))return;document.getElementById('log').innerHTML='';try{cekPat();var g=await getFile('content/blog.json'),d=JSON.parse(g.text),p=d.posts[i];d.posts.splice(i,1);await putFile('content/blog.json',enc(JSON.stringify(d,null,2)),'Hapus blog: '+p.title,g.sha);log('SELESAI dihapus.','ok');loadBlogList();}catch(e){log('GAGAL: '+e.message,'err');}}
+
+/* ---- ANTI DOUBLE-CLICK + FEEDBACK STATUS ---- */
+var BUSY={};
+function beginBusy(key,btnId,text){
+  if(BUSY[key])return false;
+  BUSY[key]=true;
+  var b=document.getElementById(btnId);
+  if(b){if(!b.dataset.orig)b.dataset.orig=b.innerHTML;b.disabled=true;b.innerHTML='⏳ '+text;}
+  return true;
+}
+function endBusy(key,btnId){
+  BUSY[key]=false;
+  var b=document.getElementById(btnId);
+  if(b&&b.dataset.orig){b.innerHTML=b.dataset.orig;b.disabled=false;}
+}
+function guard(name,btnId,text){
+  var orig=window[name];
+  window[name]=function(){
+    if(!beginBusy(name,btnId,text))return;
+    var done=function(){endBusy(name,btnId);};
+    try{
+      var r=orig.apply(this,arguments);
+      if(r&&r.then){r.then(done,done);}else{done();}
+    }catch(e){done();}
+  };
+}
+guard('submitGaleri','g-submit','Mengunggah...');
+guard('submitBlog','b-submit','Menerbitkan...');
+guard('generateAI','btn-genai','Membuat gambar...');
+guard('startVideo','btn-render','Merender video...');
+guard('compressVideo','btn-kompres','Mengompres...');
+guard('doShare','btn-share','Mengirim...');
+guard('runAITool','btn-aitool','AI berpikir...');
+guard('importOldPosts','btn-impor','Mengimpor...');
+guard('saveLogo','btn-logo','Menyimpan...');
 
 document.getElementById('b-date').value=new Date().toISOString().slice(0,10);
 loadSettings();
