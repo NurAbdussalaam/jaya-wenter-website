@@ -130,7 +130,7 @@
   </div>
 
   <div id="tab-video" class="hidden">
-    <p class="hint">Foto before-after (kiri=sebelum, kanan=sesudah) → video 9:16 ±17 dtk.</p>
+    <p class="hint">Foto before-after (kiri=sebelum, kanan=sesudah) → video 9:16 ±17 dtk. Mode Sinematik: AI menghapus background & tulisan, pakaian tampil bersih di tengah.</p>
     <label>Foto dari Galeri</label><select id="v-gallery"><option value="">— atau upload —</option></select>
     <label>Upload Foto</label><input id="v-file" type="file" accept="image/*" onchange="onVideoFileChange()">
     <button class="mini" type="button" onclick="clearFile('v-file')">✕ Hapus file terpilih</button>
@@ -140,7 +140,11 @@
     <label>🎵 Musik latar (opsional, mp3 bebas royalti)</label><input id="v-music" type="file" accept="audio/*">
     <button class="mini" type="button" onclick="clearFile('v-music')">✕ Hapus musik terpilih</button>
     <p class="hint">Musik otomatis dilepas setelah render selesai.</p>
-    <div class="chk"><input type="checkbox" id="v-cinematic" checked> 🎬 Mode Sinematik (auto-detect pakaian + zoom halus + frame logo akhir)</div>
+    <label>🎭 Logo JAYA WENTER (upload sekali, untuk frame akhir)</label>
+    <input id="v-logo" type="file" accept="image/png,image/jpeg,image/webp">
+    <button class="mini" type="button" onclick="saveLogo()">💾 Simpan Logo ke Panel</button>
+    <p id="v-logo-status" class="hint">Logo saat ini: default (/assets/logo_resmi_jaya_wenter.png)</p>
+    <div class="chk"><input type="checkbox" id="v-cinematic" checked> 🎬 Mode Sinematik (AI hapus background + zoom halus + logo akhir)</div>
     <div class="chk"><input type="checkbox" id="v-labels" checked> Label ❌ SEBELUM / ✅ SESUDAH</div>
     <div class="chk"><input type="checkbox" id="v-original"> Mode Original (foto utuh, tanpa split)</div>
     <div class="chk"><input type="checkbox" id="v-badge"> Badge "100% FOTO ASLI" (opsional)</div>
@@ -221,7 +225,7 @@
 <script>
 var OWNER='NurAbdussalaam', REPO='jaya-wenter-website', BRANCH='main';
 var currentEdit={type:null,index:-1}, aiCoverBlob=null, lastVideoBlob=null, lastVideoName='', compressedBlob=null, compressedName='';
-var aiLastOutput='', aiLastTool='', jwLogoImg=null;
+var aiLastOutput='', aiLastTool='', jwLogoImg=null, imglyMod=null;
 function log(s,c){var e=document.getElementById('log');e.innerHTML+='<span class="'+(c||'')+'">'+s+'</span>\n';}
 function lsGet(k){return localStorage.getItem(k)||'';}
 function clearFile(id){document.getElementById(id).value='';}
@@ -283,7 +287,7 @@ async function uploadVideoToR2(blob,name){
 }
 
 /* ---- AI ---- */
-var BUSINESS_CONTEXT='Anda adalah asisten pemasaran untuk JAYA WENTER, jasa pewarnaan ulang (wenter) pakaian profesional di Malang. Info bisnis:\n- Alamat: Kebonsari Gg 4 No. 18A, Kebonsari, Sukun, Malang\n- WhatsApp: 0853-2573-0777\n- Website: wenter.my.id\n- Layanan: wenter jeans, jaket, kaos, hoodie, sweater, celana, seragam, tas (bahan katun/jeans/twill/kanvas/drill/chino/cargo)\n- Warna tersedia: hitam, biru tua, hijau tua, coklat tua, abu tua\n- Prinsip komunikasi: JUJUR dan tidak menjanjikan berlebihan. Untuk kasus belang parah/noda mencolok akibat pemutih, SELALU rekomendasikan warna HITAM karena daya tutup paling kuat — warna lain berisiko masih terlihat belang. Untuk belang ringan, warna lain masih bisa dipertimbangkan.\n- Selalu arahkan ke konsultasi gratis via WhatsApp dengan kirim foto pakaian.\n- Harga lebih hemat dibanding beli baru, serat kain terjaga, hasil lebih pekat & merata.\n- Gaya bahasa: ramah, sederhana, seperti ngobrol dengan pemilik usaha yang berpengalaman.';
+var BUSINESS_CONTEXT='Anda adalah asisten pemasaran untuk JAYA WENTER, jasa pewarnaan ulang (wenter) pakaian profesional di Malang. Info bisnis:\n- Alamat: Kebonsari Gg 4 No. 18A, Kebonsari, Sukun, Malang\n- WhatsApp: 0853-2573-0777\n- Website: wenter.my.id\n- Layanan: wenter jeans, jaket, kaos, hoodie, sweater, celana, seragam, tas (bahan katun/jeans/twill/kanvas/drill/chino/cargo)\n- Warna tersedia: hitam, biru tua, hijau tua, coklat tua, abu tua\n- Prinsip komunikasi: JUJUR dan tidak menjanjikan berlebihan. Untuk kasus belang parah/noda mencolok akibat pemutih, SELALU rekomendasikan warna HITAM karena daya tutup paling kuat — warna lain berisiko masih terlihat belang. Untuk belang ringan, warna lain masih bisa dipertimbangkan.\n- Selalu arahkan ke konsultasi gratis via WhatsApp dengan kirim foto pakaian.\n- Harga lebih hemat dibanding beli baru, serat kain terjaga, hasil lebih pekat & merata.\n- Gaya bahasa: ramah, sederhana, seperti ngobrol dengan pemilik usaha yang berpengalaman.\n- Tagline brand: "Perbarui Tampilan Baju Lamamu"';
 
 async function callAI(prompt){
   var key=lsGet('gemini_key');
@@ -373,16 +377,16 @@ function useAICover(){if(!aiCoverBlob)return;var f=new File([aiCoverBlob],'ai-co
 /* ---- AI TOOLS ---- */
 var AI_TOOLS = {
   article: {
-    desc: '✍️ Tulis judul + keywords → AI menulis draf artikel lengkap (judul, paragraf pembuka, 3-4 heading H2, list, CTA WA). Hasilnya bisa langsung dipindahkan ke tab + Blog.',
+    desc: '✍️ Tulis judul + keywords → AI menulis draf artikel lengkap. Hasilnya bisa langsung dipindahkan ke tab + Blog.',
     inputs: [
       {id:'ai_title', label:'Judul artikel', type:'input', placeholder:'Contoh: Cara Menghilangkan Noda Membandel di Jaket'},
       {id:'ai_keys', label:'Keywords (koma)', type:'input', placeholder:'jasa wenter malang, noda membandel, jaket pudar'},
-      {id:'ai_angle', label:'Sudut pandang (opsional)', type:'input', placeholder:'Contoh: untuk ibu rumah tangga / pemilik jaket kulit'}
+      {id:'ai_angle', label:'Sudut pandang (opsional)', type:'input', placeholder:'Contoh: untuk ibu rumah tangga'}
     ],
     action: '📝 Pindahkan ke tab + Blog'
   },
   seo: {
-    desc: '🔍 Analisis SEO judul + keywords → meta description, 10 long-tail keywords, skor & saran perbaikan.',
+    desc: '🔍 Analisis SEO judul + keywords → meta description, 10 long-tail keywords, skor & saran.',
     inputs: [
       {id:'ai_title', label:'Judul artikel', type:'input', placeholder:'Contoh: Wenter vs Beli Baru: Mana Lebih Hemat?'},
       {id:'ai_keys', label:'Keywords awal (koma)', type:'input', placeholder:'jasa wenter malang'}
@@ -390,7 +394,7 @@ var AI_TOOLS = {
     action: null
   },
   caption: {
-    desc: '📱 1 foto/topik → 3 gaya caption (edukasi / promo / cerita) + hashtag, siap pakai di IG/FB/Threads/Telegram.',
+    desc: '📱 1 foto/topik → 3 gaya caption (edukasi / promo / cerita) + hashtag.',
     inputs: [
       {id:'ai_topic', label:'Topik / judul foto', type:'input', placeholder:'Contoh: celana jeans wenter dari abu-abu ke hitam pekat'},
       {id:'ai_platform', label:'Platform utama', type:'select', options:['Instagram Reels','Facebook','Threads','Telegram','Semua platform']}
@@ -398,29 +402,29 @@ var AI_TOOLS = {
     action: null
   },
   ideas: {
-    desc: '💡 Generate kalender ide konten 30 hari: topik blog + hook video, disesuaikan dengan tema yang Anda pilih.',
+    desc: '💡 Kalender ide konten 30 hari: topik blog + hook video.',
     inputs: [
-      {id:'ai_theme', label:'Tema utama bulan ini', type:'input', placeholder:'Contoh: tips merawat pakaian setelah wenter / promo akhir tahun / edukasi bahan kain'},
-      {id:'ai_target', label:'Target audiens', type:'select', options:['Pelanggan baru (belum kenal wenter)','Pelanggan lama (sudah pernah wenter)','Mahasiswa / anak kos','Ibu rumah tangga','Pemilik laundry / agen','Semua kalangan']}
+      {id:'ai_theme', label:'Tema utama bulan ini', type:'input', placeholder:'Contoh: tips merawat pakaian setelah wenter'},
+      {id:'ai_target', label:'Target audiens', type:'select', options:['Pelanggan baru','Pelanggan lama','Mahasiswa / anak kos','Ibu rumah tangga','Pemilik laundry / agen','Semua kalangan']}
     ],
     action: null
   },
   reply: {
-    desc: '💬 Paste pertanyaan pelanggan dari WA → AI susun draf balasan sopan, profesional, dengan info harga/proses & arahkan kirim foto.',
+    desc: '💬 Paste pertanyaan pelanggan → draf balasan WA sopan & profesional.',
     inputs: [
-      {id:'ai_question', label:'Pertanyaan pelanggan (tempel chat WA)', type:'textarea', placeholder:'Contoh: Mas, harga wenter hoodie ukuran XL berapa ya? Bisa dikirim dari Surabaya?'}
+      {id:'ai_question', label:'Pertanyaan pelanggan (tempel chat WA)', type:'textarea', placeholder:'Contoh: Mas, harga wenter hoodie ukuran XL berapa ya?'}
     ],
     action: null
   },
   testimonial: {
-    desc: '⭐ Ubah chat WA mentah dari pelanggan jadi testimoni profesional 1 paragraf siap tampil di website/galeri.',
+    desc: '⭐ Chat WA mentah → testimoni rapi siap tampil di website.',
     inputs: [
-      {id:'ai_raw', label:'Chat mentah dari pelanggan', type:'textarea', placeholder:'Contoh: mas makasih ya, celananya jadi hitam lagi, awalnya udah mau dibuang soalnya belang gara2 pemutih'}
+      {id:'ai_raw', label:'Chat mentah dari pelanggan', type:'textarea', placeholder:'Contoh: mas makasih ya, celananya jadi hitam lagi...'}
     ],
     action: null
   },
   hook: {
-    desc: '🎥 Topik → 5 variasi hook video pendek (5-7 kata) untuk TikTok/Reels/Shorts. Bisa langsung dipakai sebagai teks hook di tab 🎥 Video.',
+    desc: '🎥 Topik → 5 variasi hook video 5-7 kata. Bisa langsung dipakai di tab 🎥 Video.',
     inputs: [
       {id:'ai_topic', label:'Topik video', type:'input', placeholder:'Contoh: jaket kulit diwenter dari coklat ke hitam'},
       {id:'ai_emotion', label:'Emosi utama', type:'select', options:['Kaget / Penasaran','Empati / Sedih','Harapan / Bahagia','Edukasi / Tips','Inspiratif']}
@@ -469,25 +473,25 @@ function buildPrompt(tool){
     v[inp.id]=el?el.value.trim():'';
   });
   if(tool==='article'){
-    return 'Tulis artikel blog lengkap untuk JAYA WENTER.\nJudul: '+v.ai_title+'\nKeywords: '+v.ai_keys+'\nSudut pandang: '+(v.ai_angle||'umum')+'\n\nFormat output:\n- Baris 1: judul (sama persis)\n- Baris 2-4: ringkasan 1 kalimat (50-160 karakter)\n- Baris selanjutnya: isi artikel dalam markdown (paragraf pembuka yang mengena, 3-4 heading H2, list bullet jika perlu, CTA arahkan kirim foto ke WhatsApp 0853-2573-0777)\n- Panjang: 400-600 kata\n- Gaya: jujur, sederhana, seperti ngobrol dengan pemilik usaha yang berpengalaman.\n- Untuk kasus pakaian belang parah/noda mencolok, rekomendasikan warna hitam dengan alasan teknis yang masuk akal.\n- Tutup dengan info lokasi & WA.';
+    return 'Tulis artikel blog lengkap untuk JAYA WENTER.\nJudul: '+v.ai_title+'\nKeywords: '+v.ai_keys+'\nSudut pandang: '+(v.ai_angle||'umum')+'\n\nFormat output:\n- Baris 1: judul (sama persis)\n- Baris 2-4: ringkasan 1 kalimat (50-160 karakter)\n- Baris selanjutnya: isi artikel dalam markdown (paragraf pembuka, 3-4 heading H2, list bullet jika perlu, CTA arahkan kirim foto ke WhatsApp 0853-2573-0777)\n- Panjang: 400-600 kata\n- Gaya: jujur, sederhana.\n- Untuk kasus belang parah, rekomendasikan warna hitam.\n- Tutup dengan info lokasi & WA.';
   }
   if(tool==='seo'){
-    return 'Analisis SEO untuk artikel JAYA WENTER.\nJudul: '+v.ai_title+'\nKeywords awal: '+v.ai_keys+'\n\nOutput format:\n## Meta Description\n(1 kalimat, 140-160 karakter, memuat keywords utama)\n\n## 10 Long-tail Keywords\n(daftar nomor 1-10, masing-masing 3-5 kata, relevan untuk pencarian lokal "wenter Malang")\n\n## Skor & Saran\n- Skor judul (1-10) + alasan singkat\n- 3 saran konkret agar artikel lebih ranking di Google\n- 1 ide internal link ke artikel/topik terkait';
+    return 'Analisis SEO untuk artikel JAYA WENTER.\nJudul: '+v.ai_title+'\nKeywords awal: '+v.ai_keys+'\n\nOutput format:\n## Meta Description\n(140-160 karakter)\n\n## 10 Long-tail Keywords\n(nomor 1-10, 3-5 kata, lokal "wenter Malang")\n\n## Skor & Saran\n- Skor judul (1-10)\n- 3 saran konkret\n- 1 ide internal link';
   }
   if(tool==='caption'){
-    return 'Buat 3 gaya caption sosmed untuk JAYA WENTER.\nTopik: '+v.ai_topic+'\nPlatform utama: '+v.ai_platform+'\n\nOutput format:\n## Gaya 1: Edukasi\n(caption 2-3 kalimat + hashtag relevan)\n\n## Gaya 2: Promo / Penawaran\n(caption yang mendorong action + hashtag)\n\n## Gaya 3: Cerita / Testimoni imajiner\n(caption gaya storytelling + hashtag)\n\nSemua caption harus:\n- Memuat nama JAYA WENTER\n- Mengarahkan ke WhatsApp 0853-2573-0777 untuk konsultasi\n- Menyebut lokasi Malang\n- Pakai emoji secukupnya\n- Sertakan 5-7 hashtag per caption';
+    return 'Buat 3 gaya caption sosmed untuk JAYA WENTER.\nTopik: '+v.ai_topic+'\nPlatform utama: '+v.ai_platform+'\n\nOutput:\n## Gaya 1: Edukasi\n## Gaya 2: Promo\n## Gaya 3: Cerita\n\nSemua caption: memuat JAYA WENTER, arahkan ke WA 0853-2573-0777, sebut Malang, 5-7 hashtag per caption.';
   }
   if(tool==='ideas'){
-    return 'Buat kalender ide konten 30 hari untuk JAYA WENTER.\nTema utama: '+v.ai_theme+'\nTarget audiens: '+v.ai_target+'\n\nOutput format (tepat 30 baris):\nHari 1: [Blog] Judul artikel blog | [Video] Hook video TikTok/Reels\nHari 2: ...\n...\nHari 30: ...\n\nAturan:\n- Selang-seling: 15 topik blog + 15 topik video\n- Variasikan: tips, edukasi, behind-the-scenes, testimoni, mitos-fakta, Q&A\n- Semua relevan dengan wenter pakaian (jeans, jaket, kaos, hoodie, dll)\n- Hook video harus 5-7 kata yang bikin penasaran';
+    return 'Buat kalender ide konten 30 hari untuk JAYA WENTER.\nTema: '+v.ai_theme+'\nTarget: '+v.ai_target+'\n\nOutput 30 baris:\nHari N: [Blog] judul | [Video] hook 5-7 kata\nSelang-seling 15 blog + 15 video.';
   }
   if(tool==='reply'){
-    return 'Susun draf balasan WhatsApp profesional untuk pertanyaan pelanggan JAYA WENTER.\nPertanyaan pelanggan:\n'+v.ai_question+'\n\nAturan balasan:\n- Sapa ramah (Halo Kak/Bapak/Ibu)\n- Jawab pertanyaan dengan jujur dan tidak menjanjikan berlebihan\n- Jika ditanya harga umum, berikan kisaran dan arahkan kirim foto pakaian untuk penawaran pasti\n- Untuk pakaian belang parah akibat pemutih, rekomendasikan warna hitam\n- Akhiri dengan ajakan kirim foto ke WA untuk konsultasi gratis\n- Panjang: 3-5 kalimat, tidak terlalu formal, tidak terlalu santai\n- Tidak perlu salam penutup panjang (cukup "JAYA WENTER" atau "Salam, JAYA WENTER")';
+    return 'Susun draf balasan WhatsApp profesional untuk pelanggan JAYA WENTER.\nPertanyaan:\n'+v.ai_question+'\n\nAturan: sapa ramah, jujur, jika harga beri kisaran + arahkan kirim foto, untuk belang parah rekomendasikan hitam, 3-5 kalimat, akhiri "Salam, JAYA WENTER".';
   }
   if(tool==='testimonial'){
-    return 'Ubah chat WA mentah berikut menjadi testimoni profesional 1 paragraf untuk website JAYA WENTER.\nChat mentah:\n'+v.ai_raw+'\n\nOutput format:\n- Paragraf testimoni (4-6 kalimat, bahasa Indonesia rapi, tidak berlebihan)\n- Baris terpisah: nama samaran singkat (contoh: "Ibu Rina, Malang" atau "Budi, pelanggan hoodie")\n- Hapus kata-kata kasar/slang berlebihan, tapi pertahankan inti pengalaman asli\n- Tonjolkan hasil (warna pekat, rapi, hemat, percaya diri)\n- Tidak perlu menyebut harga spesifik';
+    return 'Ubah chat WA mentah jadi testimoni profesional 1 paragraf untuk website JAYA WENTER.\nChat mentah:\n'+v.ai_raw+'\n\nOutput: paragraf 4-6 kalimat + baris nama samaran (contoh: "Ibu Rina, Malang").';
   }
   if(tool==='hook'){
-    return 'Buat 5 variasi hook video pendek (5-7 kata) untuk JAYA WENTER.\nTopik: '+v.ai_topic+'\nEmosi utama: '+v.ai_emotion+'\n\nOutput: tepat 5 hook, masing-masing satu baris, tanpa nomor, tanpa tanda kutip. Setiap hook harus:\n- 5-7 kata\n- Memancing rasa ingin tahu / emosi yang diminta\n- Cocok untuk TikTok / Instagram Reels / YouTube Shorts\n- Mengandung elemen before-after atau kejutan';
+    return 'Buat 5 variasi hook video 5-7 kata untuk JAYA WENTER.\nTopik: '+v.ai_topic+'\nEmosi: '+v.ai_emotion+'\n\nOutput: tepat 5 baris hook tanpa nomor.';
   }
   return '';
 }
@@ -520,23 +524,20 @@ function runAIAction(){
   if(aiLastTool==='article'){
     var lines=aiLastOutput.split('\n');
     var title=(lines[0]||'').replace(/^#+\s*/,'').trim();
-    var summary='';
     var body=lines.slice(1).join('\n').trim();
-    var m=body.match(/^(.{50,160})[\n\.]/);
-    if(m)summary=m[1].trim();
-    else summary=body.split('\n').filter(function(l){return l.trim();})[0]||'';
+    var first=body.split('\n').filter(function(l){return l.trim();})[0]||'';
     document.getElementById('b-title').value=title;
-    document.getElementById('b-summary').value=summary;
+    document.getElementById('b-summary').value=first.slice(0,160);
     document.getElementById('b-body').value=body;
     showTab('blog');
-    alert('Judul, ringkasan, dan isi artikel sudah dipindahkan ke tab + Blog. Lanjutkan isi tanggal, kategori, keywords, cover, lalu Terbitkan.');
+    alert('Judul, ringkasan, dan isi artikel sudah dipindahkan ke tab + Blog.');
   }
   if(aiLastTool==='hook'){
     var first=aiLastOutput.split('\n').filter(function(l){return l.trim();})[0]||'';
     if(first){
       document.getElementById('v-hook').value=first.toUpperCase();
       showTab('video');
-      alert('Hook pertama dipindahkan ke tab 🎥 Video. Pilih 4 hook lainnya secara manual dengan copy-paste.');
+      alert('Hook pertama dipindahkan ke tab 🎥 Video.');
     }
   }
 }
@@ -562,32 +563,100 @@ async function publishBlog(){document.getElementById('log').innerHTML='';try{cek
 async function updateBlog(){document.getElementById('log').innerHTML='';try{cekPat();var i=currentEdit.index,g=await getFile('content/blog.json'),d=JSON.parse(g.text),p=d.posts[i];if(!p)throw new Error('Tidak ditemukan.');var t=document.getElementById('b-title').value.trim(),b=document.getElementById('b-body').value.trim();if(!t||!b)throw new Error('Judul & isi wajib.');var k=document.getElementById('b-keys').value.split(',').map(function(s){return s.trim();}).filter(Boolean);var cf=document.getElementById('b-cover').files[0];if(cf)p.cover='/assets/uploads/'+await uploadImageSEO(cf,'assets/uploads/',t+' '+k.join(' '));p.slug=p.slug||slugify(t);p.title=t;p.date=document.getElementById('b-date').value||p.date;p.category=document.getElementById('b-cat').value.trim();p.summary=document.getElementById('b-summary').value.trim();p.keywords=k;p.body=b;delete p.link;await putFile('content/blog.json',enc(JSON.stringify(d,null,2)),'Edit blog: '+t,g.sha);log('SELESAI diperbarui.','ok');cancelEdit();}catch(e){log('GAGAL: '+e.message,'err');}}
 async function editBlog(i){try{cekPat();var p=JSON.parse((await getFile('content/blog.json')).text).posts[i];if(!p)return;document.getElementById('b-title').value=p.title;document.getElementById('b-date').value=p.date||'';document.getElementById('b-cat').value=p.category||'';document.getElementById('b-summary').value=p.summary||'';document.getElementById('b-body').value=p.body||'';document.getElementById('b-keys').value=Array.isArray(p.keywords)?p.keywords.join(', '):'';document.getElementById('b-cover').value='';document.getElementById('b-edit-select').value=String(i);currentEdit={type:'blog',index:i};document.getElementById('editBannerB').classList.remove('hidden');document.getElementById('b-cancel').classList.remove('hidden');document.getElementById('b-submit').textContent='Update Postingan';showTab('blog');}catch(e){log('GAGAL: '+e.message,'err');}}
 
-/* ===================== VIDEO GENERATOR ===================== */
+/* ===================== VIDEO GENERATOR (AI SINEMATIK) ===================== */
 var VW=1080,VH=1920;
+var TAGLINE='Perbarui Tampilan Baju Lamamu';
 
-/* Muat logo JAYA WENTER sekali (dari /assets/) untuk frame akhir */
+/* ---- LOGO PANEL ---- */
+function saveLogo(){
+  var f=document.getElementById('v-logo').files[0];
+  if(!f){alert('Pilih file logo dulu (PNG transparan disarankan).');return;}
+  var fr=new FileReader();
+  fr.onload=function(){
+    var dataUrl=fr.result;
+    localStorage.setItem('jw_logo',dataUrl);
+    jwLogoImg=null;
+    document.getElementById('v-logo-status').textContent='✔ Logo tersimpan di browser ini.';
+    log('Logo tersimpan di browser.');
+    var b64=dataUrl.split(',')[1];
+    if(lsGet('gh_pat')){
+      putFile('assets/logo_panel.png',b64,'Update logo panel').then(function(){
+        document.getElementById('v-logo-status').textContent='✔ Logo tersimpan di browser & GitHub (tersedia di semua perangkat).';
+        log('Logo juga tersimpan di GitHub: assets/logo_panel.png','ok');
+      }).catch(function(e){log('Simpan logo ke GitHub gagal ('+e.message+') — tetap tersimpan di browser.','err');});
+    } else {
+      log('Tip: simpan token GitHub agar logo juga tersedia di perangkat lain.');
+    }
+  };
+  fr.readAsDataURL(f);
+}
 function loadJWLogo(){
   if(jwLogoImg) return Promise.resolve(jwLogoImg);
   return new Promise(function(res){
-    var img=new Image();
-    img.onload=function(){jwLogoImg=img;res(img);};
-    img.onerror=function(){jwLogoImg=null;res(null);};
-    img.src='/assets/logo_resmi_jaya_wenter.png';
+    function done(img){jwLogoImg=img;res(img);}
+    function tryUrls(idx){
+      var urls=['/assets/logo_panel.png','/assets/logo_resmi_jaya_wenter.png'];
+      if(idx>=urls.length){done(null);return;}
+      var i=new Image();
+      i.onload=function(){done(i);};
+      i.onerror=function(){tryUrls(idx+1);};
+      i.src=urls[idx];
+    }
+    var local=lsGet('jw_logo');
+    if(local){
+      var i1=new Image();
+      i1.onload=function(){done(i1);};
+      i1.onerror=function(){tryUrls(0);};
+      i1.src=local;
+    } else tryUrls(0);
   });
+}
+
+/* ---- AI BACKGROUND REMOVAL (imgly, gratis, di browser) ---- */
+async function getImgly(){
+  if(imglyMod) return imglyMod;
+  imglyMod=await import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1/+esm');
+  return imglyMod;
+}
+async function extractCloth(img,side){
+  var half=img.width/2;
+  var c=document.createElement('canvas');
+  c.width=Math.ceil(half); c.height=img.height;
+  var cx=c.getContext('2d');
+  cx.drawImage(img, side===0?0:half, 0, half, img.height, 0, 0, c.width, c.height);
+  var blob=await new Promise(function(res){c.toBlob(res,'image/png');});
+  var mod=await getImgly();
+  var out=await mod.removeBackground(blob);
+  var cut=await loadImageSrc(URL.createObjectURL(out));
+  /* trim margin transparan */
+  var tc=document.createElement('canvas'); tc.width=cut.width; tc.height=cut.height;
+  var tctx=tc.getContext('2d'); tctx.drawImage(cut,0,0);
+  var d=tctx.getImageData(0,0,tc.width,tc.height).data;
+  var minX=tc.width,maxX=0,minY=tc.height,maxY=0;
+  for(var y=0;y<tc.height;y+=2){
+    for(var x=0;x<tc.width;x+=2){
+      if(d[(y*tc.width+x)*4+3]>20){
+        if(x<minX)minX=x; if(x>maxX)maxX=x;
+        if(y<minY)minY=y; if(y>maxY)maxY=y;
+      }
+    }
+  }
+  if(maxX<=minX||maxY<=minY) return {img:cut,w:cut.width,h:cut.height};
+  var w=maxX-minX, h=maxY-minY;
+  var fc=document.createElement('canvas'); fc.width=w; fc.height=h;
+  fc.getContext('2d').drawImage(tc,minX,minY,w,h,0,0,w,h);
+  var fi=await loadImageSrc(fc.toDataURL('image/png'));
+  return {img:fi,w:w,h:h};
 }
 
 async function loadVideoGalleryOptions(){try{var d=JSON.parse((await getFile('content/gallery.json')).text),s=document.getElementById('v-gallery');s.innerHTML='<option value="">— atau upload —</option>';d.items.forEach(function(it){var o=document.createElement('option');o.value='../galeri/'+it.image;o.textContent=it.title;o.dataset.title=it.title;s.appendChild(o);});s.onchange=function(){if(s.value){document.getElementById('v-hook').value=(s.selectedOptions[0].dataset.title||'JANGAN DIBUANG!').toUpperCase()+'!';clearFile('v-file');}};}catch(e){}}
 function onVideoFileChange(){var f=document.getElementById('v-file');if(f.files&&f.files[0])document.getElementById('v-gallery').value='';}
-function buildCaption(o){var L=[o.hook,'Hasil nyata jasa wenter Malang — before after tanpa editan.','Konsultasi gratis: '+o.wa+' • wenter.my.id'];var t=hashtags(o.keys);if(t)L.push(t);return L.join('\n');}
+function buildCaption(o){var L=[o.hook,TAGLINE+' — jasa wenter Malang.','Konsultasi gratis: '+o.wa+' • wenter.my.id'];var t=hashtags(o.keys);if(t)L.push(t);return L.join('\n');}
 function copyCaption(){var t=document.getElementById('v-caption').value;if(!t){alert('Render dulu.');return;}navigator.clipboard.writeText(t).then(function(){alert('Tersalin!');});}
 function loadImageSrc(s){return new Promise(function(r,j){var i=new Image();i.onload=function(){r(i);};i.onerror=function(){j(new Error('Gagal muat foto'));};i.src=s;});}
 function vbg(c,x){c.fillStyle=x;c.fillRect(0,0,VW,VH);}
-
-/* --- Easing smooth --- */
 function easeInOutCubic(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
 function lerp(a,b,t){return a+(b-a)*t;}
-
-/* --- Gradient background brand JAYA WENTER --- */
 function drawGradientBg(ctx){
   var g=ctx.createLinearGradient(0,0,0,VH);
   g.addColorStop(0,'#0a1a3f');
@@ -597,156 +666,115 @@ function drawGradientBg(ctx){
   ctx.fillRect(0,0,VW,VH);
 }
 
-/* --- Deteksi bounding box pakaian (auto-detect) --- */
-/* Algoritma: sample pixel tiap 8px, hitung rata-rata warna background (4 sudut),
-   lalu cari area yang warnanya JAUH dari background = area pakaian. */
-function detectClothesBounds(img){
-  var tmpCanvas=document.createElement('canvas');
-  var scanW=256, scale=scanW/img.width;
-  tmpCanvas.width=scanW;
-  tmpCanvas.height=Math.round(img.height*scale);
-  var tctx=tmpCanvas.getContext('2d');
-  tctx.drawImage(img,0,0,tmpCanvas.width,tmpCanvas.height);
-  var data=tctx.getImageData(0,0,tmpCanvas.width,tmpCanvas.height).data;
-  var W=tmpCanvas.width, H=tmpCanvas.height;
-
-  /* Ambil rata-rata warna background dari 4 sudut (anggap background seragam) */
-  function avgCorner(cx,cy,r){
-    var rSum=0,gSum=0,bSum=0,n=0;
-    for(var y=cy-r;y<=cy+r;y+=4){
-      for(var x=cx-r;x<=cx+r;x+=4){
-        if(x<0||y<0||x>=W||y>=H)continue;
-        var idx=(y*W+x)*4;
-        rSum+=data[idx];gSum+=data[idx+1];bSum+=data[idx+2];n++;
-      }
-    }
-    return n?[rSum/n,gSum/n,bSum/n]:[255,255,255];
-  }
-  var c1=avgCorner(20,20,15), c2=avgCorner(W-20,20,15), c3=avgCorner(20,H-20,15), c4=avgCorner(W-20,H-20,15);
-  var bg=[(c1[0]+c2[0]+c3[0]+c4[0])/4,(c1[1]+c2[1]+c3[1]+c4[1])/4,(c1[2]+c2[2]+c3[2]+c4[2])/4];
-
-  function colorDiff(r,g,b){return Math.abs(r-bg[0])+Math.abs(g-bg[1])+Math.abs(b-bg[2]);}
-
-  /* Cari bounding box pakaian di sisi kiri (before) dan kanan (after) */
-  function findBounds(startX,endX){
-    var minX=W,maxX=0,minY=H,maxY=0;
-    for(var y=0;y<H;y+=2){
-      for(var x=startX;x<endX;x+=2){
-        var idx=(y*W+x)*4;
-        var d=colorDiff(data[idx],data[idx+1],data[idx+2]);
-        if(d>45){
-          if(x<minX)minX=x;if(x>maxX)maxX=x;
-          if(y<minY)minY=y;if(y>maxY)maxY=y;
-        }
-      }
-    }
-    if(maxX<=minX||maxY<=minY)return null;
-    /* Scale balik ke ukuran asli */
-    return {x:minX/scale,y:minY/scale,w:(maxX-minX)/scale,h:(maxY-minY)/scale};
-  }
-
-  var halfW=W/2;
-  var before=findBounds(0,halfW);
-  var after=findBounds(halfW,W);
-
-  return {before:before, after:after};
-}
-
-/* --- Gambar smart: pakaian di tengah dengan padding, zoom sinematik --- */
-/* side: 0=before (kiri), 1=after (kanan) */
-/* p: progress 0..1, zoom dari 1.0 → 1.25 */
-function drawSmartHalf(ctx,img,side,p,bounds){
+/* Gambar pakaian hasil ekstrak: tengah + padding + zoom sinematik + bayangan lembut */
+function drawCloth(ctx,cloth,p){
   drawGradientBg(ctx);
-
-  var half=img.width/2;
-  var b=null;
-  if(bounds){
-    b = side===0 ? bounds.before : bounds.after;
-  }
-  /* Fallback jika deteksi gagal */
-  if(!b){
-    b = {x: side===0 ? 0 : half, y: 0, w: half, h: img.height};
-  }
-
-  /* Padding 18% agar pakaian punya ruang napas di frame vertikal */
-  var padX=b.w*0.18, padY=b.h*0.18;
-  var sx=Math.max(0,b.x-padX), sy=Math.max(0,b.y-padY);
-  var sw=Math.min(img.width-sx,b.w+padX*2);
-  var sh=Math.min(img.height-sy,b.h+padY*2);
-
-  /* Area render di canvas (tengah) */
-  var renderAreaW=VW*0.92;
-  var renderAreaH=VH*0.72;
-
-  /* Zoom sinematik dengan easing */
-  var zoom=lerp(1.0, 1.28, easeInOutCubic(p));
-
-  /* Hitung skala agar gambar fit di area, lalu apply zoom */
-  var s=Math.min(renderAreaW/sw, renderAreaH/sh)*zoom;
-  var dw=sw*s, dh=sh*s;
+  if(!cloth)return;
+  var zoom=lerp(1.0,1.25,easeInOutCubic(p));
+  var areaW=VW*0.86, areaH=VH*0.60;
+  var s=Math.min(areaW/cloth.w, areaH/cloth.h)*zoom;
+  var dw=cloth.w*s, dh=cloth.h*s;
   var dx=(VW-dw)/2;
-  var dy=VH*0.13; /* posisi vertikal (biar ada ruang label bawah) */
-
-  ctx.drawImage(img,sx,sy,sw,sh,dx,dy,dw,dh);
+  var dy=VH*0.15+((VH*0.60-dh)/2);
+  ctx.save();
+  ctx.shadowColor='rgba(0,0,0,0.55)';
+  ctx.shadowBlur=70;
+  ctx.shadowOffsetY=35;
+  ctx.drawImage(cloth.img,dx,dy,dw,dh);
+  ctx.restore();
 }
 
-/* --- Frame logo JAYA WENTER dengan zoom-in dramatis --- */
+/* Frame sinematik */
+function fHookNew(ctx,clothB,o,p){
+  drawCloth(ctx,clothB,0);
+  ctx.globalAlpha=Math.min(1,p*3);
+  ctx.fillStyle='rgba(0,8,20,0.78)';ctx.fillRect(0,0,VW,300);
+  ctx.font='900 88px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#f2b705';
+  ctx.fillText(o.hook,VW/2,150,VW-120);
+  ctx.globalAlpha=1;
+}
+function fBeforeNew(ctx,clothB,o,p){
+  drawCloth(ctx,clothB,p);
+  ctx.fillStyle='rgba(0,0,0,0.55)';ctx.fillRect(0,VH-380,VW,380);
+  if(o.labels)pill(ctx,'❌ SEBELUM',VW/2,VH-210,'#b00020','#fff');
+  if(o.badge)pill(ctx,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-80,'rgba(0,0,0,0.7)','#7CFC7C',40);
+}
+function fAfterNew(ctx,clothA,o,p){
+  drawCloth(ctx,clothA,p);
+  ctx.fillStyle='rgba(0,0,0,0.55)';ctx.fillRect(0,VH-380,VW,380);
+  if(o.labels)pill(ctx,'✅ SESUDAH',VW/2,VH-210,'#0a7a34','#fff');
+  if(o.badge)pill(ctx,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-80,'rgba(0,0,0,0.7)','#7CFC7C',40);
+}
+function fTrans(c,i,o,p){vbg(c,'#001d5a');c.save();c.translate(VW/2,VH/2-150);c.rotate(-0.12);c.fillStyle='#fff';c.fillRect(-450,-30,900,60);c.beginPath();c.moveTo(450,-90);c.lineTo(600,0);c.lineTo(450,90);c.closePath();c.fill();c.restore();c.font='900 110px Arial';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#f2b705';c.fillText('DIWENTER...',VW/2,VH/2+150);}
+function fCTA(c,o,p){vbg(c,'#001d5a');c.font='900 100px Arial';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#fff';c.fillText('JAYA WENTER',VW/2,500);c.font='600 52px Arial';c.fillStyle='#cfd8ff';c.fillText(TAGLINE,VW/2,620);rr(c,VW/2-430,900,860,150,75);c.fillStyle='#25D366';c.fill();c.font='800 58px Arial';c.fillStyle='#fff';c.fillText('💬 Konsultasi Gratis',VW/2,978);c.font='800 74px Arial';c.fillStyle='#f2b705';c.fillText(o.wa,VW/2,1200);c.font='700 56px Arial';c.fillStyle='#fff';c.fillText('wenter.my.id',VW/2,1350);}
+
+/* Frame logo akhir: fade-in + zoom perlahan + tagline baru */
 function drawLogoFrame(ctx,logo,p){
   drawGradientBg(ctx);
-
-  /* Logo: fade-in + zoom-in dari 0.7x ke 1.15x */
-  var scale=lerp(0.65, 1.15, easeInOutCubic(p));
-  var alpha=Math.min(1, p*2.5);
+  var scale=lerp(0.65,1.15,easeInOutCubic(p));
+  var alpha=Math.min(1,p*2.5);
   if(!logo){
-    /* Fallback: teks "JAYA WENTER" */
     ctx.globalAlpha=alpha;
     ctx.font='900 '+(90*scale)+'px Arial';
-    ctx.textAlign='center';
-    ctx.textBaseline='middle';
+    ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillStyle='#f2b705';
-    ctx.fillText('JAYA WENTER',VW/2,VH/2-80);
-    ctx.font='600 '+(42*scale)+'px Arial';
-    ctx.fillStyle='#fff';
-    ctx.fillText('Jasa Wenter Pakaian Profesional',VW/2,VH/2+40);
-    ctx.globalAlpha=1;
-    return;
+    ctx.fillText('JAYA WENTER',VW/2,VH/2-100);
+  } else {
+    var baseH=VH*0.34;
+    var s=baseH/logo.height*scale;
+    var dw=logo.width*s, dh=logo.height*s;
+    var dx=(VW-dw)/2, dy=VH/2-dh/2-80;
+    ctx.globalAlpha=alpha;
+    ctx.drawImage(logo,dx,dy,dw,dh);
   }
-
-  /* Logo asli dengan zoom */
-  var baseH=VH*0.35;
-  var s=baseH/logo.height*scale;
-  var dw=logo.width*s, dh=logo.height*s;
-  var dx=(VW-dw)/2, dy=VH/2-dh/2-60;
-
-  ctx.globalAlpha=alpha;
-  ctx.drawImage(logo,dx,dy,dw,dh);
-
-  /* Teks pendukung di bawah logo */
   var textAlpha=Math.max(0,(p-0.25)/0.75);
   ctx.globalAlpha=textAlpha;
-  ctx.font='700 54px Arial';
-  ctx.textAlign='center';
+  ctx.font='700 56px Arial';
+  ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillStyle='#f2b705';
-  ctx.fillText('Hasil Nyata, Terpercaya',VW/2,dy+dh+80);
+  ctx.fillText(TAGLINE,VW/2,VH/2+170);
   ctx.font='600 42px Arial';
   ctx.fillStyle='#fff';
-  ctx.fillText('wenter.my.id',VW/2,dy+dh+145);
+  ctx.fillText('wenter.my.id',VW/2,VH/2+240);
   ctx.globalAlpha=1;
 }
 
-/* --- Helpers lama (tetap dipakai jika Mode Original atau Mode biasa) --- */
+/* ---- Fallback (jika AI gagal): metode lama ---- */
 function drawContain(c,i){var s=Math.min(VW/i.width,VH/i.height),w=i.width*s,h=i.height*s;c.drawImage(i,(VW-w)/2,(VH-h)/2,w,h);}
-function drawHalf(c,i,side,p,orig){if(orig){drawContain(c,i);return;}var sw=i.width/2,sx=side===0?0:sw;c.save();c.filter='blur(40px) brightness(0.75)';var bg=Math.max(VW/sw,VH/i.height)*1.2;c.drawImage(i,sx,0,sw,i.height,(VW-sw*bg)/2,(VH-i.height*bg)/2,sw*bg,i.height*bg);c.restore();var areaH=VH-420;var z=0.90+0.10*p;var s=Math.min((VW*0.92)/sw,(areaH*0.94)/i.height)*z;var dw=sw*s,dh=i.height*s;c.drawImage(i,sx,0,sw,i.height,(VW-dw)/2,(areaH-dh)/2,dw,dh);}
+function drawSmartHalf(ctx,img,side,p,bounds){
+  drawGradientBg(ctx);
+  var half=img.width/2;
+  var b=bounds?(side===0?bounds.before:bounds.after):null;
+  if(!b)b={x:side===0?0:half,y:0,w:half,h:img.height};
+  var padX=b.w*0.18,padY=b.h*0.18;
+  var sx=Math.max(0,b.x-padX),sy=Math.max(0,b.y-padY);
+  var sw=Math.min(img.width-sx,b.w+padX*2),sh=Math.min(img.height-sy,b.h+padY*2);
+  var zoom=lerp(1.0,1.28,easeInOutCubic(p));
+  var s=Math.min((VW*0.92)/sw,(VH*0.72)/sh)*zoom;
+  var dw=sw*s,dh=sh*s;
+  ctx.drawImage(img,sx,sy,sw,sh,(VW-dw)/2,VH*0.13,dw,dh);
+}
+function detectClothesBounds(img){
+  var tmpCanvas=document.createElement('canvas');
+  var scanW=256,scale=scanW/img.width;
+  tmpCanvas.width=scanW;tmpCanvas.height=Math.round(img.height*scale);
+  var tctx=tmpCanvas.getContext('2d');
+  tctx.drawImage(img,0,0,tmpCanvas.width,tmpCanvas.height);
+  var data=tctx.getImageData(0,0,tmpCanvas.width,tmpCanvas.height).data;
+  var W=tmpCanvas.width,H=tmpCanvas.height;
+  function avgCorner(cx,cy,r){var rS=0,gS=0,bS=0,n=0;for(var y=cy-r;y<=cy+r;y+=4){for(var x=cx-r;x<=cx+r;x+=4){if(x<0||y<0||x>=W||y>=H)continue;var idx=(y*W+x)*4;rS+=data[idx];gS+=data[idx+1];bS+=data[idx+2];n++;}}return n?[rS/n,gS/n,bS/n]:[255,255,255];}
+  var c1=avgCorner(20,20,15),c2=avgCorner(W-20,20,15),c3=avgCorner(20,H-20,15),c4=avgCorner(W-20,H-20,15);
+  var bg=[(c1[0]+c2[0]+c3[0]+c4[0])/4,(c1[1]+c2[1]+c3[1]+c4[1])/4,(c1[2]+c2[2]+c3[2]+c4[2])/4];
+  function diff(r,g,b){return Math.abs(r-bg[0])+Math.abs(g-bg[1])+Math.abs(b-bg[2]);}
+  function findBounds(a,b2){var minX=W,maxX=0,minY=H,maxY=0;for(var y=0;y<H;y+=2){for(var x=a;x<b2;x+=2){var idx=(y*W+x)*4;if(diff(data[idx],data[idx+1],data[idx+2])>45){if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;}}}if(maxX<=minX||maxY<=minY)return null;return{x:minX/scale,y:minY/scale,w:(maxX-minX)/scale,h:(maxY-minY)/scale};}
+  return {before:findBounds(0,W/2),after:findBounds(W/2,W)};
+}
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
 function pill(c,t,x,y,bg,fg,sz){sz=sz||54;c.font='700 '+sz+'px Arial';var w=c.measureText(t).width+70,h=sz+50;rr(c,x-w/2,y-h/2,w,h,h/2);c.fillStyle=bg;c.fill();c.fillStyle=fg;c.textAlign='center';c.textBaseline='middle';c.fillText(t,x,y+4);}
-
-/* --- Frame-frame standar (fallback Mode Original) --- */
 function fHook(c,i,o,p){vbg(c,'#f5f5f5');drawContain(c,i);c.globalAlpha=Math.min(1,p*3);c.fillStyle='rgba(0,29,90,0.85)';c.fillRect(0,0,VW,300);c.font='900 92px Arial';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#f2b705';c.fillText(o.hook,VW/2,150,VW-140);c.globalAlpha=1;}
-function fBefore(c,i,o,p,bounds){vbg(c,'#111');drawSmartHalf(c,i,0,p,bounds);c.fillStyle='rgba(0,0,0,0.55)';c.fillRect(0,VH-400,VW,400);if(o.labels)pill(c,'❌ SEBELUM',VW/2,VH-220,'#b00020','#fff');if(o.badge)pill(c,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-90,'rgba(0,0,0,0.7)','#7CFC7C',40);}
-function fTrans(c,i,o,p){vbg(c,'#001d5a');c.save();c.translate(VW/2,VH/2-150);c.rotate(-0.12);c.fillStyle='#fff';c.fillRect(-450,-30,900,60);c.beginPath();c.moveTo(450,-90);c.lineTo(600,0);c.lineTo(450,90);c.closePath();c.fill();c.restore();c.font='900 110px Arial';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#f2b705';c.fillText('DIWENTER...',VW/2,VH/2+150);}
-function fAfter(c,i,o,p,bounds){vbg(c,'#111');drawSmartHalf(c,i,1,p,bounds);c.fillStyle='rgba(0,0,0,0.55)';c.fillRect(0,VH-400,VW,400);if(o.labels)pill(c,'✅ SESUDAH',VW/2,VH-220,'#0a7a34','#fff');if(o.badge)pill(c,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-90,'rgba(0,0,0,0.7)','#7CFC7C',40);}
-function fFull(c,i,o,p){vbg(c,'#f5f5f5');drawContain(c,i);pill(c,'JAYA WENTER • Hasil Nyata',VW/2,VH-140,'#001d5a','#fff',46);if(o.badge)pill(c,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-40,'rgba(0,0,0,0.6)','#7CFC7C',40);}
-function fCTA(c,o,p){vbg(c,'#001d5a');c.font='900 100px Arial';c.textAlign='center';c.textBaseline='middle';c.fillStyle='#fff';c.fillText('JAYA WENTER',VW/2,500);c.font='600 52px Arial';c.fillStyle='#cfd8ff';c.fillText('Jasa Pewarnaan Ulang Pakaian Profesional',VW/2,620);rr(c,VW/2-430,900,860,150,75);c.fillStyle='#25D366';c.fill();c.font='800 58px Arial';c.fillStyle='#fff';c.fillText('💬 Konsultasi Gratis',VW/2,978);c.font='800 74px Arial';c.fillStyle='#f2b705';c.fillText(o.wa,VW/2,1200);c.font='700 56px Arial';c.fillStyle='#fff';c.fillText('wenter.my.id',VW/2,1350);}
+function fBefore(c,i,o,p,bounds){drawSmartHalf(c,i,0,p,bounds);c.fillStyle='rgba(0,0,0,0.55)';c.fillRect(0,VH-380,VW,380);if(o.labels)pill(c,'❌ SEBELUM',VW/2,VH-210,'#b00020','#fff');if(o.badge)pill(c,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-80,'rgba(0,0,0,0.7)','#7CFC7C',40);}
+function fAfter(c,i,o,p,bounds){drawSmartHalf(c,i,1,p,bounds);c.fillStyle='rgba(0,0,0,0.55)';c.fillRect(0,VH-380,VW,380);if(o.labels)pill(c,'✅ SESUDAH',VW/2,VH-210,'#0a7a34','#fff');if(o.badge)pill(c,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-80,'rgba(0,0,0,0.7)','#7CFC7C',40);}
+function fFull(c,i,o,p){vbg(c,'#f5f5f5');drawContain(c,i);pill(c,'JAYA WENTER • '+TAGLINE,VW/2,VH-140,'#001d5a','#fff',40);if(o.badge)pill(c,'100% FOTO ASLI • TANPA EDITAN',VW/2,VH-40,'rgba(0,0,0,0.6)','#7CFC7C',40);}
 
 async function startVideo(){
   document.getElementById('log').innerHTML='';
@@ -766,39 +794,31 @@ async function startVideo(){
     if(!src)throw new Error('Pilih foto dulu.');
     var img=await loadImageSrc(src);
 
-    /* Auto-detect pakaian untuk mode sinematik */
-    var bounds=null;
+    var clothB=null,clothA=null,bounds=null,logo=null;
     if(o.cinematic && !o.original){
-      log('🔍 Menganalisis posisi pakaian...');
-      bounds=detectClothesBounds(img);
-      var okBefore=bounds.before?'✔':'⚠ fallback';
-      var okAfter=bounds.after?'✔':'⚠ fallback';
-      log('Before: '+okBefore+', After: '+okAfter);
-    }
-
-    /* Muat logo untuk frame akhir */
-    var logo=null;
-    if(o.cinematic){
+      log('🤖 AI menghapus background & tulisan (pertama kali ±unduh model, selanjutnya cepat)...');
+      try{ clothB=await extractCloth(img,0); log('✔ Pakaian BEFORE terekstrak bersih'); }
+      catch(e){ log('⚠ Before: AI gagal ('+e.message+') → pakai fallback','err'); }
+      try{ clothA=await extractCloth(img,1); log('✔ Pakaian AFTER terekstrak bersih'); }
+      catch(e){ log('⚠ After: AI gagal ('+e.message+') → pakai fallback','err'); }
+      if(!clothB||!clothA) bounds=detectClothesBounds(img);
       logo=await loadJWLogo();
-      log(logo?'🎭 Logo JAYA WENTER termuat':'⚠ Logo tidak ditemukan, pakai teks fallback');
+      log(logo?'🎭 Logo JAYA WENTER siap':'⚠ Logo tidak ditemukan, pakai teks');
     }
 
     log('Merender ±17 dtk... jangan tutup tab.');
     var canvas=document.getElementById('v-canvas'),ctx=canvas.getContext('2d');
-
     var segs;
     if(o.cinematic && !o.original){
-      /* Mode sinematik: before zoom → transisi → after zoom → logo zoom */
       segs=[
-        {d:2.0,f:function(p){fHook(ctx,img,o,p);}},
-        {d:3.5,f:function(p){fBefore(ctx,img,o,p,bounds);}},
+        {d:2.0,f:function(p){ clothB?fHookNew(ctx,clothB,o,p):fHook(ctx,img,o,p); }},
+        {d:3.5,f:function(p){ clothB?fBeforeNew(ctx,clothB,o,p):fBefore(ctx,img,o,p,bounds); }},
         {d:1.2,f:function(p){fTrans(ctx,img,o,p);}},
-        {d:3.5,f:function(p){fAfter(ctx,img,o,p,bounds);}},
+        {d:3.5,f:function(p){ clothA?fAfterNew(ctx,clothA,o,p):fAfter(ctx,img,o,p,bounds); }},
         {d:2.5,f:function(p){fCTA(ctx,o,p);}},
-        {d:2.8,f:function(p){drawLogoFrame(ctx,logo,p);}}
+        {d:3.0,f:function(p){drawLogoFrame(ctx,logo,p);}}
       ];
     } else {
-      /* Mode lama */
       segs=[
         {d:2.5,f:function(p){fHook(ctx,img,o,p);}},
         {d:3,f:function(p){fBefore(ctx,img,o,p,null);}},
@@ -928,7 +948,7 @@ async function autoCaption(){
     var t=document.getElementById('sh-type').value,keys='',cap='';
     if(t==='foto'){var it=JSON.parse((await getFile('content/gallery.json')).text).items[+document.getElementById('sh-foto').value||0];if(it){cap=it.title+' — '+it.description;keys=(it.keywords||[]).join(', ');}}
     else if(t==='blog'){var p=JSON.parse((await getFile('content/blog.json')).text).posts[+document.getElementById('sh-blog').value||0];if(p){cap=p.title+'. '+(p.summary||'')+'\nBaca: https://wenter.my.id/blog/post.html?slug='+encodeURIComponent(p.slug||p.title);keys=(p.keywords||[]).join(', ');}}
-    else if(t==='video-gen'){cap=document.getElementById('v-caption').value||'JANGAN DIBUANG! Hasil nyata jasa wenter Malang.';}
+    else if(t==='video-gen'){cap=document.getElementById('v-caption').value||'JANGAN DIBUANG! '+TAGLINE+' — jasa wenter Malang.';}
     document.getElementById('sh-keys').value=keys;
     if(cap)document.getElementById('sh-caption').value=cap;
   }catch(e){}
