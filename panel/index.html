@@ -248,18 +248,27 @@ async function generateAI(){
     if(prov==='gemini'){
       var gk=lsGet('gemini_key');
       if(!gk)throw new Error('Isi Gemini API Key di kartu pengaturan (aistudio.google.com → Get API key).');
-            var models=['gemini-2.5-flash-image','gemini-2.5-flash-image-preview','gemini-3-pro-image-preview','gemini-2.0-flash-preview-image-generation','gemini-2.0-flash-exp-image-generation'];
-      var gd=null,lastErr='';
-      for(var mi=0;mi<models.length;mi++){
-        var mname=models[mi];
+      var gd=null, errs=[];
+      var lm=await fetch('https://generativelanguage.googleapis.com/v1beta/models?key='+gk+'&pageSize=200');
+      var lj=await lm.json();
+      var avail=[];
+      ((lj.models)||[]).forEach(function(m){
+        var n=(m.name||'').replace('models/','');
+        var met=m.supportedGenerationMethods||[];
+        if(n.indexOf('image')>=0&&met.indexOf('generateContent')>=0) avail.push(n);
+      });
+      if(!avail.length) avail=['gemini-2.5-flash-image'];
+      avail.sort(function(a,b){function sc(x){if(x.indexOf('gemini-2.5-flash-image')===0)return 0;if(x.indexOf('gemini-3')===0)return 1;if(x.indexOf('gemini-2.0')===0)return 3;return 2;}return sc(a)-sc(b);});
+      for(var mi=0;mi<avail.length;mi++){
+        var mname=avail[mi];
         var gbody={contents:[{parts:[{text:p+', '+st+', high quality, no text, no watermark, no words'}]}]};
         if(mname.indexOf('gemini-2.0')===0){gbody.generationConfig={responseModalities:['TEXT','IMAGE']};}
         var gr=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+mname+':generateContent?key='+gk,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(gbody)});
         var gj=await gr.json();
         if(gr.ok&&gj.candidates){gd=gj;break;}
-        lastErr=mname+' → '+((gj.error&&gj.error.message)||('HTTP '+gr.status));
+        errs.push(mname+': '+((gj.error&&gj.error.message)||gr.status));
       }
-      if(!gd)throw new Error('Gemini: '+lastErr);
+      if(!gd)throw new Error('Gemini: '+errs.join(' | ').slice(0,400));
       var gparts=(((gd.candidates||[])[0]||{}).content||{}).parts||[];
       var imgPart=null;
       for(var pi2=0;pi2<gparts.length;pi2++){if(gparts[pi2].inlineData){imgPart=gparts[pi2];break;}}
