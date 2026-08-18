@@ -59,7 +59,7 @@
   <label>IG User ID</label><input id="s-ig">
   <label>Telegram Bot Token</label><input id="s-tg" type="password">
   <label>Telegram Channel</label><input id="s-tgch" placeholder="@jayawenter_update">
-  <label>Gemini API Key (gratis, direkomendasikan)</label><input id="s-gem" type="password">
+  <label>🎨 Gemini API Key (untuk Imagen 3, gratis 15 gambar/hari)</label><input id="s-gem" type="password">
   <label>OpenAI API Key (opsional, berbayar)</label><input id="s-oai" type="password">
   <button onclick="saveSettings()">💾 Simpan Semua Pengaturan</button>
   <p class="hint">Semua tersimpan hanya di browser ini.</p>
@@ -100,13 +100,15 @@
     <label>Ringkasan</label><input id="b-summary">
     <div class="ai-box">
       <b>🎨 Gambar AI untuk Cover (opsional)</b>
+      <p class="hint">Provider AI akan otomatis dipilih sesuai ketersediaan. Jika Imagen 3 habis kuotanya, Pollinations dipakai otomatis.</p>
       <label>Provider AI</label>
       <select id="b-ai-provider">
-        <option value="gemini">Gemini Google (gratis, direkomendasikan)</option>
-        <option value="pollinations">Pollinations (gratis, alternatif)</option>
+        <option value="auto">🤖 Otomatis (Imagen 3 → Pollinations)</option>
+        <option value="imagen">Imagen 3 Google (gratis, terbatas)</option>
+        <option value="pollinations">Pollinations (gratis, tanpa batas)</option>
         <option value="openai">OpenAI DALL·E (berbayar)</option>
       </select>
-      <label>Prompt</label><input id="b-ai-prompt" placeholder="Contoh: foto celana jeans hitam pudar terlipat di meja kayu, cahaya studio, realistis">
+      <label>Prompt <span class="hint">(bahasa Indonesia boleh)</span></label><input id="b-ai-prompt" placeholder="Contoh: foto celana jeans hitam pudar terlipat di meja kayu, cahaya studio, realistis">
       <button class="secondary" type="button" onclick="fillPromptFromTitle()">↓ Dari Judul</button>
       <label>Gaya</label><select id="b-ai-style"><option value="realistic photo">Foto Realistis</option><option value="flat illustration">Ilustrasi Flat</option><option value="watercolor illustration">Cat Air</option><option value="3d render">3D</option></select>
       <button class="secondary" type="button" onclick="generateAI()">🎨 Generate</button>
@@ -235,64 +237,68 @@ async function uploadVideoToR2(blob,name){
 }
 
 /* ---- AI ---- */
-function fillPromptFromTitle(){var t=document.getElementById('b-title').value.trim();if(t)document.getElementById('b-ai-prompt').value=t+', realistic photo, soft daylight, no text';}
+function fillPromptFromTitle(){var t=document.getElementById('b-title').value.trim();if(t)document.getElementById('b-ai-prompt').value=t+', foto realistis, cahaya lembut, tanpa teks';}
 function b64ToBlob(b64,type){var bin=atob(b64);var arr=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return new Blob([arr],{type:type});}
+async function tryImagen(key,prompt){
+  var models=['imagen-3.0-generate-002','imagen-3.0-generate-001'];
+  for(var i=0;i<models.length;i++){
+    var r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+models[i]+':predict?key='+key,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({instances:[{prompt:prompt}],parameters:{sampleCount:1,aspectRatio:'3:2'}})});
+    var j=await r.json();
+    if(r.ok&&j.predictions&&j.predictions[0]&&j.predictions[0].bytesBase64Encoded){
+      return b64ToBlob(j.predictions[0].bytesBase64Encoded,'image/png');
+    }
+  }
+  throw new Error('Imagen tidak tersedia atau kuota habis');
+}
+async function tryPollinations(prompt,style){
+  var seed=Math.floor(Math.random()*1e6);
+  var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt+', '+style+', professional quality, highly detailed, no text, no watermark')+'?width=1280&height=832&nologo=true&model=flux&enhance=true&seed='+seed;
+  var r=await fetch(url);
+  if(!r.ok)throw new Error('Pollinations HTTP '+r.status);
+  return await r.blob();
+}
+async function tryOpenAI(key,prompt,style){
+  var r=await fetch('https://api.openai.com/v1/images/generations',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-image-1',prompt:prompt+', '+style+', no text, no watermark',size:'1536x1024'})});
+  var d=await r.json();
+  if(!r.ok)throw new Error((d.error&&d.error.message)||('HTTP '+r.status));
+  return b64ToBlob(d.data[0].b64_json,'image/png');
+}
 async function generateAI(){
   var p=document.getElementById('b-ai-prompt').value.trim();
   if(!p){alert('Isi prompt.');return;}
   var prov=document.getElementById('b-ai-provider').value;
   var st=document.getElementById('b-ai-style').value;
   var s=document.getElementById('b-ai-status');
-  s.textContent='Membuat gambar... (bisa ±15-30 detik)';
+  s.textContent='Membuat gambar... (±15-30 detik)';
   try{
-    if(prov==='gemini'){
-      var gk=lsGet('gemini_key');
-      if(!gk)throw new Error('Isi Gemini API Key di kartu pengaturan (aistudio.google.com → Get API key).');
-      var gd=null, errs=[];
-      var lm=await fetch('https://generativelanguage.googleapis.com/v1beta/models?key='+gk+'&pageSize=200');
-      var lj=await lm.json();
-      var avail=[];
-      ((lj.models)||[]).forEach(function(m){
-        var n=(m.name||'').replace('models/','');
-        var met=m.supportedGenerationMethods||[];
-        if(n.indexOf('image')>=0&&met.indexOf('generateContent')>=0) avail.push(n);
-      });
-      if(!avail.length) avail=['gemini-2.5-flash-image'];
-      avail.sort(function(a,b){function sc(x){if(x.indexOf('gemini-2.5-flash-image')===0)return 0;if(x.indexOf('gemini-3')===0)return 1;if(x.indexOf('gemini-2.0')===0)return 3;return 2;}return sc(a)-sc(b);});
-      for(var mi=0;mi<avail.length;mi++){
-        var mname=avail[mi];
-        var gbody={contents:[{parts:[{text:p+', '+st+', high quality, no text, no watermark, no words'}]}]};
-        if(mname.indexOf('gemini-2.0')===0){gbody.generationConfig={responseModalities:['TEXT','IMAGE']};}
-        var gr=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+mname+':generateContent?key='+gk,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(gbody)});
-        var gj=await gr.json();
-        if(gr.ok&&gj.candidates){gd=gj;break;}
-        errs.push(mname+': '+((gj.error&&gj.error.message)||gr.status));
-      }
-      if(!gd)throw new Error('Gemini: '+errs.join(' | ').slice(0,400));
-      var gparts=(((gd.candidates||[])[0]||{}).content||{}).parts||[];
-      var imgPart=null;
-      for(var pi2=0;pi2<gparts.length;pi2++){if(gparts[pi2].inlineData){imgPart=gparts[pi2];break;}}
-      if(!imgPart)throw new Error('Gemini tidak mengirim gambar (mungkin model ini belum mendukung gambar, coba beberapa saat lagi).');
-      aiCoverBlob=b64ToBlob(imgPart.inlineData.data,imgPart.inlineData.mimeType||'image/png');
-    }else if(prov==='openai'){
+    var blob=null, used='';
+    if(prov==='openai'){
       var key=lsGet('openai_key');
       if(!key)throw new Error('Isi OpenAI API Key di kartu pengaturan.');
-      var r=await fetch('https://api.openai.com/v1/images/generations',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-image-1',prompt:p+', '+st+', no text, no watermark',size:'1536x1024'})});
-      var d=await r.json();
-      if(!r.ok)throw new Error((d.error&&d.error.message)||('HTTP '+r.status));
-      aiCoverBlob=b64ToBlob(d.data[0].b64_json,'image/png');
-    }else{
-      var seed=Math.floor(Math.random()*1e6);
-      var url='https://image.pollinations.ai/prompt/'+encodeURIComponent(p+', '+st+', professional quality, highly detailed, no text, no watermark')+'?width=1280&height=832&nologo=true&model=flux&enhance=true&seed='+seed;
-      var r2=await fetch(url);
-      if(!r2.ok)throw new Error('HTTP '+r2.status);
-      aiCoverBlob=await r2.blob();
+      blob=await tryOpenAI(key,p,st); used='OpenAI DALL·E';
+    } else if(prov==='pollinations'){
+      blob=await tryPollinations(p,st); used='Pollinations';
+    } else if(prov==='imagen'){
+      var key=lsGet('gemini_key');
+      if(!key)throw new Error('Isi Gemini API Key di kartu pengaturan.');
+      blob=await tryImagen(key,p+', '+st+', no text, no watermark'); used='Imagen 3';
+    } else {
+      var key=lsGet('gemini_key');
+      var err1='';
+      if(key){
+        try{ blob=await tryImagen(key,p+', '+st+', no text, no watermark'); used='Imagen 3'; }
+        catch(e){ err1=e.message; s.textContent='Imagen gagal ('+err1+'). Beralih ke Pollinations...'; }
+      }
+      if(!blob){
+        blob=await tryPollinations(p,st); used='Pollinations';
+      }
     }
+    aiCoverBlob=blob;
     var pv=document.getElementById('b-ai-preview');
-    pv.src=URL.createObjectURL(aiCoverBlob);
+    pv.src=URL.createObjectURL(blob);
     pv.classList.remove('hidden');
     document.getElementById('b-ai-use').classList.remove('hidden');
-    s.textContent='Siap. Klik "Jadikan Cover" atau Generate lagi.';
+    s.textContent='✔ '+used+' berhasil. Klik "Jadikan Cover" atau Generate lagi untuk variasi lain.';
   }catch(e){s.textContent='Gagal: '+e.message;}
 }
 function useAICover(){if(!aiCoverBlob)return;var f=new File([aiCoverBlob],'ai-cover-'+Date.now()+'.jpg',{type:'image/jpeg'});var dt=new DataTransfer();dt.items.add(f);document.getElementById('b-cover').files=dt.files;document.getElementById('b-ai-status').textContent='✔ Terpasang sebagai cover.';}
