@@ -59,7 +59,8 @@
   <label>IG User ID</label><input id="s-ig">
   <label>Telegram Bot Token</label><input id="s-tg" type="password">
   <label>Telegram Channel</label><input id="s-tgch" placeholder="@jayawenter_update">
-  <label>OpenAI API Key (opsional, untuk DALL·E)</label><input id="s-oai" type="password">
+  <label>Gemini API Key (gratis, direkomendasikan)</label><input id="s-gem" type="password">
+  <label>OpenAI API Key (opsional, berbayar)</label><input id="s-oai" type="password">
   <button onclick="saveSettings()">💾 Simpan Semua Pengaturan</button>
   <p class="hint">Semua tersimpan hanya di browser ini.</p>
 </div>
@@ -100,8 +101,12 @@
     <div class="ai-box">
       <b>🎨 Gambar AI untuk Cover (opsional)</b>
       <label>Provider AI</label>
-      <select id="b-ai-provider"><option value="pollinations">Pollinations (gratis, ditingkatkan)</option><option value="openai">OpenAI DALL·E (butuh API key)</option></select>
-      <label>Prompt</label><input id="b-ai-prompt">
+      <select id="b-ai-provider">
+        <option value="gemini">Gemini Google (gratis, direkomendasikan)</option>
+        <option value="pollinations">Pollinations (gratis, alternatif)</option>
+        <option value="openai">OpenAI DALL·E (berbayar)</option>
+      </select>
+      <label>Prompt</label><input id="b-ai-prompt" placeholder="Contoh: foto celana jeans hitam pudar terlipat di meja kayu, cahaya studio, realistis">
       <button class="secondary" type="button" onclick="fillPromptFromTitle()">↓ Dari Judul</button>
       <label>Gaya</label><select id="b-ai-style"><option value="realistic photo">Foto Realistis</option><option value="flat illustration">Ilustrasi Flat</option><option value="watercolor illustration">Cat Air</option><option value="3d render">3D</option></select>
       <button class="secondary" type="button" onclick="generateAI()">🎨 Generate</button>
@@ -184,6 +189,7 @@ function saveSettings(){
   localStorage.setItem('ig_id',document.getElementById('s-ig').value.trim());
   localStorage.setItem('tg_token',document.getElementById('s-tg').value.trim());
   localStorage.setItem('tg_channel',document.getElementById('s-tgch').value.trim());
+  localStorage.setItem('gemini_key',document.getElementById('s-gem').value.trim());
   localStorage.setItem('openai_key',document.getElementById('s-oai').value.trim());
   alert('Pengaturan tersimpan di browser ini.');
 }
@@ -196,6 +202,7 @@ function loadSettings(){
   document.getElementById('s-ig').value=lsGet('ig_id');
   document.getElementById('s-tg').value=lsGet('tg_token');
   document.getElementById('s-tgch').value=lsGet('tg_channel');
+  document.getElementById('s-gem').value=lsGet('gemini_key');
   document.getElementById('s-oai').value=lsGet('openai_key');
 }
 function showTab(t){
@@ -236,9 +243,26 @@ async function generateAI(){
   var prov=document.getElementById('b-ai-provider').value;
   var st=document.getElementById('b-ai-style').value;
   var s=document.getElementById('b-ai-status');
-  s.textContent='Membuat gambar... (bisa ±30 detik)';
+  s.textContent='Membuat gambar... (bisa ±15-30 detik)';
   try{
-    if(prov==='openai'){
+    if(prov==='gemini'){
+      var gk=lsGet('gemini_key');
+      if(!gk)throw new Error('Isi Gemini API Key di kartu pengaturan (aistudio.google.com → Get API key).');
+      var models=['gemini-2.5-flash-image','gemini-2.0-flash-preview-image-generation','gemini-2.0-flash-exp-image-generation','gemini-1.5-flash'];
+      var gd=null,lastErr='';
+      for(var mi=0;mi<models.length;mi++){
+        var gr=await fetch('https://generativelanguage.googleapis.com/v1beta/models/'+models[mi]+':generateContent?key='+gk,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:p+', '+st+', high quality, no text, no watermark, no words'}]}],generationConfig:{responseModalities:['TEXT','IMAGE']}})});
+        var gj=await gr.json();
+        if(gr.ok&&gj.candidates){gd=gj;break;}
+        lastErr=(gj.error&&gj.error.message)||('HTTP '+gr.status);
+      }
+      if(!gd)throw new Error('Gemini: '+lastErr);
+      var gparts=(((gd.candidates||[])[0]||{}).content||{}).parts||[];
+      var imgPart=null;
+      for(var pi2=0;pi2<gparts.length;pi2++){if(gparts[pi2].inlineData){imgPart=gparts[pi2];break;}}
+      if(!imgPart)throw new Error('Gemini tidak mengirim gambar (mungkin model ini belum mendukung gambar, coba beberapa saat lagi).');
+      aiCoverBlob=b64ToBlob(imgPart.inlineData.data,imgPart.inlineData.mimeType||'image/png');
+    }else if(prov==='openai'){
       var key=lsGet('openai_key');
       if(!key)throw new Error('Isi OpenAI API Key di kartu pengaturan.');
       var r=await fetch('https://api.openai.com/v1/images/generations',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({model:'gpt-image-1',prompt:p+', '+st+', no text, no watermark',size:'1536x1024'})});
