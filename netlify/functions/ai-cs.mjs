@@ -1,7 +1,7 @@
 import { JAYA_WENTER_KB } from "../../content/jaya-wenter-knowledge.mjs";
 import { SYSTEM_PROMPT } from "../../content/jaya-wenter-prompt.mjs";
 
-const MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
 export default async (req) => {
   if (req.method !== "POST") {
@@ -49,7 +49,6 @@ Buat satu jawaban WhatsApp yang siap dikirim. Jangan menambahkan fakta yang tida
       body: JSON.stringify({
         contents: [{ role: "user", parts: [{ text: instruction }] }],
         generationConfig: {
-          temperature: 0.2,
           maxOutputTokens: 300
         }
       })
