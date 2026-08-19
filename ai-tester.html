@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tester AI CS — Jaya Wenter</title>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;max-width:760px;margin:auto;padding:20px;background:#f5f5f5}
+h1{font-size:22px}.box{background:white;border-radius:12px;padding:16px;margin:12px 0}
+textarea{width:100%;box-sizing:border-box;min-height:90px;padding:12px;border:1px solid #ccc;border-radius:8px;font:inherit}
+button{padding:11px 16px;border:0;border-radius:8px;cursor:pointer;font-weight:600;background:#111;color:white}
+.msg{padding:12px;border-radius:10px;margin:8px 0;white-space:pre-wrap}.user{background:#e8f0fe}.ai{background:#eee}
+small{color:#666}
+</style>
+</head>
+<body>
+<h1>Tester AI CS Jaya Wenter</h1>
+<div class="box">
+<small>Pengujian internal — belum terhubung ke WhatsApp.</small>
+<textarea id="message" placeholder="Contoh: Kak alamatnya dimana?"></textarea>
+<button id="ask">Kirim ke AI</button>
+</div>
+<div id="result"></div>
+<script>
+const input=document.getElementById('message'),btn=document.getElementById('ask'),result=document.getElementById('result');
+async function ask(){
+ const message=input.value.trim(); if(!message)return;
+ btn.disabled=true; btn.textContent='Memproses...';
+ result.insertAdjacentHTML('beforeend',`<div class="msg user">${escapeHtml(message)}</div>`);
+ try{
+  const r=await fetch('/api/ai-cs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});
+  const data=await r.json(); if(!r.ok)throw new Error(data.error||'Request gagal');
+  result.insertAdjacentHTML('beforeend',`<div class="msg ai">${escapeHtml(data.answer)}</div>`);
+ }catch(e){result.insertAdjacentHTML('beforeend',`<div class="msg ai">Error: ${escapeHtml(e.message)}</div>`);}
+ finally{btn.disabled=false;btn.textContent='Kirim ke AI';}
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+btn.addEventListener('click',ask);
+input.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey))ask()});
+</script>
+</body>
+</html>
