@@ -29,7 +29,7 @@ async function ask(){
  result.insertAdjacentHTML('beforeend',`<div class="msg user">${escapeHtml(message)}</div>`);
  try{
   const r=await fetch('/api/ai-cs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})});
-  const data=await r.json(); if(!r.ok)throw new Error(data.error||'Request gagal');
+  const data=await r.json(); if(!r.ok) throw new Error(data.detail || data.error || 'Request gagal');
   result.insertAdjacentHTML('beforeend',`<div class="msg ai">${escapeHtml(data.answer)}</div>`);
  }catch(e){result.insertAdjacentHTML('beforeend',`<div class="msg ai">Error: ${escapeHtml(e.message)}</div>`);}
  finally{btn.disabled=false;btn.textContent='Kirim ke AI';}
