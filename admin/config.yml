@@ -1,0 +1,244 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "homepage"
+    label: "Halaman Utama"
+    files:
+      - name: "homepage"
+        label: "Susunan Blok Halaman Utama"
+        file: "content/homepage.json"
+        fields:
+          - name: "blocks"
+            label: "Blok Halaman"
+            widget: "list"
+            summary: "{{fields.type}} — {{fields.heading}}{{fields.title}}"
+            types:
+              - name: "hero"
+                label: "Hero (Judul Utama)"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "hero" }
+                  - { name: "title", label: "Judul", widget: "string" }
+                  - { name: "subtitle", label: "Subjudul", widget: "text" }
+                  - { name: "image", label: "Gambar", widget: "image" }
+                  - { name: "image_alt", label: "Alt Text Gambar", widget: "string", required: false }
+                  - { name: "cta_text", label: "Teks Tombol", widget: "string" }
+                  - { name: "cta_link", label: "Link Tombol (mis. WhatsApp)", widget: "string" }
+              - name: "text"
+                label: "Teks Bebas"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "text" }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - { name: "body", label: "Isi Teks", widget: "text" }
+              - name: "feature_grid"
+                label: "Grid Keunggulan"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "feature_grid" }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - name: "items"
+                    label: "Daftar Keunggulan"
+                    widget: "list"
+                    fields:
+                      - { name: "title", label: "Judul", widget: "string" }
+                      - { name: "subtitle", label: "Keterangan", widget: "string" }
+              - name: "gallery_preview"
+                label: "Cuplikan Galeri"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "gallery_preview" }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - { name: "subheading", label: "Subjudul", widget: "text" }
+                  - name: "images"
+                    label: "Gambar"
+                    widget: "list"
+                    fields:
+                      - { name: "src", label: "Gambar", widget: "image" }
+                      - { name: "alt", label: "Alt Text (SEO)", widget: "string" }
+                  - { name: "cta_text", label: "Teks Tombol", widget: "string", required: false }
+                  - { name: "cta_link", label: "Link Tombol", widget: "string", required: false }
+              - name: "service_list"
+                label: "Daftar Layanan"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "service_list" }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - name: "items"
+                    label: "Layanan"
+                    widget: "list"
+                    fields:
+                      - { name: "title", label: "Nama Layanan", widget: "string" }
+                      - { name: "description", label: "Deskripsi", widget: "text" }
+              - name: "color_palette"
+                label: "Pilihan Warna"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "color_palette" }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - { name: "subheading", label: "Subjudul", widget: "string" }
+                  - name: "colors"
+                    label: "Warna"
+                    widget: "list"
+                    fields:
+                      - { name: "name", label: "Nama Warna", widget: "string" }
+                      - { name: "hex", label: "Kode Warna (hex)", widget: "color" }
+              - name: "pricing_table"
+                label: "Tabel Harga"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "pricing_table" }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - name: "rows"
+                    label: "Daftar Harga"
+                    widget: "list"
+                    fields:
+                      - { name: "item", label: "Nama Barang", widget: "string" }
+                      - { name: "price", label: "Harga", widget: "string" }
+              - name: "testimonials"
+                label: "Testimoni"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "testimonials" }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - name: "items"
+                    label: "Testimoni"
+                    widget: "list"
+                    fields:
+                      - { name: "stars", label: "Bintang (1-5)", widget: "number", default: 5, min: 1, max: 5 }
+                      - { name: "name", label: "Nama Pelanggan", widget: "string" }
+                      - { name: "text", label: "Isi Testimoni", widget: "text" }
+                  - { name: "cta_text", label: "Teks Tombol", widget: "string", required: false }
+                  - { name: "cta_link", label: "Link Tombol (mis. Google Review)", widget: "string", required: false }
+              - name: "faq"
+                label: "FAQ"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "faq" }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - name: "items"
+                    label: "Pertanyaan"
+                    widget: "list"
+                    fields:
+                      - { name: "question", label: "Pertanyaan", widget: "string" }
+                      - { name: "answer", label: "Jawaban", widget: "text" }
+              - name: "blog_preview"
+                label: "Cuplikan Blog"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "blog_preview" }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - name: "posts"
+                    label: "Postingan"
+                    widget: "list"
+                    fields:
+                      - { name: "title", label: "Judul", widget: "string" }
+                      - { name: "excerpt", label: "Ringkasan", widget: "text" }
+                      - { name: "link", label: "Link", widget: "string" }
+              - name: "cta_banner"
+                label: "Banner Ajakan (CTA)"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "cta_banner" }
+                  - { name: "anchor", label: "ID Anchor (opsional, utk link menu)", widget: "string", required: false }
+                  - name: "style"
+                    label: "Gaya Tombol"
+                    widget: "select"
+                    options: ["default", "agent", "consult"]
+                    default: "default"
+                  - { name: "heading", label: "Judul", widget: "string" }
+                  - { name: "body", label: "Isi", widget: "text" }
+                  - { name: "cta_text", label: "Teks Tombol", widget: "string" }
+                  - { name: "cta_link", label: "Link Tombol", widget: "string" }
+              - name: "legal_terms"
+                label: "Ketentuan/Syarat Layanan"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "legal_terms" }
+                  - { name: "anchor", label: "ID Anchor (opsional)", widget: "string", required: false }
+                  - { name: "heading", label: "Judul Section", widget: "string" }
+                  - { name: "summary", label: "Judul Dropdown", widget: "string" }
+                  - name: "sections"
+                    label: "Pasal/Bagian"
+                    widget: "list"
+                    fields:
+                      - { name: "title", label: "Judul Pasal", widget: "string" }
+                      - { name: "body", label: "Isi", widget: "text" }
+              - name: "video"
+                label: "Video (YouTube/TikTok)"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "video" }
+                  - name: "provider"
+                    label: "Platform"
+                    widget: "select"
+                    options: ["youtube", "tiktok"]
+                  - { name: "url", label: "Link Video", widget: "string" }
+                  - { name: "caption", label: "Keterangan (opsional)", widget: "string", required: false }
+              - name: "custom_embed"
+                label: "Embed Bebas (aplikasi/widget lain)"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "custom_embed" }
+                  - { name: "html", label: "Kode HTML/iframe", widget: "text" }
+              - name: "ai_chat_widget"
+                label: "Widget Chat AI"
+                widget: "object"
+                fields:
+                  - { name: "type", widget: "hidden", default: "ai_chat_widget" }
+                  - { name: "greeting", label: "Kalimat Sapaan", widget: "string" }
+                  - name: "position"
+                    label: "Posisi"
+                    widget: "select"
+                    options: ["bottom-right", "bottom-left"]
+                    default: "bottom-right"
+
+  - name: "gallery"
+    label: "Galeri"
+    files:
+      - name: "gallery"
+        label: "Daftar Foto Galeri"
+        file: "content/gallery.json"
+        fields:
+          - name: "items"
+            label: "Daftar Foto"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { name: "image", label: "Foto", widget: "image" }
+              - { name: "alt", label: "Alt Text (SEO)", widget: "string" }
+              - { name: "title", label: "Judul", widget: "string" }
+              - { name: "description", label: "Deskripsi", widget: "text" }
+              - name: "kategori"
+                label: "Kategori"
+                widget: "select"
+                options: ["celana", "hoodie", "jaket", "kaos", "kemeja", "tas", "topi", "lainnya"]
+              - { name: "merk", label: "Merk (opsional)", widget: "string", required: false }
+              - name: "warna"
+                label: "Warna"
+                widget: "select"
+                options: ["hitam", "biru", "hijau", "coklat", "abu"]
+
+  - name: "blog"
+    label: "Blog"
+    files:
+      - name: "blog"
+        label: "Daftar Postingan Blog"
+        file: "content/blog.json"
+        fields:
+          - name: "posts"
+            label: "Daftar Postingan"
+            widget: "list"
+            summary: "{{fields.title}} - {{fields.date}}"
+            fields:
+              - { name: "title", label: "Judul Postingan", widget: "string" }
+              - { name: "date", label: "Tanggal", widget: "datetime", format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+              - { name: "category", label: "Kategori (opsional)", widget: "string", required: false }
+              - { name: "summary", label: "Ringkasan (opsional)", widget: "text", required: false }
+              - { name: "cover", label: "Gambar Cover (opsional)", widget: "image", required: false }
+              - { name: "body", label: "Isi Postingan", widget: "markdown" }
