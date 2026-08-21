@@ -1,0 +1,170 @@
+{
+  "blocks": [
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "title": "Jasa Wenter Malang Profesional",
+      "subtitle": "Mengembalikan warna jeans, jaket, kaos, celana, hoodie, sweater dan seragam yang pudar agar lebih pekat, merata dan memiliki tampilan baru.",
+      "image": "assets/wenter-malang-celana-pendek.png",
+      "image_alt": "Jasa Wenter Malang",
+      "cta_text": "Pesan Sekarang",
+      "cta_link": "https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..."
+    },
+    {
+      "id": "text-1",
+      "type": "text",
+      "heading": "Tentang JAYA WENTER",
+      "body": "JAYA WENTER merupakan jasa wenter Malang yang melayani pewarnaan ulang pakaian pudar seperti jeans, jaket, kaos, celana, hoodie, sweater, tas dan seragam.\n\nDengan proses wenter profesional, warna pakaian kembali lebih pekat, merata dan nyaman digunakan. Kami melayani pelanggan di Malang maupun seluruh Indonesia melalui layanan pengiriman."
+    },
+    {
+      "id": "features-1",
+      "type": "feature_grid",
+      "heading": "Keunggulan JAYA WENTER",
+      "items": [
+        { "title": "WARNA BARU", "subtitle": "Lebih Pekat & Merata" },
+        { "title": "SERAT AMAN", "subtitle": "Tetap Kuat" },
+        { "title": "HASIL RAPI", "subtitle": "Tahan Lama" },
+        { "title": "TAMPILAN BARU", "subtitle": "Mengubah Baju Lama Anda Agar Memiliki Tampilan Yang Baru" }
+      ]
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery_preview",
+      "heading": "Galeri Before After JAYA WENTER",
+      "subheading": "Hasil wenter jeans, jaket, kaos, celana, tas dan berbagai pakaian yang telah kami kerjakan.",
+      "images": [
+        { "src": "assets/wenter-malang-rok-jeans.png", "alt": "Jasa Wenter Malang Rok Kena Pemutih" },
+        { "src": "assets/wenter-malang-celana-pendek.png", "alt": "Jasa Wenter Malang Celana Pendek" },
+        { "src": "assets/wenter-malang-jaket-jeans-biru.png", "alt": "Jasa Wenter Malang Jaket Jeans Biru" },
+        { "src": "assets/wenter-malang-celana-hijau.png", "alt": "Jasa Wenter Malang Jaket Jeans Hijau" },
+        { "src": "assets/wenter-malang-hoodie.png", "alt": "Jasa Wenter Malang Hoodie" },
+        { "src": "assets/wenter-malang-tas-eiger.png", "alt": "Jasa Wenter Malang Tas Eiger" },
+        { "src": "assets/wenter-malang-topi-nike.png", "alt": "Jasa Wenter Malang Jaket Jeans Biru" },
+        { "src": "assets/wenter-malang-kaos-nike.png", "alt": "Jasa Wenter Malang Kaos" }
+      ],
+      "cta_text": "Lihat Semua Hasil Wenter",
+      "cta_link": "/galeri/"
+    },
+    {
+      "id": "services-1",
+      "type": "service_list",
+      "heading": "Layanan JAYA WENTER",
+      "items": [
+        { "title": "Wenter Jeans", "description": "Mengembalikan warna jeans pudar agar kembali lebih pekat dan merata." },
+        { "title": "Wenter Jaket & Hoodie", "description": "Pewarnaan ulang jaket & hoodie berbahan katun maupun jeans." },
+        { "title": "Wenter Kaos", "description": "Membuat warna kaos kusam kembali lebih segar dan menarik." },
+        { "title": "Wenter Celana", "description": "Cocok untuk celana kerja maupun celana kasual berbahan katun dan jeans yang mulai memudar." },
+        { "title": "Wenter berbagai jenis pakaian lain berbahan katun", "description": "Mengembalikan warna berbagai jenis pakaian berbahan katun agar tampak lebih rapi." }
+      ]
+    },
+    {
+      "id": "colors-1",
+      "type": "color_palette",
+      "heading": "Pilihan Warna Wenter",
+      "subheading": "Tersedia 5 warna pilihan.",
+      "colors": [
+        { "name": "Hitam", "hex": "#1a1a1a" },
+        { "name": "Biru Tua", "hex": "#1c3f6e" },
+        { "name": "Hijau Tua", "hex": "#2f4a2b" },
+        { "name": "Coklat Tua", "hex": "#4b3324" },
+        { "name": "Abu-Abu Tua", "hex": "#54524f" }
+      ]
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing_table",
+      "heading": "Tarif Jasa Wenter Malang",
+      "rows": [
+        { "item": "Celana Panjang", "price": "Rp30.000" },
+        { "item": "Jaket", "price": "Rp30.000" },
+        { "item": "Hoodie", "price": "Rp30.000" },
+        { "item": "Sweater", "price": "Rp30.000" },
+        { "item": "Kemeja", "price": "Rp30.000" },
+        { "item": "Kaos", "price": "Rp30.000" },
+        { "item": "Tas", "price": "Rp30.000" },
+        { "item": "Topi", "price": "Rp25.000" },
+        { "item": "Sepatu", "price": "Rp30.000" },
+        { "item": "Ukuran Jumbo", "price": "Menyesuaikan" }
+      ]
+    },
+    {
+      "id": "testimonials-1",
+      "type": "testimonials",
+      "heading": "Testimoni Pelanggan & Review Google",
+      "items": [
+        { "stars": 5, "name": "Mikazen", "text": "Hasilnya bagus dan sesuai, rekomended. Saya wenter 2 celana dan 2 jaket. Terima kasih." },
+        { "stars": 5, "name": "Rizky Safitri", "text": "Hasilnya bagus \ud83d\ude0d\ud83d\ude0d\ud83d\ude0d" },
+        { "stars": 5, "name": "Pelanggan Google", "text": "Banyak pelanggan mempercayakan jeans, jaket, kaos dan seragam mereka kepada JAYA WENTER." }
+      ],
+      "cta_text": "Lihat Review Google",
+      "cta_link": "https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7"
+    },
+    {
+      "id": "faq-1",
+      "type": "faq",
+      "heading": "Pertanyaan yang Sering Diajukan (FAQ)",
+      "items": [
+        { "question": "Apa itu jasa wenter?", "answer": "Jasa wenter atau jasa wantex adalah layanan pewarnaan ulang pakaian atau barang berbahan kain yang warnanya sudah pudar sehingga tampil lebih pekat dan segar kembali." },
+        { "question": "Pakaian atau barang apa saja yang bisa diwenter?", "answer": "Kami khusus menerima pakaian dan barang berbahan katun serta jeans seperti celana jeans, kaos, kemeja, jaket, hoodie, sweater, rok, topi, tas berbahan katun atau kanvas, sepatu berbahan kain tertentu, serta jenis pakaian lainnya yang berbahan katun atau jeans." },
+        { "question": "Apakah semua jenis bahan bisa diwenter?", "answer": "Tidak. Kami hanya menerima bahan katun dan jeans. Beberapa bahan yang tidak bisa diwenter dengan pewarna kami diantaranya:\n- Polyester\n- Parasut\n- Nylon\n- Wool\n- Spandek\n- Bahan sintetis lainnya" },
+        { "question": "Apakah warna bisa lebih pekat dari kondisi sekarang?", "answer": "Dalam banyak kasus warna pakaian yang pudar dapat menjadi jauh lebih pekat dibanding kondisi sebelum diwenter, tergantung warna awal dan kondisi bahan." },
+        { "question": "Warna apa saja yang tersedia?", "answer": "Hitam, Biru Tua, Hijau Tua, Coklat Tua, dan Abu-Abu Tua." },
+        { "question": "Berapa lama proses pengerjaan?", "answer": "Estimasi pengerjaan sekitar 3\u20137 hari atau menyesuaikan banyaknya pakaian dan antrian." },
+        { "question": "Berapa biaya jasa wenter?", "answer": "- Celana Panjang Rp30.000\n- Jaket Rp30.000\n- Hoodie Rp30.000\n- Sweater Rp30.000\n- Kaos Rp30.000\n- Kemeja Rp30.000\n- Rok Rp30.000\n- Tas Rp30.000\n- Topi Rp25.000\n- Sepatu Rp30.000" },
+        { "question": "Apakah bisa menerima pelanggan dari luar kota?", "answer": "Bisa. Kami melayani pelanggan dari seluruh Indonesia melalui jasa pengiriman." },
+        { "question": "Apakah ada syarat khusus sebelum pakaian diwenter?", "answer": "Pakaian harus dipastikan berbahan katun atau jeans. Dan pastikan sudah bersih dan bebas dari:\n- Noda atau bekas minyak\n- Noda atau bekas parfum\n- Noda atau bekas deodorant\n- Noda pemutih\n- Noda cat\n- Noda lem\n- Noda tinta\n- Noda membandel lainnya" }
+      ]
+    },
+    {
+      "id": "blog-preview-1",
+      "type": "blog_preview",
+      "heading": "Artikel Terbaru",
+      "posts": [
+        {
+          "title": "Cara Menghitamkan Celana Jeans Kusam Tanpa Beli Baru",
+          "excerpt": "Pelajari penyebab warna jeans memudar dan cara menghitamkannya kembali agar tampak lebih pekat tanpa harus membeli baru.",
+          "link": "/blog/cara-menghitamkan-celana-jeans-kusam.html"
+        }
+      ]
+    },
+    {
+      "id": "agen-1",
+      "type": "cta_banner",
+      "anchor": "agen-laundry",
+      "style": "agent",
+      "heading": "Daftar Menjadi Agen Laundry JAYA WENTER",
+      "body": "Kami membuka peluang kerja sama bagi pemilik laundry yang ingin menambah layanan wenter kepada pelanggan.\n\nAnda dapat menawarkan layanan wenter tanpa perlu memiliki peralatan maupun proses produksi sendiri.\n\nCocok untuk laundry yang ingin meningkatkan omzet dan menambah layanan kepada pelanggan.\n\nIsi formulir pendaftaran dan tim kami akan menghubungi Anda untuk menjelaskan skema kerja sama agen laundry.",
+      "cta_text": "Daftar Menjadi Agen",
+      "cta_link": "https://wa.me/6285325730777?text=Halo%20Jaya%20Wenter%2C%20Saya%20ingin%20mendaftar%20menjadi%20Agen..."
+    },
+    {
+      "id": "consult-1",
+      "type": "cta_banner",
+      "style": "consult",
+      "heading": "Pakaian Kusam Tidak Harus Diganti",
+      "body": "Percayakan kepada kami untuk mengembalikan warna pakaian Anda menjadi lebih pekat, merata dan tampak seperti baru kembali. Silahkan konsultasikan terlebih dahulu kepada kami.",
+      "cta_text": "Konsultasi Sekarang",
+      "cta_link": "https://wa.me/6285325730777?text=Halo%20Jaya%20Wenter%2C%20saya%20ingin%20konsultasi.."
+    },
+    {
+      "id": "terms-1",
+      "type": "legal_terms",
+      "anchor": "ketentuan-layanan",
+      "heading": "Ketentuan Pengguna Jasa",
+      "summary": "Syarat dan Ketentuan Layanan JAYA WENTER",
+      "sections": [
+        { "title": "1. Jenis Bahan", "body": "Kami hanya menerima pakaian dan barang berbahan katun atau jeans. Pastikan pakaian yang Anda wenter berbahan katun atau jeans." },
+        { "title": "2. Barang Tertinggal", "body": "Pastikan tidak ada uang, dokumen, kartu, kunci, perhiasan, atau barang berharga lainnya yang tertinggal di dalam pakaian.\n\nKami tidak bertanggung jawab atas barang yang tertinggal." },
+        { "title": "3. Kondisi Pakaian", "body": "Proses wenter melibatkan pemanasan hingga sekitar 75\u00b0C, perendaman, dan pengadukan berulang.\n\nPastikan pakaian dalam kondisi layak untuk diproses." },
+        { "title": "4. Kerusakan Akibat Kondisi Awal", "body": "Kami tidak bertanggung jawab atas kerusakan yang disebabkan oleh kondisi pakaian sebelum diwenter seperti kain rapuh, jahitan lemah, sablon retak, bordir rusak, resleting rusak, atau kerusakan akibat usia pakaian." },
+        { "title": "5. Kebersihan Barang", "body": "Pakaian harus bebas dari noda minyak, parfum, deodorant, pemutih, cat, lem, tinta, dan noda lain yang menghambat penyerapan warna." },
+        { "title": "6. Hasil Pewarnaan", "body": "Hasil akhir dipengaruhi warna awal, jenis bahan, kondisi kain, dan usia pakaian.\n\nHasil tidak dapat dijamin sama persis dengan warna asli saat masih baru." },
+        { "title": "7. Perbedaan Warna", "body": "Pelanggan memahami bahwa warna hasil akhir dapat berbeda dari contoh warna, foto referensi, atau perkiraan awal karena karakteristik bahan, warna awal, kondisi kain, usia pakaian, serta kondisi barang yang berbeda-beda." },
+        { "title": "8. Barang yang Tidak Dapat Diproses", "body": "Kami berhak menolak pengerjaan barang yang:\n- Berisiko rusak saat diproses\n- Menggunakan bahan yang tidak sesuai\n- Memiliki kondisi yang tidak memungkinkan untuk mendapatkan hasil yang layak\n\nKeputusan penerimaan atau penolakan barang sepenuhnya menjadi pertimbangan JAYA WENTER berdasarkan kondisi barang yang diterima." },
+        { "title": "9. Komplain dan Klaim", "body": "Komplain terkait hasil pengerjaan wajib disampaikan paling lambat 3 (tiga) hari setelah barang diterima pelanggan.\n\nKomplain yang disampaikan setelah batas waktu tersebut dianggap tidak dapat diproses.\n\nPelanggan wajib menyampaikan komplain secara jelas disertai foto atau informasi yang diperlukan agar dapat dilakukan pemeriksaan dan tindak lanjut." },
+        { "title": "10. Persetujuan Pelanggan", "body": "Dengan menyerahkan, mengirimkan, atau memesan layanan JAYA WENTER, pelanggan dianggap telah membaca, memahami, mengetahui, dan menyetujui seluruh syarat dan ketentuan yang berlaku pada layanan JAYA WENTER.\n\nPelanggan juga memahami bahwa hasil akhir pengerjaan dapat dipengaruhi oleh kondisi awal barang, jenis bahan, usia pakaian, serta faktor teknis lainnya yang telah dijelaskan dalam ketentuan ini." },
+        { "title": "11. Penyelesaian Perselisihan", "body": "Apabila terdapat hal-hal yang belum diatur dalam ketentuan ini atau terjadi perbedaan pendapat antara pelanggan dan JAYA WENTER, maka penyelesaiannya akan diupayakan terlebih dahulu melalui musyawarah untuk mencapai kesepakatan bersama yang baik dan adil bagi kedua belah pihak." }
+      ]
+    }
+  ]
+}
