@@ -40,15 +40,6 @@
       ]
     },
     {
-      "id": "gallery-1",
-      "type": "gallery_preview",
-      "heading": "Galeri Before After JAYA WENTER",
-      "subheading": "Hasil wenter jeans, jaket, kaos, celana, tas dan berbagai pakaian yang telah kami kerjakan.",
-      "limit": 8,
-      "cta_text": "Lihat Semua Hasil Wenter",
-      "cta_link": "/galeri/"
-    },
-    {
       "id": "services-1",
       "type": "service_list",
       "heading": "Layanan JAYA WENTER",
@@ -74,6 +65,15 @@
           "description": "Mengembalikan warna berbagai jenis pakaian berbahan katun agar tampak lebih rapi."
         }
       ]
+    },
+    {
+      "id": "gallery-1",
+      "type": "gallery_preview",
+      "heading": "Galeri Before After JAYA WENTER",
+      "subheading": "Hasil wenter jeans, jaket, kaos, celana, tas dan berbagai pakaian yang telah kami kerjakan.",
+      "limit": 8,
+      "cta_text": "Lihat Semua Hasil Wenter",
+      "cta_link": "/galeri/"
     },
     {
       "id": "colors-1",
