@@ -72,7 +72,16 @@
       "heading": "Galeri Before After JAYA WENTER",
       "subheading": "Hasil wenter jeans, jaket, kaos, celana, tas dan berbagai pakaian yang telah kami kerjakan.",
       "limit": 8,
-      "pilih": [],
+      "pilih": [
+        "images/thumb-jaket-chenglong-abu-abu-ke-hitam-wenter-malang-wenter-terdekat-jasa-wenter-malan-1789351519038.jpg",
+        "images/wenter-malang-rok-jeans.png",
+        "images/wenter-malang-jaket-jeans-biru.png",
+        "images/wenter-malang-celana-hijau.png",
+        "images/jasa-wenter-malang-dress-denim-biru.png",
+        "images/jasa-wenter-malang-hoodie-belang.png",
+        "images/wenter-malang-tas-eiger.png",
+        "images/wenter-malang-topi-nike.png"
+      ],
       "cta_text": "Lihat Semua Hasil Wenter",
       "cta_link": "/galeri/"
     },
