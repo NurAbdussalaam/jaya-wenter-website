@@ -190,15 +190,15 @@
         },
         {
           "question": "Pakaian atau barang apa saja yang bisa diwenter?",
-          "answer": "Kami khusus menerima pakaian dan barang berbahan katun serta jeans seperti celana jeans, kaos, kemeja, jaket, hoodie, sweater, rok, topi, tas berbahan katun atau kanvas, sepatu berbahan kain tertentu, serta jenis pakaian lainnya yang berbahan katun atau jeans."
+          "answer": "Kami khusus menerima pakaian dan barang berbahan katun serta jeans seperti celana jeans, kaos, kemeja, jaket, hoodie, sweater, rok, topi, tas berbahan katun atau kanvas, sepatu berbahan kain tertentu, serta jenis pakaian lainnya yang berbahan katun atau jeans, atau campuran katun dengan bahan lain\n"
         },
         {
           "question": "Apakah semua jenis bahan bisa diwenter?",
-          "answer": "Tidak. Kami hanya menerima bahan katun dan jeans. Beberapa bahan yang tidak bisa diwenter dengan pewarna kami diantaranya:\n- Polyester\n- Parasut\n- Nylon\n- Wool\n- Spandek\n- Bahan sintetis lainnya"
+          "answer": "Tidak. Kami hanya menerima bahan katun dan jeans. Beberapa bahan yang tidak bisa diwenter dengan pewarna kami diantaranya:\n- Polyester\n- Parasut\n- Nylon\n- Wool\n- Spandek\n- Bahan sintetis lainnya\nPakaian berbahan campuran katun masih bisa diwenter, misalnya pakaian dengan bahan cotton 40% dan polyester 60%."
         },
         {
           "question": "Apakah warna bisa lebih pekat dari kondisi sekarang?",
-          "answer": "Dalam banyak kasus warna pakaian yang pudar dapat menjadi jauh lebih pekat dibanding kondisi sebelum diwenter, tergantung warna awal dan kondisi bahan."
+          "answer": "Dalam banyak kasus warna pakaian yang pudar dapat menjadi jauh lebih pekat dibanding kondisi sebelum diwenter, tergantung warna awal dan kondisi bahan pakaian."
         },
         {
           "question": "Warna apa saja yang tersedia?",
@@ -218,7 +218,7 @@
         },
         {
           "question": "Apakah ada syarat khusus sebelum pakaian diwenter?",
-          "answer": "Pakaian harus dipastikan berbahan katun atau jeans. Dan pastikan sudah bersih dan bebas dari:\n- Noda atau bekas minyak\n- Noda atau bekas parfum\n- Noda atau bekas deodorant\n- Noda pemutih\n- Noda cat\n- Noda lem\n- Noda tinta\n- Noda membandel lainnya"
+          "answer": "Pakaian harus dipastikan berbahan katun atau jeans. Dan pastikan sudah bersih dan bebas dari:\n- Noda atau bekas minyak\n- Noda atau bekas parfum\n- Noda atau bekas deodorant\n- Noda pemutih\n- Noda cat\n- Noda lem\n- Noda tinta\n- Noda membandel lainnya\n\nPakaian yang akan diwenter harus sudah dicuci bersih dan tanpa diberi pewangi/parfumm"
         }
       ]
     },
