@@ -194,7 +194,7 @@
         },
         {
           "question": "Apakah semua jenis bahan bisa diwenter?",
-          "answer": "Tidak. Kami hanya menerima bahan katun dan jeans. Beberapa bahan yang tidak bisa diwenter dengan pewarna kami diantaranya:\n- Polyester\n- Parasut\n- Nylon\n- Wool\n- Spandek\n- Bahan sintetis lainnya\n\nPakaian berbahan campuran katun masih bisa diwenter, misalnya pakaian dengan bahan cotton 40% dan polyester 60%."
+          "answer": "Tidak. Kami hanya menerima bahan katun dan jeans. Beberapa bahan yang tidak bisa diwenter dengan pewarna kami diantaranya:\n- Polyester\n- Parasut\n- Nylon\n- Wool\n- Spandek\n- Bahan sintetis lainnya\n\nPakaian berbahan campuran katun masih bisa diwenter, misalnya pakaian dengan bahan cotton 60% dan polyester 40%."
         },
         {
           "question": "Apakah warna bisa lebih pekat dari kondisi sekarang?",
@@ -262,7 +262,7 @@
       "sections": [
         {
           "title": "1. Jenis Bahan",
-          "body": "Kami hanya menerima pakaian dan barang berbahan katun atau jeans. Pastikan pakaian yang Anda wenter berbahan katun atau jeans.\n\n"
+          "body": "Kami hanya menerima pakaian dan barang berbahan katun atau jeans. Pastikan pakaian yang Anda wenter berbahan katun atau jeans. Bahan campuran katun masih bisa diwenter selama kandungan katun mencukupi, misalnya bahan dengan kandungan cotton 60% dan polyester 40%.\n\n"
         },
         {
           "title": "2. Barang Tertinggal",
