@@ -10,7 +10,7 @@ Website: www.wenter.my.id
 WhatsApp: 085325730777
 
 LOKASI
-Google Maps: https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7
+Google Maps: https://maps.app.goo.gl/G8Atqmf971wFU3fb9
 Alamat: Jl.Kebonsari Gg 4 No.18A, Kebonsari, Sukun, Malang
 Patokan: Rumah tingkat pagar besi pink, barat persis masjid ponpes bani syihab, sebelah dokter sugeng.
 
