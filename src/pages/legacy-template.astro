@@ -1,0 +1,12 @@
+---
+// Kerangka sementara untuk artikel lama (HTML statis). Dipakai oleh scripts/build-legacy-posts.mjs,
+// lalu dihapus dari hasil build. Tidak ikut sitemap.
+import Base from "../layouts/Base.astro";
+---
+<Base title="%%TITLE%%" description="%%DESC%%" path="/blog/%%FILE%%" ogType="article" ogImage="https://wenter.my.id%%OGIMG%%">
+  <article class="container article">
+    %%CONTENT%%
+    <div class="center"><a class="btn btn-wa" href="%%CTA_HREF%%" target="_blank" rel="noopener" data-wa="Artikel Konsultasi">%%CTA_TEXT%%</a></div>
+    <div class="back" style="margin-top:28px"><a class="btn btn-outline" href="/blog/">← Kembali ke Blog</a></div>
+  </article>
+</Base>

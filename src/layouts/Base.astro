@@ -1,0 +1,110 @@
+---
+import "../styles/global.css";
+import Icon from "../components/Icon.astro";
+import { WA_NUMBER, SITE } from "../lib/util.js";
+
+const {
+  title,
+  description = "",
+  path = "/",
+  ogImage = "/assets/og-image.jpg",
+  ogType = "website",
+  preload = "",
+  jsonld = [],
+  noindex = false,
+} = Astro.props;
+
+const canonical = SITE + path;
+const og = ogImage.startsWith("http") ? ogImage : SITE + ogImage;
+const wa = (t) => `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t)}`;
+const navWa = wa("Halo jaya wenter, saya ingin memesan layanan wenter...");
+---
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="canonical" href={canonical} />
+  <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large"} />
+  <meta name="theme-color" content="#001d5a" />
+  <meta property="og:title" content={title} />
+  {description && <meta property="og:description" content={description} />}
+  <meta property="og:type" content={ogType} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={og} />
+  <meta property="og:locale" content="id_ID" />
+  <meta property="og:site_name" content="JAYA WENTER" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="/assets/logo_resmi_jaya_wenter.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" />
+  {preload && <link rel="preload" as="image" href={preload} fetchpriority="high" />}
+  {jsonld.map((j) => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGVM89D5LW"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QGVM89D5LW');
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/" aria-label="JAYA WENTER - Beranda"><img class="logo" src="/assets/logo_resmi_jaya_wenter.png" alt="Logo JAYA WENTER" width="87" height="58" /></a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="nav" aria-label="Buka menu"><Icon name="menu" size={26} /></button>
+      <nav class="nav" id="nav" aria-label="Menu utama">
+        <a href="/">Beranda</a>
+        <a href="/#layanan">Layanan</a>
+        <a href="/#faq">FAQ</a>
+        <a href="/#ketentuan-layanan">Ketentuan</a>
+        <a href="/galeri/">Galeri</a>
+        <a href="/blog/">Blog</a>
+        <a href="/#agen-laundry">Agen Laundry</a>
+        <a href="https://maps.app.goo.gl/zeY23NPQKtfVsbgd8" target="_blank" rel="noopener">Lokasi</a>
+        <a class="btn btn-wa btn-sm" href={navWa} target="_blank" rel="noopener" data-wa="Header Nav CTA"><Icon name="whatsapp" size={18} /><span>Pesan Layanan Wenter Sekarang</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main><slot /></main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <h3>JAYA WENTER</h3>
+      <p>Garment Recolouring Service</p>
+      <p>WhatsApp : <a class="footer-wa" href={wa("Halo Jaya Wenter..")} data-wa="Footer Nomor">085325730777</a></p>
+      <p>Melayani Malang &amp; Seluruh Indonesia</p>
+      <p>Alamat :<br />Jl. Kebonsari IV No.18A, Kebonsari,<br />Kec. Sukun, Kota Malang, Jawa Timur 65149</p>
+      <p>Jam Operasional :<br />Senin - Kamis &amp; Sabtu: 08.00 - 16.00 WIB<br />Jumat: 08.00 - 11.30 WIB<br />Minggu: Tutup</p>
+      <div class="footer-links">
+        <a href="/#faq">FAQ</a>
+        <a href="/#ketentuan-layanan">Ketentuan Pengguna Jasa</a>
+        <a href="/blog/">Blog</a>
+        <a href="https://maps.app.goo.gl/zeY23NPQKtfVsbgd8" target="_blank" rel="noopener">Google Maps</a>
+      </div>
+      <p>Temukan lokasi JAYA WENTER di Google Maps:</p>
+      <a class="btn btn-wa" href="https://maps.app.goo.gl/zeY23NPQKtfVsbgd8" target="_blank" rel="noopener" data-maps="Footer"><Icon name="pin" size={18} /><span>Lihat Lokasi Kami</span><span class="arrow"><Icon name="arrow" size={18} /></span></a>
+    </div>
+  </footer>
+
+  <a class="wa-float" href={wa("Halo Jaya Wenter..")} target="_blank" rel="noopener" aria-label="Chat WhatsApp JAYA WENTER" data-wa="Floating Button"><Icon name="whatsapp" size={32} /></a>
+
+  <script is:inline>
+    (function(){
+      var t=document.getElementById('navToggle'),n=document.getElementById('nav');
+      if(t&&n){t.addEventListener('click',function(){var o=n.classList.toggle('open');t.setAttribute('aria-expanded',o);});
+        n.addEventListener('click',function(e){if(e.target.closest('a'))n.classList.remove('open');});}
+      document.addEventListener('click',function(e){
+        var a=e.target.closest('a[data-wa],a[href^="https://wa.me"],a[data-maps]');
+        if(!a||typeof gtag!=='function')return;
+        if(a.hasAttribute('data-maps')){gtag('event','maps_click',{event_category:'Lead',event_label:a.getAttribute('data-maps')});return;}
+        gtag('event','whatsapp_click',{event_category:'Lead',event_label:a.getAttribute('data-wa')||document.title});
+      });
+    })();
+  </script>
+</body>
+</html>

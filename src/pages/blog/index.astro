@@ -1,0 +1,33 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getPosts } from "../../lib/blog.js";
+import { dims } from "../../lib/util.js";
+
+const posts = await Promise.all(getPosts().map(async (p) => ({ ...p, d: await dims(p.cover) })));
+---
+<Base
+  title="Blog JAYA WENTER | Tips Wenter & Perawatan Pakaian"
+  description="Artikel seputar wenter, pewarnaan ulang pakaian, perawatan jeans, jaket, kaos dan seragam dari JAYA WENTER Malang."
+  path="/blog/"
+>
+  <section class="section"><div class="container">
+    <h1 class="section-title">Blog JAYA WENTER</h1>
+    <p class="section-sub">Artikel seputar perawatan pakaian, solusi mengatasi warna pudar, serta informasi mengenai proses wenter agar pakaian kesayangan Anda kembali tampil lebih pekat dan menarik.</p>
+    <div class="blog-grid">
+      {posts.map((p) => (
+        <article class="blog-card">
+          {p.cover && <img src={p.cover} alt={p.title} width={p.d.width} height={p.d.height} loading="lazy" decoding="async" />}
+          <div class="in">
+            <h2>{p.title}</h2>
+            {p.summary && <p>{p.summary}</p>}
+            <a class="btn btn-outline btn-sm" href={p.href}>Baca Selengkapnya →</a>
+          </div>
+        </article>
+      ))}
+    </div>
+    <div class="center">
+      <a class="btn btn-wa" href="https://wa.me/6285325730777?text=Halo%20Jaya%20Wenter%2C%20saya%20ingin%20konsultasi.." target="_blank" rel="noopener" data-wa="Blog Konsultasi">Konsultasi Via WhatsApp</a>
+    </div>
+    <div class="back"><a class="btn btn-navy" href="/">← Kembali ke Beranda</a></div>
+  </div></section>
+</Base>

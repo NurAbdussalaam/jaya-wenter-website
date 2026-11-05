@@ -1,0 +1,17 @@
+{
+  "name": "jaya-wenter-website",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/copy-static.mjs && node scripts/build-legacy-posts.mjs && node scripts/optimize-images.mjs dist"
+  },
+  "dependencies": {
+    "astro": "^5.18.0",
+    "marked": "^18.1.2"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}

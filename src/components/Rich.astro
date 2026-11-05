@@ -1,0 +1,8 @@
+---
+import { richText } from "../lib/util.js";
+const { text } = Astro.props;
+const blocks = richText(text);
+---
+{blocks.map((b) => b.type === "ul"
+  ? <ul>{b.items.map((i) => <li>{i}</li>)}</ul>
+  : <p>{b.lines.map((l, i) => <Fragment>{i > 0 && <br />}{l}</Fragment>)}</p>)}

@@ -5,10 +5,14 @@
       "type": "hero",
       "title": "Jasa Wenter Malang Profesional",
       "subtitle": "Mengembalikan warna jeans, jaket, kaos, celana, hoodie, sweater dan seragam yang pudar agar lebih pekat, merata dan memiliki tampilan baru.",
-      "image": "assets/wenter-malang-celana-pendek.png",
+      "image": "assets/wenter-malang-celana-pendek.webp",
       "image_alt": "Jasa Wenter Malang",
       "cta_text": "Pesan Sekarang",
-      "cta_link": "https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter..."
+      "cta_link": "https://wa.me/6285325730777?text=Halo%20jaya%20wenter%2C%20saya%20ingin%20memesan%20layanan%20wenter...",
+      "highlights": [
+        "Mulai Rp25.000",
+        "Estimasi pengerjaan 3–7 hari"
+      ]
     },
     {
       "id": "text-1",
@@ -73,14 +77,14 @@
       "subheading": "Hasil wenter jeans, jaket, kaos, celana, tas dan berbagai pakaian yang telah kami kerjakan.",
       "limit": 8,
       "pilih": [
-        "images/wenter-malang-rok-jeans.png",
-        "images/wenter-malang-jaket-jeans-biru.png",
-        "images/jasa-wenter-malang-celana-panjang-kena-pemutih.png",
-        "images/jasa-wenter-malang-celana-pendek-pudar-belang.png",
+        "images/wenter-malang-rok-jeans.webp",
+        "images/wenter-malang-jaket-jeans-biru.webp",
+        "images/jasa-wenter-malang-celana-panjang-kena-pemutih.webp",
+        "images/jasa-wenter-malang-celana-pendek-pudar-belang.webp",
         "images/thumb-jaket-chenglong-abu-abu-ke-hitam-wenter-malang-wenter-terdekat-jasa-wenter-malan-1789351519038.jpg",
-        "images/jasa-wenter-malang-hoodie-belang.png",
-        "images/wenter-malang-tas-eiger.png",
-        "images/wenter-malang-topi-nike.png"
+        "images/jasa-wenter-malang-hoodie-belang.webp",
+        "images/wenter-malang-tas-eiger.webp",
+        "images/wenter-malang-topi-nike.webp"
       ],
       "cta_text": "Lihat Semua Contoh Hasil Wenter",
       "cta_link": "/galeri/"
@@ -177,7 +181,7 @@
         }
       ],
       "cta_text": "Lihat Review Google",
-      "cta_link": "https://maps.app.goo.gl/nU6xoe1qhUbgyGuL7"
+      "cta_link": "https://maps.app.goo.gl/zeY23NPQKtfVsbgd8"
     },
     {
       "id": "faq-1",
@@ -206,7 +210,7 @@
         },
         {
           "question": "Berapa lama proses pengerjaan?",
-          "answer": "Estimasi pengerjaan sekitar 3–7 hari atau menyesuaikan banyaknya pakaian dan antrian."
+          "answer": "Estimasi sekitar 3–7 hari, bergantung jumlah pakaian dan antrean pengerjaan."
         },
         {
           "question": "Berapa biaya jasa wenter?",
@@ -261,7 +265,6 @@
       "summary": "Syarat dan Ketentuan Layanan JAYA WENTER",
       "sections": [
         {
-          
           "title": "1. Jenis Bahan",
           "body": "Kami hanya menerima pakaian dan barang berbahan katun atau jeans. Pastikan pakaian yang Anda wenter berbahan katun atau jeans. Bahan campuran katun masih bisa diwenter selama kandungan katun mencukupi, misalnya bahan dengan kandungan cotton 60% dan polyester 40%.\n\n"
         },

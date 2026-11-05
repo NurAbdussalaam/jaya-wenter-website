@@ -1,0 +1,87 @@
+---
+import Base from "../../layouts/Base.astro";
+import Icon from "../../components/Icon.astro";
+import galleryData from "../../../content/gallery.json";
+import { abs, dims } from "../../lib/util.js";
+
+const items = await Promise.all((galleryData.items || []).map(async (it) => ({
+  ...it,
+  thumb: abs(it.image, "galeri"),
+  full: abs(it.full || it.image, "galeri"),
+  d: await dims(abs(it.image, "galeri")),
+})));
+const jsonld = [{
+  "@context": "https://schema.org",
+  "@type": "ImageGallery",
+  name: "Galeri Hasil Wenter JAYA WENTER",
+  url: "https://wenter.my.id/galeri/",
+  image: items.slice(0, 20).map((it) => ({ "@type": "ImageObject", contentUrl: "https://wenter.my.id" + it.full, name: it.title, description: it.description })),
+}];
+---
+<Base
+  title="Galeri Hasil Wenter | JAYA WENTER"
+  description="Galeri hasil wenter JAYA WENTER. Lihat before-after wenter celana, jaket, hoodie, kaos, kemeja, tas dan berbagai merk terkenal."
+  path="/galeri/"
+  jsonld={jsonld}
+>
+  <section class="section"><div class="container">
+    <h1 class="section-title">Galeri Hasil Wenter JAYA WENTER</h1>
+    <p class="section-sub">Lihat berbagai hasil before-after wenter yang telah kami kerjakan.</p>
+
+    <div class="search-wrap">
+      <div class="search-box">
+        <Icon name="search" size={18} />
+        <input type="text" id="gallerySearch" placeholder="Contoh: kaos nike hitam" autocomplete="off" aria-label="Cari hasil wenter" />
+        <button type="button" id="searchClearBtn" class="search-clear" aria-label="Hapus pencarian">&times;</button>
+      </div>
+      <div class="kw-group">
+        <span class="kw-label">Jenis</span>
+        <div class="kw-buttons" id="kategoriButtons">
+          <button type="button" class="kw-btn" data-kategori="celana">Celana</button>
+          <button type="button" class="kw-btn" data-kategori="hoodie">Hoodie</button>
+          <button type="button" class="kw-btn" data-kategori="jaket">Jaket</button>
+          <button type="button" class="kw-btn" data-kategori="kaos">Kaos</button>
+          <button type="button" class="kw-btn" data-kategori="tas">Tas</button>
+          <button type="button" class="kw-btn" data-kategori="topi">Topi</button>
+          <button type="button" class="kw-btn" data-kategori="lainnya">Lainnya</button>
+        </div>
+      </div>
+      <div class="kw-group">
+        <span class="kw-label">Warna</span>
+        <div class="kw-buttons" id="warnaButtons">
+          <button type="button" class="kw-btn" data-warna="hitam">Hitam</button>
+          <button type="button" class="kw-btn" data-warna="biru">Biru Tua</button>
+          <button type="button" class="kw-btn" data-warna="hijau">Hijau Tua</button>
+          <button type="button" class="kw-btn" data-warna="coklat">Coklat Tua</button>
+          <button type="button" class="kw-btn" data-warna="abu">Abu-Abu Tua</button>
+        </div>
+      </div>
+      <div class="search-meta">
+        <span id="resultCount" aria-live="polite"></span>
+        <button type="button" id="resetFilterBtn" class="reset-btn">Reset Filter</button>
+      </div>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid">
+      {items.map((it, i) => (
+        <article class="gallery-item" data-kategori={it.kategori || ""} data-merk={it.merk || ""} data-warna={it.warna || ""}>
+          <button type="button" class="imgbtn" data-thumb={it.thumb} data-full={it.full} aria-label={`Perbesar foto: ${it.title || it.alt || ""}`}>
+            <img src={it.thumb} alt={it.alt || it.title || ""} width={it.d.width} height={it.d.height} loading={i < 4 ? "eager" : "lazy"} decoding="async" />
+          </button>
+          <div class="gallery-info"><h2 style="font-size:16px;margin-bottom:6px">{it.title}</h2><p>{it.description}</p></div>
+        </article>
+      ))}
+    </div>
+    <div class="no-result" id="noResultMsg">
+      Tidak ada hasil yang cocok dengan pencarian Anda.<br />Coba kata kunci lain atau reset filter.
+    </div>
+
+    <div class="back"><a class="btn btn-navy" href="/">← Kembali ke Beranda</a></div>
+  </div></section>
+
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Foto diperbesar">
+    <button type="button" id="lightboxClose" aria-label="Tutup">&times;</button>
+    <img id="lightboxImg" alt="" />
+  </div>
+  <script>import "../../scripts/gallery.js";</script>
+</Base>

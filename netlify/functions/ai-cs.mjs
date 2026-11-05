@@ -3,7 +3,25 @@ import { SYSTEM_PROMPT } from "../../content/jaya-wenter-prompt.mjs";
 
 const MODEL = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
-export default async (req) => {
+// Pembatas sederhana per IP (in-memory; cukup untuk meredam penyalahgunaan ringan)
+const hits = new Map();
+const LIMIT = 15;            // maks permintaan
+const WINDOW_MS = 60_000;    // per 1 menit
+const MAX_LEN = 800;         // maks panjang pesan
+
+function tooMany(ip) {
+  const now = Date.now();
+  const arr = (hits.get(ip) || []).filter((t) => now - t < WINDOW_MS);
+  arr.push(now);
+  hits.set(ip, arr);
+  return arr.length > LIMIT;
+}
+
+export default async (req, context) => {
+  const ip = context?.ip || req.headers.get("x-nf-client-connection-ip") || "unknown";
+  if (tooMany(ip)) {
+    return Response.json({ error: "Terlalu banyak permintaan. Coba lagi sebentar." }, { status: 429 });
+  }
   if (req.method !== "POST") {
     return Response.json({ error: "Method Not Allowed" }, { status: 405 });
   }
@@ -18,6 +36,10 @@ export default async (req) => {
   const message = typeof body.message === "string" ? body.message.trim() : "";
   if (!message) {
     return Response.json({ error: "Field message wajib diisi." }, { status: 400 });
+  }
+
+  if (message.length > MAX_LEN) {
+    return Response.json({ error: "Pesan terlalu panjang." }, { status: 413 });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;

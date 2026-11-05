@@ -1,0 +1,141 @@
+---
+import Icon from "./Icon.astro";
+import Rich from "./Rich.astro";
+import { abs, dims } from "../lib/util.js";
+
+const { blocks = [], gallery = [] } = Astro.props;
+const galleryMap = new Map(gallery.map((g) => [g.image, g]));
+
+const rows = [];
+for (const b of blocks) {
+  const row = { b };
+  if (b.type === "hero") row.dim = await dims(abs(b.image));
+  if (b.type === "gallery_preview") {
+    const list = Array.isArray(b.pilih) && b.pilih.length
+      ? b.pilih.map((n) => galleryMap.get(n)).filter(Boolean)
+      : gallery.slice(0, Number(b.limit) || 6);
+    row.items = await Promise.all(list.map(async (it) => ({ ...it, src: abs(it.image, "galeri"), d: await dims(abs(it.image, "galeri")) })));
+  }
+  rows.push(row);
+}
+const star = (n) => Array.from({ length: Number(n) || 5 });
+---
+{rows.map(({ b, dim, items }, idx) => {
+  switch (b.type) {
+    case "hero": return (
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <h1>{b.title}</h1>
+            <p>{b.subtitle}</p>
+            <a class="btn btn-wa btn-lg" href={b.cta_link} target="_blank" rel="noopener" data-wa="Hero CTA"><Icon name="whatsapp" size={22} /><span>{b.cta_text}</span></a>
+            {Array.isArray(b.highlights) && b.highlights.length > 0 && (
+              <ul class="chips">{b.highlights.map((h) => <li>{h}</li>)}</ul>
+            )}
+          </div>
+          <div class="hero-img">
+            <img src={abs(b.image)} alt={b.image_alt || b.title} width={dim.width} height={dim.height} fetchpriority="high" decoding="async" />
+          </div>
+        </div>
+      </section>);
+    case "text": return (
+      <section class="section"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        <div class="prose box"><Rich text={b.body} /></div>
+      </div></section>);
+    case "feature_grid": return (
+      <section class="section section-alt"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        <div class="grid grid-4">
+          {(b.items || []).map((it) => <div class="card feature"><strong>{it.title}</strong><span>{it.subtitle}</span></div>)}
+        </div>
+      </div></section>);
+    case "service_list": return (
+      <section id="layanan" class="section"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        <div class="grid grid-3">
+          {(b.items || []).map((it) => <div class="card"><h3>{it.title}</h3><p>{it.description}</p></div>)}
+        </div>
+      </div></section>);
+    case "gallery_preview": return (
+      <section id="galeri" class="section section-alt"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        {b.subheading && <p class="section-sub">{b.subheading}</p>}
+        <div class="thumbs">
+          {items.map((it) => <img src={it.src} alt={it.alt || it.title || ""} width={it.d.width} height={it.d.height} loading="lazy" decoding="async" />)}
+        </div>
+        {b.cta_link && <div class="center"><a class="btn btn-outline" href={b.cta_link}><span>{b.cta_text}</span><span class="arrow"><Icon name="arrow" size={18} /></span></a></div>}
+      </div></section>);
+    case "color_palette": return (
+      <section class="section"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        {b.subheading && <p class="section-sub">{b.subheading}</p>}
+        <div class="swatches">
+          {(b.colors || []).map((c) => <div class="swatch"><i style={`background:${c.hex}`}></i><span>{c.name}</span></div>)}
+        </div>
+      </div></section>);
+    case "pricing_table": return (
+      <section id="tarif" class="section section-alt"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        <div class="box" style="max-width:640px;margin:24px auto 0">
+          <table class="price-table"><tbody>
+            {(b.rows || []).map((r) => <tr><td>{r.item}</td><td>{r.price}</td></tr>)}
+          </tbody></table>
+        </div>
+      </div></section>);
+    case "testimonials": return (
+      <section class="section"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        <div class="grid grid-3">
+          {(b.items || []).map((t) => (
+            <div class="card quote">
+              <div class="stars" aria-label={`${t.stars || 5} dari 5 bintang`}>{star(t.stars).map(() => <Icon name="star" size={18} />)}</div>
+              <p>{t.text}</p>
+              <b>{t.name}</b>
+            </div>))}
+        </div>
+        {b.cta_link && <div class="center"><a class="btn btn-google" href={b.cta_link} target="_blank" rel="noopener"><span>{b.cta_text}</span></a></div>}
+      </div></section>);
+    case "faq": return (
+      <section id="faq" class="section section-alt"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        <div class="acc">
+          {(b.items || []).map((it) => <details><summary>{it.question}</summary><div><Rich text={it.answer} /></div></details>)}
+        </div>
+      </div></section>);
+    case "blog_preview": return (
+      <section class="section"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        <div class="blog-grid">
+          {(b.posts || []).map((p) => (
+            <article class="blog-card"><div class="in">
+              <h3><a href={p.link} style="text-decoration:none;color:inherit">{p.title}</a></h3>
+              <p>{p.excerpt}</p>
+              <a class="btn btn-outline btn-sm" href={p.link}>Baca Selengkapnya →</a>
+            </div></article>))}
+        </div>
+      </div></section>);
+    case "cta_banner": return (
+      <section id={b.anchor || undefined} class="section"><div class="container">
+        <div class={`banner ${b.style === "agent" ? "banner-agent" : "banner-consult"}`}>
+          <h2>{b.heading}</h2>
+          <Rich text={b.body} />
+          <a class="btn btn-wa btn-lg" href={b.cta_link} target="_blank" rel="noopener" data-wa={b.cta_text}><Icon name="whatsapp" size={22} /><span>{b.cta_text}</span></a>
+        </div>
+      </div></section>);
+    case "legal_terms": return (
+      <section id={b.anchor || undefined} class="section"><div class="container">
+        <h2 class="section-title">{b.heading}</h2>
+        <div class="acc"><details><summary>{b.summary}</summary>
+          <div>{(b.sections || []).map((s) => <Fragment><h3>{s.title}</h3><Rich text={s.body} /></Fragment>)}</div>
+        </details></div>
+      </div></section>);
+    case "video": return (
+      <section class="section"><div class="container" style="max-width:700px">
+        <div style="position:relative;padding-bottom:56.25%;height:0"><iframe src={b.url} title={b.caption || "Video"} style="position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:14px" loading="lazy" allowfullscreen></iframe></div>
+        {b.caption && <p class="section-sub" style="margin-top:10px">{b.caption}</p>}
+      </div></section>);
+    case "custom_embed": return <section class="section"><div class="container" set:html={b.html || ""} /></section>;
+    default: return null;
+  }
+})}

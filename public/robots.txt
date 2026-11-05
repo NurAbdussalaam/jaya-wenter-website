@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /panel/
+Disallow: /ai-tester.html
+Disallow: /netlify/
+Disallow: /content/
+Disallow: /index-backup-
+Disallow: /galeri/index-backup-
+
+Sitemap: https://wenter.my.id/sitemap.xml
