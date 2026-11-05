@@ -29,6 +29,7 @@ collections:
                   - { name: "image_alt", label: "Alt Text Gambar", widget: "string", required: false }
                   - { name: "cta_text", label: "Teks Tombol", widget: "string" }
                   - { name: "cta_link", label: "Link Tombol (mis. WhatsApp)", widget: "string" }
+                  - { name: "highlights", label: "Poin Singkat di Bawah Tombol (mis. Mulai Rp25.000)", widget: "list", required: false, field: { name: "poin", label: "Poin", widget: "string" } }
               - name: "text"
                 label: "Teks Bebas"
                 widget: "object"

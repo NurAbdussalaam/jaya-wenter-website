@@ -1,0 +1,56 @@
+---
+import Base from "../layouts/Base.astro";
+import Blocks from "../components/Blocks.astro";
+import homepage from "../../content/homepage.json";
+import galleryData from "../../content/gallery.json";
+import { abs, plain, SITE } from "../lib/util.js";
+
+const blocks = homepage.blocks || [];
+const hero = blocks.find((b) => b.type === "hero");
+const faq = blocks.find((b) => b.type === "faq");
+
+const jsonld = [
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["LocalBusiness", "ProfessionalService"],
+        "@id": SITE + "/#bisnis",
+        name: "JAYA WENTER",
+        alternateName: "Jasa Wenter Malang",
+        description: "Jasa wenter (pewarnaan ulang pakaian) di Malang untuk jeans, jaket, kaos, celana, hoodie, sweater, tas dan seragam. Melayani Malang dan seluruh Indonesia.",
+        url: SITE + "/",
+        telephone: "+6285325730777",
+        image: SITE + "/assets/og-image.jpg",
+        logo: SITE + "/assets/logo_resmi_jaya_wenter.png",
+        priceRange: "Rp25.000+",
+        address: { "@type": "PostalAddress", streetAddress: "Jl. Kebonsari IV No.18A, Kebonsari, Kec. Sukun", addressLocality: "Kota Malang", addressRegion: "Jawa Timur", postalCode: "65149", addressCountry: "ID" },
+        areaServed: [{ "@type": "City", name: "Malang" }, { "@type": "Country", name: "Indonesia" }],
+        openingHoursSpecification: [
+          { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Saturday"], opens: "08:00", closes: "16:00" },
+          { "@type": "OpeningHoursSpecification", dayOfWeek: "Friday", opens: "08:00", closes: "11:30" },
+        ],
+        hasMap: "https://maps.app.goo.gl/zeY23NPQKtfVsbgd8",
+        sameAs: ["https://maps.app.goo.gl/zeY23NPQKtfVsbgd8"],
+      },
+      { "@type": "WebSite", "@id": SITE + "/#website", url: SITE + "/", name: "JAYA WENTER", inLanguage: "id-ID", publisher: { "@id": SITE + "/#bisnis" } },
+    ],
+  },
+];
+if (faq?.items?.length) {
+  jsonld.push({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.items.map((it) => ({ "@type": "Question", name: plain(it.question), acceptedAnswer: { "@type": "Answer", text: plain(it.answer) } })),
+  });
+}
+---
+<Base
+  title="Jasa Wenter Malang Mulai Rp25.000 | JAYA WENTER"
+  description="Jasa wenter Malang untuk jeans, jaket, hoodie, kaos &amp; seragam. Mulai Rp25.000, 5 pilihan warna, estimasi 3–7 hari, bisa kirim dari luar kota."
+  path="/"
+  preload={hero ? abs(hero.image) : ""}
+  jsonld={jsonld}
+>
+  <Blocks blocks={blocks} gallery={galleryData.items || []} />
+</Base>

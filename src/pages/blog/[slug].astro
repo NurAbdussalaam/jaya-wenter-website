@@ -1,0 +1,38 @@
+---
+import { marked } from "marked";
+import Base from "../../layouts/Base.astro";
+import { getPosts } from "../../lib/blog.js";
+import { dims, plain, SITE } from "../../lib/util.js";
+
+export async function getStaticPaths() {
+  return getPosts().filter((p) => !p.legacy && p.slug && p.body).map((p) => ({ params: { slug: p.slug }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const html = marked.parse(post.body || "");
+const d = await dims(post.cover);
+const desc = plain(post.summary || String(post.body).replace(/[#*_>`\[\]\(\)!-]/g, " ")).slice(0, 155);
+const jsonld = [{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.title,
+  datePublished: post.date,
+  dateModified: post.date,
+  image: post.cover ? SITE + post.cover : undefined,
+  author: { "@type": "Organization", name: "JAYA WENTER" },
+  publisher: { "@type": "Organization", name: "JAYA WENTER", logo: { "@type": "ImageObject", url: SITE + "/assets/logo_resmi_jaya_wenter.png" } },
+  mainEntityOfPage: `${SITE}/blog/${post.slug}/`,
+}];
+---
+<Base title={`${post.title} | JAYA WENTER`} description={desc} path={`/blog/${post.slug}/`} ogType="article" ogImage={post.cover || "/assets/og-image.jpg"} jsonld={jsonld}>
+  <article class="container article">
+    <h1>{post.title}</h1>
+    {post.date && <div class="meta">{new Date(post.date).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}{post.category ? ` · ${post.category}` : ""}</div>}
+    {post.cover && <img class="hero-cover" src={post.cover} alt={post.title} width={d.width} height={d.height} fetchpriority="high" />}
+    <div set:html={html} />
+    {Array.isArray(post.keywords) && post.keywords.length > 0 && (
+      <div class="tags"><b>Tags:</b><br />{post.keywords.map((k) => <span>{k}</span>)}</div>
+    )}
+    <div class="center"><a class="btn btn-wa" href="https://wa.me/6285325730777?text=Halo%20Jaya%20Wenter%2C%20saya%20ingin%20konsultasi.." target="_blank" rel="noopener" data-wa="Artikel Konsultasi">Konsultasi Via WhatsApp</a></div>
+    <div class="back" style="margin-top:28px"><a class="btn btn-outline" href="/blog/">← Kembali ke Blog</a></div>
+  </article>
+</Base>
