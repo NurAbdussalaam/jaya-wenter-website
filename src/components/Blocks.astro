@@ -118,9 +118,13 @@ const star = (n) => Array.from({ length: Number(n) || 5 });
     case "cta_banner": return (
       <section id={b.anchor || undefined} class="section"><div class="container">
         <div class={`banner ${b.style === "agent" ? "banner-agent" : "banner-consult"}`}>
-          <h2>{b.heading}</h2>
-          <Rich text={b.body} />
-          <a class="btn btn-wa btn-lg" href={b.cta_link} target="_blank" rel="noopener" data-wa={b.cta_text}><Icon name="whatsapp" size={22} /><span>{b.cta_text}</span></a>
+          <div class="banner-text">
+            <h2>{b.heading}</h2>
+            <Rich text={b.body} />
+          </div>
+          <div class="banner-action">
+            <a class="btn btn-wa btn-lg" href={b.cta_link} target="_blank" rel="noopener" data-wa={b.cta_text}><Icon name="whatsapp" size={22} /><span>{b.cta_text}</span></a>
+          </div>
         </div>
       </div></section>);
     case "legal_terms": return (
